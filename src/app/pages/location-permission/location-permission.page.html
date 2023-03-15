@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center"><b>Find Location Here!!</b></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <p align="center"><ion-img src="assets/images/location1.svg"></ion-img></p>
+<ion-card>
+  <p class="ion-text-center"><b>We don't have your location, yet!</b></p>
+  <p class="ion-text-center">Set your location to start using this App</p>
+</ion-card>
+
+  <ion-button shape="round" size="default" expand="block" (click)="alertMsg()">
+    <ion-icon name="location-outline" class="mr-5" ></ion-icon>
+    Enable Device Location</ion-button>
+</ion-content>

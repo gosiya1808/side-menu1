@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>BACK</ion-back-button>
+    </ion-buttons>
+    <ion-title>Department</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <h1>DEPARTMENTLIST</h1>
+  <ion-item *ngFor="let i of listdata">
+    <p>{{i.DepartmentId}}</p>
+    <p>{{i.DepartmentName}}</p>
+    <p>{{i.EntryBy}}</p>
+    <p>{{i.EntryDate}}</p>
+    <p>{{i.UpdateBy}}</p>
+    <p>{{i.UpdatedDate}}</p>
+    <p>{{i.IsActive}}</p>
+  </ion-item>
+</ion-content>

@@ -1,0 +1,35 @@
+<ion-header>
+  <script type="text/javascript" src="cordova.js"></script>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>Back</ion-back-button>
+    </ion-buttons>
+    <ion-title>Add-attendance</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <p align="center"><ion-img src="assets/images/hrms.svg" height="45px" class="ion-padding-bottom"></ion-img></p>
+  <ion-card>
+  <ion-item lines="full" fill="outline" shape="round">
+    <ion-label position="floating">Starting Latitude</ion-label>
+    <ion-input type="number" class="my-input" placeholder="Enter latitude" name="InLatitude" [(ngModel)]="details.InLatitude"
+     required>
+    </ion-input>
+  </ion-item>
+  <ion-item lines="full" fill="outline" shape="round">
+    <ion-label position="floating">Starting Latitude</ion-label>
+    <ion-input class="my-input" type="number" placeholder="Enter latitude" name="InLongitude" [(ngModel)]="details.InLongitude"
+     required>
+    </ion-input>
+  </ion-item>
+  <ion-item lines="full" fill="outline" class="my-input" shape="round">
+    <ion-label position="floating">Description</ion-label>
+    <ion-input type="text" class="my-input" placeholder="Enter discription" maxlength="200" name="InDiscription"
+     [(ngModel)]="details.InDiscription"></ion-input>
+  </ion-item>
+  </ion-card>
+  <div class="ion-padding-top">
+    <ion-button size="default" type="submit" shape="round" class="ion-margin-top" expand="block" (click)="onSubmit()"><ion-icon name="add-circle-outline" class="mr-5" color="black"></ion-icon>Add Attendance</ion-button>
+    <ion-button size="default" type="submit" shape="round" class="ion-margin-top" expand="block" routerLink="/punch-out"><ion-icon name="person-circle-outline" class="mr-5"></ion-icon>Punch Out</ion-button>
+  </div>
+</ion-content> 

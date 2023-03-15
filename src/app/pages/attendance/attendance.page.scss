@@ -1,0 +1,31 @@
+// ion-content {
+//   --background: url('/assets/images/final.svg') no-repeat 100% 100%;
+//   --background-size: cover;
+// }
+
+ion-button{
+  --background:#1e90ff ;
+  // --background:rgba(253, 108, 106, 1);
+}
+ion-content {
+  --background: #0e0e23; 
+}
+ion-toolbar {
+  --background:#1e90ff ;
+}
+.card{
+  font-size: 20px;
+}
+
+ion-card{
+  border-radius: 20px;
+  // --background:#800080;
+}
+.mr-5{
+  margin-right: 10px;
+}
+ion-label {
+  --font-color: black;
+  --font-weight: 100;
+  font-size: large;
+}

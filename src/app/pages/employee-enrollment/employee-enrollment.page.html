@@ -1,0 +1,21 @@
+<ion-header>
+  <script type="text/javascript" src="cordova.js"></script>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>BACK</ion-back-button>
+    </ion-buttons>
+    <ion-title>Employee Enrollment</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <h1>Employee List</h1>
+  <ion-item *ngFor="let i of employeeList"  
+  (click)="onNavigate(i.EmployeeId)">
+    <p>Firstname:-{{i.FirstName}}</p><br>
+    <h5>Lastname:-{{i.LastName}}</h5>
+    <h4>employeeid:{{i.EmployeeId}}</h4>
+  </ion-item >
+  <!-- <ion-infinite-scroll (ionInfinite)="loadData(true)" >
+    <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+</ion-content>

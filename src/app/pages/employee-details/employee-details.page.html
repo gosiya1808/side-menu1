@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>Back</ion-back-button>
+    </ion-buttons>
+    <ion-title>employee-details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h1>Employee Details</h1>
+  <ion-list>
+    <ion-item *ngIf="employees">
+      <h4>Name:{{ employees.FirstName }}{{ employees.LastName}}</h4>
+      <p>Department: {{ employees.TemporaryAddress }}</p>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,33 @@
+<ion-header>
+  <script type="text/javascript" src="cordova.js"></script>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>Back</ion-back-button>
+    </ion-buttons>
+    <ion-title>Punch Out</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-card class="ion-padding">
+  <ion-item class="ion-padding" lines="full" fill="outline" shape="round">
+    <ion-label position="floating">Ending Latitude</ion-label>
+    <ion-input type="number" placeholder="Enter latitude" class="my-input" name="OutLatitude"
+      [(ngModel)]="details.OutLatitude" required>
+    </ion-input>
+  </ion-item>
+  <ion-item class="ion-padding" lines="full" fill="outline" shape="round">
+    <ion-label position="floating">Ending Longtitude</ion-label>
+    <ion-input type="number" placeholder="Enter latitude"class="my-input" name="OutLongtitude" [(ngModel)]="details.OutLongitude"
+       required>
+    </ion-input>
+  </ion-item>
+  <ion-item lines="full" fill="outline" class="my-input" shape="round">
+    <ion-label position="floating">Description</ion-label>
+    <ion-input type="text" class="my-input" placeholder="Enter discription" maxlength="200" name="OutDiscription"
+     [(ngModel)]="details.OutDiscription"></ion-input>
+  </ion-item>
+  </ion-card>
+  <div>
+    <ion-button size="default" type="submit" shape="round" expand="block" (click)="onSubmit()">Punch Out</ion-button>
+  </div>
+</ion-content> 

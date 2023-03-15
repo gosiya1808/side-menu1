@@ -1,0 +1,55 @@
+
+// ion-toolbar{
+//     --ion-background-color:white ;
+//     --ion-text-align:center;
+
+// }
+// ion-title{
+//     text-align:center;
+// }
+// .wrapform{
+//     margin-top: 30px;
+// }
+// .sign-btn-wrap{
+//     text-align: center;
+//     padding-top: 30px;
+// }
+// ion-card{
+//     --ion-background-color:transparent;
+//     box-shadow: none !important;
+// }
+// .tab1 {   
+//     tab-size: 2;   
+// } 
+// .mr-5{
+//     margin-right: 10px;
+// }
+ion-button{
+    --background:#1e90ff ;
+    // --background:rgba(253, 108, 106, 1);
+  }
+  .my-input {
+      border-radius: 30px;
+      --border-color:#1e90ff;
+      --border-width: 2px;
+  }
+  ion-content {
+    --background: #0e0e23; 
+  }
+  ion-toolbar {
+    --background:#1e90ff ;
+  }
+  ion-card{
+    border-radius: 20px;
+    --background:#1e90ff ;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    // --background:#800080;
+  }
+  .mr-5{
+    margin-right: 10px;
+  }
+  
+  
+  
+  
