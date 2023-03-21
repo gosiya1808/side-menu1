@@ -5,16 +5,17 @@ import { Attendance, Employee } from '../Model/employee-details';
 import { LoadingController } from '@ionic/angular';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
-  baseUrl = 'https://c9dc-2409-4041-6e3d-b606-4060-8e31-f86f-77f.in.ngrok.io/';
+  baseUrl = 'https://8a7a-116-72-9-56.in.ngrok.io/';
   attendance = new Attendance();
   PageNumber:number|any;
- 
+  
 
 
   constructor(
@@ -45,23 +46,16 @@ export class ApiServicesService {
       });
     });
   }
-  //doing changes here
-  // getEmployessById(EmployeeId:number){
-  //   const params = {
-  //     'EmployeeId': EmployeeId
-  //   };
-  //   return this.http.get(this.baseUrl+'api/Employee/GetEmployeeById',params,{}) .then(response => {
-  //     console.log(response.data);
-  //   })
-  //   .catch(error => {
-  //     console.error(error);
-  //   });       
-  // }
+
   getEmployessById(EmployeeId: number){
     // const params = {
     //   'EmployeeId': this.EmployeeId
     // };
     return this.http.get(this.baseUrl+'api/Employee/GetEmployeeById?employeeId='+EmployeeId,{},{});
+  }
+
+  getAttendanceById(EmployeeId: number){
+    return this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?attendanceId='+EmployeeId,{},{});
   }
 
 
@@ -88,16 +82,7 @@ export class ApiServicesService {
   //   });
   // }
 
-  // insertAttendance(): Observable<Attendance[]> {
-  //   return new Observable<Attendance[]>(observer => {
-  //     this.http.post(this.baseUrl+'api/Attendance/SaveAttendanceDetails', {}, {}).then(response => {
-  //       observer.next(response.data);
-  //       observer.complete();
-  //     }).catch(error => {
-  //       observer.error(error);
-  //     });
-  //   });
-  // }
+  
   addAttendance(attendance: Attendance) {
     return this.http.post(this.baseUrl+'api/Attendance/SaveAttendanceDetails', attendance,{});
   }
@@ -106,8 +91,9 @@ export class ApiServicesService {
     const g={
       //"AttendanceId":this.AttendanceId,nahi ho to ye comment remove kar dena 
       "AttendanceId":this.AttendanceId,
-      "EndingLatitude":attendance.InLatitude,
-      "EndingLongitude":attendance.InLongitude,
+      "OutLatitude":attendance.OutLatitude,
+      "OutLongitude":attendance.OutLongitude,
+      "OutDiscription":attendance.OutDiscription
     }
     return this.http.post(this.baseUrl+'api/Attendance/UpdateAttendance',g,{});
   }

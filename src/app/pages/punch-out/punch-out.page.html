@@ -11,13 +11,13 @@
   <ion-card class="ion-padding">
   <ion-item class="ion-padding" lines="full" fill="outline" shape="round">
     <ion-label position="floating">Ending Latitude</ion-label>
-    <ion-input type="number" placeholder="Enter latitude" class="my-input" name="OutLatitude"
+    <ion-input disabled type="number" placeholder="Enter latitude" class="my-input" name="OutLatitude"
       [(ngModel)]="details.OutLatitude" required>
     </ion-input>
   </ion-item>
   <ion-item class="ion-padding" lines="full" fill="outline" shape="round">
     <ion-label position="floating">Ending Longtitude</ion-label>
-    <ion-input type="number" placeholder="Enter latitude"class="my-input" name="OutLongtitude" [(ngModel)]="details.OutLongitude"
+    <ion-input disabled type="number" placeholder="Enter latitude"class="my-input" name="OutLongitude" [(ngModel)]="details.OutLongitude"
        required>
     </ion-input>
   </ion-item>
@@ -28,6 +28,7 @@
   </ion-item>
   </ion-card>
   <div>
-    <ion-button size="default" type="submit" shape="round" expand="block" (click)="onSubmit()">Punch Out</ion-button>
+    <ion-button size="default" type="submit" shape="round" expand="block" (click)="onSubmit()"><ion-icon name="person-circle-outline" class="mr-5"></ion-icon>Punch Out</ion-button>
+    <ion-button size="default" type="submit" shape="round" expand="block" (click)="getCurrentCoordinates()"><ion-icon name="location-outline" class="mr-5"></ion-icon>Get Current Location</ion-button>
   </div>
 </ion-content> 

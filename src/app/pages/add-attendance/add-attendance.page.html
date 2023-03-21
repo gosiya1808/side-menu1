@@ -7,18 +7,18 @@
     <ion-title>Add-attendance</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" *ngIf="!attendanceGiven">
   <p align="center"><ion-img src="assets/images/hrms.svg" height="45px" class="ion-padding-bottom"></ion-img></p>
   <ion-card>
   <ion-item lines="full" fill="outline" shape="round">
     <ion-label position="floating">Starting Latitude</ion-label>
-    <ion-input type="number" class="my-input" placeholder="Enter latitude" name="InLatitude" [(ngModel)]="details.InLatitude"
+    <ion-input disabled type="number" class="my-input" placeholder="Enter latitude" name="InLatitude" [(ngModel)]="details.InLatitude"
      required>
     </ion-input>
   </ion-item>
   <ion-item lines="full" fill="outline" shape="round">
     <ion-label position="floating">Starting Latitude</ion-label>
-    <ion-input class="my-input" type="number" placeholder="Enter latitude" name="InLongitude" [(ngModel)]="details.InLongitude"
+    <ion-input disabled class="my-input" type="number" placeholder="Enter latitude" name="InLongitude" [(ngModel)]="details.InLongitude"
      required>
     </ion-input>
   </ion-item>
@@ -31,5 +31,9 @@
   <div class="ion-padding-top">
     <ion-button size="default" type="submit" shape="round" class="ion-margin-top" expand="block" (click)="onSubmit()"><ion-icon name="add-circle-outline" class="mr-5" color="black"></ion-icon>Add Attendance</ion-button>
     <ion-button size="default" type="submit" shape="round" class="ion-margin-top" expand="block" routerLink="/punch-out"><ion-icon name="person-circle-outline" class="mr-5"></ion-icon>Punch Out</ion-button>
+    <ion-button size="default" type="submit" shape="round" class="ion-margin-top" expand="block" (click)="getCurrentCoordinates()"><ion-icon name="location-outline" class="mr-5"></ion-icon>Get Current Location</ion-button>
   </div>
 </ion-content> 
+<ion-content *ngIf="attendanceGiven">
+  <h2 color="red">Attendance already given</h2>
+</ion-content>

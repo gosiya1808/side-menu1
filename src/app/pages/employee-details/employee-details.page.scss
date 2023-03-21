@@ -1,0 +1,42 @@
+
+// ion-content {
+//     --background: #0e0e23; 
+// }
+ion-toolbar {
+    --background:#1e90ff ;
+}
+h2 {
+    font-size: 20px;
+}
+ion-item {
+--border-width: 0;
+}
+
+.icon {
+  font-size: 15em;
+}
+ion-avatar {
+  justify-content: center;
+  align-items: center;
+  height: 150px; 
+  width: 150px;
+  margin-left: 90px;
+}
+ion-card{
+  box-shadow: none;
+}
+.padding{
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 50%;
+}
+.mr-5{
+  margin-right: 20px;
+}
+ion-badge {
+  font-size: 1rem;
+  display: block;
+  padding: 0.5rem;
+  text-align: center;
+}

@@ -3,6 +3,10 @@ import { AlertController } from '@ionic/angular';
 import { Platform, NavController } from '@ionic/angular';
 import  { Diagnostic } from '@ionic-native/diagnostic/ngx'
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { Geolocation} from '@ionic-native/geolocation/ngx';
+
+
+
 
 
 @Component({
@@ -16,8 +20,12 @@ export class AppComponent {
     private alertController: AlertController,
     private navCtrl:  NavController,
     public plt: Platform,
-    private androidPermissions: AndroidPermissions
-  ) {this.initializeApp();}
+    private androidPermissions: AndroidPermissions,
+    private geolocation: Geolocation,
+  ) {
+   // this.initializeApp();
+  }
+
 
   ionViewWillEnter(){
     this.requestLocationPermission();
@@ -64,6 +72,7 @@ export class AppComponent {
         });
         await alert.present();
        }
+       
   requestLocationPermission() {
     this.diagnostic.requestLocationAuthorization().then((status) => {
       if (status === this.diagnostic.permissionStatus.DENIED) {
@@ -119,6 +128,50 @@ export class AppComponent {
       });
     });
   }
+
+  // async showRetryAlert() {
+  //   const alert = await this.alertController.create({
+  //     header: 'Location Permission',
+  //     message: 'Please enable location access to use this app.',
+  //     buttons: [
+  //       {
+  //         text: 'Cancel',
+  //         role: 'cancel',
+  //         handler: () => {
+  //           console.log('Permission denied');
+  //         }
+  //       },
+  //       {
+  //         text: 'Retry',
+  //         handler: () => {
+  //           console.log('Retrying location permission');
+  //           this.geolocation.getCurrentPosition().then((resp) => {
+  //             console.log(resp);
+  //               this.checkLocationEnabled();
+  //           }).catch((error) => {
+  //             console.log('Error getting location', error);
+  //           });
+  //         }
+  //       }
+  //     ]
+  //   });
+  //   await alert.present();
+  // }
+  // checkLocationEnabled() {
+  //   this.diagnostic.isLocationEnabled().then((enabled) => {
+  //     if (enabled) {
+  //       this.geolocation.getCurrentPosition().then((resp) => {
+  //         console.log(resp);
+  //       }).catch((error) => {
+  //         console.log('Error getting location', error);
+  //       });
+  //     } else {
+  //       this.showLocationServicesAlert();
+  //     }
+  //   }).catch((error) => {
+  //     console.log('Error checking location', error);
+  //   });
+  // }
   
   ngOnInit() {
     
