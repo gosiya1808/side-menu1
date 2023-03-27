@@ -97,19 +97,5 @@ export class EmployeeEnrollmentPage implements OnInit {
   //   });
       
   // }
-  //json wala new ye hai ye wala use kar rahi thi  
-  // async loadData(loadMore=false) {
-  //   if(loadMore){
-  //     this.page=this.page+1;
-  //   }
-  //   this.api.showLoader();
-  //   (this.api.getEmployess()).subscribe((res:any)  =>{
-  //     this.employeeListJson = JSON.parse(res);
-  //     console.log(this.employeeListJson);
-  //     this.employeeList = this.employeeListJson['Result'];   
-  //     console.log(this.employeeList);
-  //     this.api.hideLoader();
-  //   });
-      
-  // }
+  
 }

@@ -16,8 +16,8 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./punch-out.page.scss'],
 })
 export class PunchOutPage implements OnInit {
-  details = new Attendance();
-  detailsJson:string|any;
+  dummy = new Attendance();
+  dataJson:string|any;
   AttendanceId:any;
  
  
@@ -29,19 +29,20 @@ export class PunchOutPage implements OnInit {
     private geolocation: Geolocation,
     private route: ActivatedRoute,
     private toastController: ToastController
-  ) {this.getCurrentCoordinates();
+  ) {
+    //this.getCurrentCoordinates();
   
     
   }
   onSubmit() {
     //this.details.EndingTime = new Date().toLocaleTimeString();
-     this.api.updateAttedance(this.details)
+     this.api.updateAttedance(this.dummy)
        .then(async response => {
          console.log('updated successfully:', response);
-          this.detailsJson = JSON.parse(response.data);
-          console.log(this.detailsJson);
-          this.details = this.detailsJson['Result'];   
-          console.log(this.details);
+          this.dataJson = JSON.parse(response.data);
+          console.log(this.dataJson);
+          this.dummy = this.dataJson['Result'];   
+          console.log(this.dummy);
           const toast = await this.toastController.create({
             message: 'You have attendance successfully!',
             duration: 2000, 
@@ -68,8 +69,8 @@ export class PunchOutPage implements OnInit {
     this.api.showLoader();
     this.geolocation.getCurrentPosition().then((resp) => {
       console.log(resp)
-      this.details.OutLatitude = resp.coords.latitude;
-      this.details.OutLongitude = resp.coords.longitude;
+      this.dummy.OutLatitude = resp.coords.latitude;
+      this.dummy.OutLongitude = resp.coords.longitude;
       this.api.hideLoader();
      }).catch((error) => {
        console.log('Error getting location', error);

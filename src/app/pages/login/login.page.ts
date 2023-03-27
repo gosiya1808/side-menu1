@@ -32,7 +32,7 @@ export class LoginPage implements OnInit {
     this.router.navigate(['location-permission']);
   }
   onSubmit(){
-    if(this.username=='admin@gmail.com' && this.password=='admin12345'){
+    if(this.username=='admin' && this.password=='admin'){
     this.router.navigate(['/home']);
    }
   }

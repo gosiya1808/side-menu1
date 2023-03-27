@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Attendance, Employee } from '../Model/employee-details';
 import { LoadingController } from '@ionic/angular';
-
+import { map } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
 
 
 @Injectable({
@@ -12,7 +12,8 @@ import { LoadingController } from '@ionic/angular';
 export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
-  baseUrl = 'https://8a7a-116-72-9-56.in.ngrok.io/';
+  //EmployeeId: number | null = null;
+  baseUrl = 'https://efee-42-108-196-132.in.ngrok.io/';
   attendance = new Attendance();
   PageNumber:number|any;
   
@@ -32,7 +33,7 @@ export class ApiServicesService {
   //   return this.http.get(this.baseUrl+'api/Employee/GetAllEmployees/')
   // }
   //get ki jagah post kiya 
-  getEmployess(PageNumber:number,PageSize:number=30): Observable<Employee[]>{
+  getEmployess(PageNumber:number,PageSize:number=50): Observable<Employee[]>{
     const gg={
       'CurrentPageNumber':PageNumber,
       'PageSize':PageSize
@@ -55,10 +56,22 @@ export class ApiServicesService {
   }
 
   getAttendanceById(EmployeeId: number){
-    return this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?attendanceId='+EmployeeId,{},{});
+    return this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?employeeId='+EmployeeId,{},{});
   }
 
-
+  //ye attendance ke liye kiya hai
+  getAttendanceByEmployeeId(EmployeeId: number): Observable<Attendance>{ 
+    return from(this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?employeeId='+EmployeeId,{},{})).pipe(
+      map((data: any) => {
+        const serverDateTime = new Attendance();
+        serverDateTime.Date = data.Date;
+        serverDateTime.InTime = data.InTime;
+        serverDateTime.OutTime = data.OutTime;
+        return serverDateTime;
+      })
+    );
+  }
+  
 
 
   getAttendance(): Observable<Attendance[]> {
@@ -72,25 +85,15 @@ export class ApiServicesService {
     });
   }
   
-  // getAttendancebyId(AttendanceId:number): Observable<Attendance[]> {
-  //   return new Observable<Attendance[]>(observer => {
-  //     this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?attendanceId='+AttendanceId, {}, {}).then(response => {
-  //       console.log("data coming :",response);
-  //     }).catch(error => {
-  //       observer.error(error);
-  //     });
-  //   });
-  // }
-
-  
-  addAttendance(attendance: Attendance) {
+  addAttendance(attendance: Attendance,employeeId: number) {
+    attendance.EmployeeId = employeeId;
     return this.http.post(this.baseUrl+'api/Attendance/SaveAttendanceDetails', attendance,{});
   }
   //parameter change kiya hai 
   updateAttedance(attendance: Attendance){
     const g={
       //"AttendanceId":this.AttendanceId,nahi ho to ye comment remove kar dena 
-      "AttendanceId":this.AttendanceId,
+      "EmployeeId":this.EmployeeId,
       "OutLatitude":attendance.OutLatitude,
       "OutLongitude":attendance.OutLongitude,
       "OutDiscription":attendance.OutDiscription
