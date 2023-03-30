@@ -17,7 +17,7 @@ export class Employee{
     DesignationId!: number;
     ReportingEmployeeId!: number;
     ProfileImageName!: string;
-    BirthDate!: Date;
+    BirthDate!: string;
     Gender!: string;
     TemporaryAddress!: string;
     PermanentAddress!: string;
@@ -87,4 +87,5 @@ export class Attendance{
     IsActive! : string;
     InDiscription! : string;
     OutDiscription! : string;
+    status!: string;
 }

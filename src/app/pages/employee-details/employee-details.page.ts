@@ -29,6 +29,12 @@ export class EmployeeDetailsPage implements OnInit {
         console.log(this.detailsJson);
         this.employees = this.detailsJson['Result'];   
         console.log(this.employees);
+        // const dateParts = this.employees.BirthDate.slice(0, 10).split('-');
+        // this.employees = {
+        //   year: dateParts[0],
+        //   month: dateParts[1],
+        //  day: dateParts[2],
+        // }
       }catch (error) {
         console.error('Error parsing JSON:', error);
       }

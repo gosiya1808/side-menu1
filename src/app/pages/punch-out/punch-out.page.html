@@ -23,7 +23,7 @@
   </ion-item>
   <ion-item lines="full" fill="outline" class="my-input" shape="round">
     <ion-label position="floating">Description</ion-label>
-    <ion-input type="text" class="my-input" placeholder="Enter discription" maxlength="200" name="OutDiscription"
+    <ion-input type="text" pattern="[a-zA-Z ]*" class="my-input" placeholder="Enter discription" maxlength="200" name="OutDiscription"
      [(ngModel)]="dummy.OutDiscription"></ion-input>
   </ion-item>
   </ion-card>
