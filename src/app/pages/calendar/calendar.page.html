@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Attendance</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item *ngFor="let i of employeeList">
+    <h2>Date:{{i.Date}}</h2>
+    <p>Time: {{i.InTime}}</p>
+  </ion-item>
+  
+</ion-content>

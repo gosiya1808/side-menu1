@@ -22,7 +22,11 @@ export class AttendancePage implements OnInit {
   detailsJson:string|any;
   details: Attendance |any;
   data:Attendance|any;
+  punchIntime!:string;
+  punchOutTime!:string;
 
+  dateFromApi!: string;
+  dummy='2023-04-03T11:29:23.051Z';
   
   //abc='D:/side-menu/src/assets/images/back.svg';
 
@@ -34,19 +38,27 @@ export class AttendancePage implements OnInit {
     private route: ActivatedRoute,
     private datePipe: DatePipe
   ) { }
-
+//snsaknsknsfdgdfgfdgbnbhbh
   async ngOnInit() {
-    const EmployeeId = 8;
+    const EmployeeId = 37;
     console.log(EmployeeId)
     const today = new Date().toISOString().slice(0, 10);
     await this.api.getAttendanceById(EmployeeId,today).then((res:any)=>{
       console.log(res);
       try {
+        this.details = res.Date;
+        this.dateFromApi = this.details;
+        console.log(this.dateFromApi)
+       
         this.detailsJson = JSON.parse(res.data);
         console.log(this.detailsJson);
         this.details = this.detailsJson['Result'];   
+        this.punchIntime = today+'T'+this.details.InTime+'Z'
+        console.log(this.punchIntime)
+        this.punchOutTime = today+'T'+this.details.OutTime+'Z'
+        console.log(this.punchOutTime)
         console.log(this.details);
-        //ye uncomment karna hai nahi aaya to 
+        //ye uncomment karna hai nahi aaya to dsadwdw
           console.log(this.details.InTime);
           console.log(this.details.OutTime);
           // const inTimeParts = this.details.InTime.split(/[:.]/);

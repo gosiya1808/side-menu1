@@ -11,11 +11,12 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import  { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Storage } from '@ionic/storage-angular';
+import { SwiperModule } from 'swiper/angular'; //na work kare to remove karna 
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,SwiperModule],
   providers: [
     Geolocation,
     Diagnostic,

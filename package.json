@@ -33,9 +33,12 @@
     "@ionic/angular": "^6.1.9",
     "@ionic/cordova-builders": "^8.0.0",
     "@ionic/storage-angular": "^3.0.6",
+    "@types/swiper": "^6.0.0",
+    "ionic2-calendar": "^1.0.1",
     "ionicons": "^6.0.3",
     "moment": "^2.29.4",
     "rxjs": "~7.5.0",
+    "swiper": "^8.4.6",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

@@ -24,7 +24,7 @@ export class AddAttendancePage implements OnInit {
   dataJson: string | any;
   AttendanceId: any;
   employeeId: number | any;
-  submitDisabled?: boolean = false;
+  submitDisabled?: boolean;
   //detailsJson:string|any;
 
   constructor(
@@ -41,25 +41,65 @@ export class AddAttendancePage implements OnInit {
   async ionViewDidEnter() {
       await this.checkAttendanceStatus();
       this.checkWeekend();
+      //this.checkPunchOutStatus();
   }
 
-
+  //sdfsgdsfwedwejwiejwije
+  checkPunchOutStatus() {
+    const employeeId = 35;
+    const today = new Date().toISOString().slice(0, 10);
+    console.log(today); // replace with the actual employee id
+    this.api.getAttendanceById(employeeId,today).then(response => {
+      const attendanceList = JSON.parse(response.data);
+      console.log(attendanceList);
+      this.details = attendanceList['Result'];
+      console.log(this.details);  
+      if (attendanceList && attendanceList['Result']['OutLatitude'] && attendanceList['Result']['OutLongitude'] && attendanceList['Result']['OutDescription']) {
+        this.attendanceMarked = true;
+        console.log(" marked true");
+        this.submitDisabled = true;
+        console.log(" submitted true");
+        } else {
+          this.attendanceMarked = false;
+          console.log(" markedfalse");
+          this.submitDisabled = false;
+          console.log(" submitted false");
+        }
+    }).catch((error:any) => {
+      console.error('Error fetching attendance:', error);
+    });
+  }
+//dsadadssddsadsadsddnsdn
   checkAttendanceStatus() {
-    const EmployeeId = 8;
+    const EmployeeId = 38;
     const today = new Date().toISOString().slice(0, 10);
     console.log(today); // replace with the actual employee id
     this.api.getAttendanceById(EmployeeId,today).then(response => {
       const attendanceList = JSON.parse(response.data);
       console.log(attendanceList);
       this.details = attendanceList['Result'];
-      console.log(this.details);  
-      if (attendanceList && attendanceList['Result']) {
+      console.log(this.details);
+      //attendanceList && attendanceList['Result']  
+      if (this.details) {
         this.attendanceMarked = true;
         console.log('attendance marked is true');
         this.submitDisabled = true;
         console.log('already have attendance of today!!');
         this.isPunchedIn = true;
         console.log('punched marked is true');
+        const result = attendanceList['Result'];
+        if (result['OutTime']!=null) {
+          // Employee has already punched out for the day
+          this.submitDisabled = true;
+          console.log('User has already punched out for the day');
+        } else {
+          // Employee has only punched in for the day
+          // this.attendanceMarked = false;
+          // console.log(" markedfalse");
+          this.submitDisabled = false;
+          console.log(" submitted false");
+          // this.isPunchedIn = true;
+        }  
       }else {
         this.attendanceMarked = false;
         console.log('attendance marked is false');
@@ -151,7 +191,7 @@ export class AddAttendancePage implements OnInit {
   }
 
   //yaha se change kiya hai
-//essgdbdbdb
+//essgdbdbdbscsbjcsjdskjab
     onPunchIn() {
       // const today = new Date().toISOString().slice(0, 10);
       // this.api.checkAttendance(1,today).then((data:any)=>{
@@ -185,7 +225,7 @@ export class AddAttendancePage implements OnInit {
       //   }
       // })
    // Logic for punch-in action
-    this.api.addAttendance(this.data,8)
+    this.api.addAttendance(this.data,38)
       .then(async response => {
         console.log('added successfully:', response);
         this.api.EmployeeId = JSON.parse(response.data)
@@ -212,9 +252,9 @@ export class AddAttendancePage implements OnInit {
 
   onPunchOut() {
     // Logic for punch-out action
-
     this.api.updateAttedance(this.data)
       .then(async response => {
+        this.api.showLoader();
         console.log('updated successfully:', response);
         this.dataJson = JSON.parse(response.data);
         console.log(this.dataJson);
@@ -228,6 +268,7 @@ export class AddAttendancePage implements OnInit {
         toast.present();
         toast.onDidDismiss().then(() => {
           this.navigate();
+          this.api.hideLoader();
         });
       })
       .catch(error => {

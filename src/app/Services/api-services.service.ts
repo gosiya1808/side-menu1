@@ -14,7 +14,7 @@ export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
   //EmployeeId: number | null = null;
-  baseUrl = 'https://fb4b-2402-3a80-16ad-e0ae-a86b-18f9-682d-48fb.in.ngrok.io/';
+  baseUrl = 'https://b731-2402-3a80-16a1-7044-60df-7c30-34d5-fe52.in.ngrok.io/';
   attendance = new Attendance();
   PageNumber:number|any;
   
@@ -59,7 +59,7 @@ export class ApiServicesService {
     return this.http.get(this.baseUrl+'api/Employee/GetEmployeeById?employeeId='+EmployeeId,{},{});
   }
  
-  //yaha pe date add kiya hai wokr na kare to nikal dena 
+  //yaha pe date add kiya hai wokr na kare to nikal dena abhi ye attendance// ke baad change kiya 
   getAttendanceById(EmployeeId: number, Date:String){
     return this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?employeeId='+EmployeeId+'&date='+Date,{},{});
   }
@@ -84,12 +84,11 @@ export class ApiServicesService {
     return this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?employeeId='+EmployeeId+'&date='+Date,{},{});
   }
 
-  // checkAttendance(EmployeeId: number, Date: string){
-  //   const url = `${this.baseUrl}api/attendance?employeeId=${EmployeeId}&Date=${Date}`;
-  //   return this.http.get(url,{},{});
-  // }
+  checkAttendanceForPunchOut(EmployeeId: any){
+    return this.http.get(this.baseUrl+'api/Attendance/AttendanceStatus?employeeId='+EmployeeId,{},{});
+  }
 
-  getAttendance(): Observable<Attendance[]> {
+  getAllAttendance(): Observable<Attendance[]> {
     return new Observable<Attendance[]>(observer => {
       this.http.get(this.baseUrl+'api/Attendance/GetAllAttendance', {}, {}).then(response => {
         observer.next(response.data);

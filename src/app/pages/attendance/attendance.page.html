@@ -29,13 +29,47 @@
     </ion-card-header>
     <ion-card-content>
       <ion-item *ngIf="details">
-        <ion-thumbnail slot="end">
+        <!-- <ion-thumbnail slot="end">
           <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-        </ion-thumbnail>
-        <ion-label><h2><ion-icon name="calendar-outline" class="mr-5" size="large"></ion-icon>{{ data?.year }}-{{ data?.month }}-{{ data?.day }}</h2><br>
-          <h2><ion-icon name="alarm-outline" class="mr-5" size="large"></ion-icon>{{details.InTime}}
+        </ion-thumbnail> -->
+        <!-- <ion-label><h2><ion-icon name="calendar-outline" class="mr-5" size="large"></ion-icon>
+          <ion-datetime-button datetime="date" color="" > </ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime disabled presentation="date" [showDefaultButtons]="true" displayFormat="YYYY-DD-MM"  id="date"  name="dob" required [(ngModel)]="details.Date"></ion-datetime>
+           </ng-template>
+          </ion-modal></h2><br>
+          <h2><ion-icon name="alarm-outline" class="mr-5" size="large"></ion-icon><ion-datetime-button datetime="time" color="" > </ion-datetime-button>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime disabled presentation="time" [showDefaultButtons]="true" displayFormat="hh:mm A"  id="time"  name="InTime" required [(ngModel)]="details.InTime"></ion-datetime>
+             </ng-template>
+            </ion-modal>
           </h2>
-        </ion-label>
+        </ion-label> -->
+        <p>
+          <ion-datetime-button datetime="date" color="" > </ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime disabled presentation="date" [showDefaultButtons]="true" displayFormat="YYYY-DD-MM"  id="date"  name="dob" required [(ngModel)]="details.Date"></ion-datetime>
+           </ng-template>
+          </ion-modal>
+        </p>
+        <h2>
+          <ion-datetime-button datetime="datetime" color="" > </ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime 
+              disabled 
+              presentation="time" 
+              [showDefaultButtons]="true"
+              id="datetime"  
+              name="InTime" 
+              required 
+              [(ngModel)]="punchIntime"></ion-datetime>
+           </ng-template>
+          </ion-modal>
+       </h2>
       </ion-item>  
     </ion-card-content>
   </ion-card>
@@ -45,14 +79,35 @@
     </ion-card-header>
     <ion-card-content>
       <ion-item *ngIf="details">
-        <ion-thumbnail slot="end">
+        <!-- <ion-thumbnail slot="end">
           <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-        </ion-thumbnail>
-        <ion-label><h2><ion-icon name="calendar-outline" class="mr-5" size="large"></ion-icon><ion-text class="ion-text-center">{{ data?.year }}-{{ data?.month }}-{{ data?.day }}</ion-text></h2><br>
+        </ion-thumbnail> -->
+        <!-- <ion-label><h2><ion-icon name="calendar-outline" class="mr-5" size="large"></ion-icon><ion-text class="ion-text-center">{{ data?.year }}-{{ data?.month }}-{{ data?.day }}</ion-text></h2><br>
           <h2 class="ion-padding-bottom"><ion-icon name="alarm-outline" class="mr-5" size="large"></ion-icon>{{details.OutTime}}</h2>
-          <!-- {{ details?.OutHours  % 12 }}:{{ details?.OutMinutes }}:{{ details?.OutSeconds }}:{{ details.OutHours < 12 ? 'AM' : 'PM'}}
-          {{ details?.year }}-{{ details?.month }}-{{ details?.day }} -->
-        </ion-label>
+        </ion-label> -->
+        <p>
+          <ion-datetime-button datetime="date" color="" > </ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime disabled presentation="date" [showDefaultButtons]="true" displayFormat="YYYY-DD-MM"  id="date"  name="dob" required [(ngModel)]="details.Date"></ion-datetime>
+           </ng-template>
+          </ion-modal>
+        </p>
+        <h2>
+          <ion-datetime-button datetime="datetime" color="" > </ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime 
+              disabled 
+              presentation="time" 
+              [showDefaultButtons]="true"
+              id="datetime"  
+              name="OutTime" 
+              required 
+              [(ngModel)]="punchOutTime"></ion-datetime>
+           </ng-template>
+          </ion-modal>
+       </h2>
       </ion-item>  
     </ion-card-content>
   </ion-card>
@@ -60,3 +115,5 @@
     <ion-button size="large" class="button" type="submit" shape="round" expand="block">Get Location</ion-button>
   </div>
 </ion-content>
+ <!-- {{ details?.OutHours  % 12 }}:{{ details?.OutMinutes }}:{{ details?.OutSeconds }}:{{ details.OutHours < 12 ? 'AM' : 'PM'}}
+          {{ details?.year }}-{{ details?.month }}-{{ details?.day }} -->
