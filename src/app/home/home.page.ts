@@ -7,6 +7,20 @@ import { Component, } from '@angular/core';
 })
 export class HomePage {
 
+  number = document.getElementById("number");
+  counter = 0;
+  // // setInterVal:any(()=>{
+  //   if(counter == 65){
+  //     clearInterval();
+  //   }else{
+  //     counter += 1;
+  //     number.innerHTML = counter + "%";
+  //   }
+      
+  // // }, 30)
+
   constructor() {}
+
+  
 
 }

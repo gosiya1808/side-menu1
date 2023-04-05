@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 
 
 
+
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.page.html',
@@ -38,18 +39,24 @@ export class AttendancePage implements OnInit {
     private route: ActivatedRoute,
     private datePipe: DatePipe
   ) { }
-//snsaknsknsfdgdfgfdgbnbhbh
-  async ngOnInit() {
-    const EmployeeId = 37;
+
+  
+  async ionViewDidEnter() {
+    await this.attendance();
+  }
+
+
+  ngOnInit() {
+    
+  }
+
+  attendance() {
+    const EmployeeId = 5;
     console.log(EmployeeId)
     const today = new Date().toISOString().slice(0, 10);
-    await this.api.getAttendanceById(EmployeeId,today).then((res:any)=>{
+    this.api.showLoader();
+    this.api.getAttendanceById(EmployeeId,today).then((res:any)=>{
       console.log(res);
-      try {
-        this.details = res.Date;
-        this.dateFromApi = this.details;
-        console.log(this.dateFromApi)
-       
         this.detailsJson = JSON.parse(res.data);
         console.log(this.detailsJson);
         this.details = this.detailsJson['Result'];   
@@ -58,53 +65,36 @@ export class AttendancePage implements OnInit {
         this.punchOutTime = today+'T'+this.details.OutTime+'Z'
         console.log(this.punchOutTime)
         console.log(this.details);
-        //ye uncomment karna hai nahi aaya to dsadwdw
+        this.api.hideLoader();
+        //ye uncomment karna hai nahi aaya to dsadwdwxcxdssfdsfzczxczxc
           console.log(this.details.InTime);
           console.log(this.details.OutTime);
           // const inTimeParts = this.details.InTime.split(/[:.]/);
           // const outTimeParts = this.details.OutTime.split(/[:.]/);
-          const dateParts = this.details.Date.slice(0, 10).split('-');
+          //const dateParts = this.details.Date.slice(0, 10).split('-');
 
-          this.data = {
-            year: dateParts[0],
-            month: dateParts[1],
-            day: dateParts[2],
-            // InHours: inTimeParts[0],
-            // InMinutes: inTimeParts[1],
-            // InSeconds: inTimeParts[2],
-            // OutHours: outTimeParts[0],
-            // OutMinutes: outTimeParts[1],
-            // OutSeconds: outTimeParts[2],
-          };
+          // this.data = {
+          //   year: dateParts[0],
+          //   month: dateParts[1],
+          //   day: dateParts[2],
+          //   // InHours: inTimeParts[0],
+          //   // InMinutes: inTimeParts[1],
+          //   // InSeconds: inTimeParts[2],
+          //   // OutHours: outTimeParts[0],
+          //   // OutMinutes: outTimeParts[1],
+          //   // OutSeconds: outTimeParts[2],
+          // };
           for (let i = 0; i < this.details.length; i++) {
             // Check if the attendance has punch-in time but no punch-out time
-            if (this.details[i]['InTime'] !== null && this.details[i]['OutTime'] === null) {
+            if (this.details[i]['punchIntime'] !== null && this.details[i]['punchOutTime'] === null) {
               // Display the punch-in time and leave the punch-out time blank
-              console.log('Punch In: ' + this.details['InTime']);
+              console.log('Punch In: ' + this.details['punchIntime']);
               console.log('Punch Out: ',"");
             }
           }
 
-         //varaible change kiya hai and ye three lines last wali 
-
-        //  this.details.Date = this.datePipe.transform(res.Date, 'yyyy-MM-dd') ?? '';
-        //  console.log(this.details.Date);
-        //  this.details.InTime = this.datePipe.transform(res.InTime, 'hh:mm a') ?? '';
-        //  console.log(this.details.InTime);
-        //  this.details.OutTime = this.datePipe.transform(res.OutTime, 'hh:mm a') ?? '';
-        //  console.log(this.details.OutTime);
-
-         //  const datePipe = new DatePipe('en-US');
-        //  const timeString = `${this.details.InHours}:${this.details.InMinutes}:${this.details.InSeconds}`;
-        //  this.formattedTime = datePipe.transform(timeString, 'hh:mm:ss a');
-        //  console.log(this.formattedTime);
-        // this.detailsJson.InTime = moment(res.InTime, 'hh:mm a').format('HH:mm:ss');
-        // console.log('details.InTime:', this.detailsJson.InTime);
-        // this.detailsJson.OutTime = moment(res.OutTime, 'hh:mm a').format('HH:mm:ss');
-
-      }catch (error) {
-        console.error('Error parsing JSON:', error);
-      }
+    }).catch(error=>{
+      console.log("error getting data",error);
     })
   }
   

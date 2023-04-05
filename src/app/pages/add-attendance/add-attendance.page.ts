@@ -44,9 +44,8 @@ export class AddAttendancePage implements OnInit {
       //this.checkPunchOutStatus();
   }
 
-  //sdfsgdsfwedwejwiejwije
   checkPunchOutStatus() {
-    const employeeId = 35;
+    const employeeId =46;
     const today = new Date().toISOString().slice(0, 10);
     console.log(today); // replace with the actual employee id
     this.api.getAttendanceById(employeeId,today).then(response => {
@@ -54,7 +53,7 @@ export class AddAttendancePage implements OnInit {
       console.log(attendanceList);
       this.details = attendanceList['Result'];
       console.log(this.details);  
-      if (attendanceList && attendanceList['Result']['OutLatitude'] && attendanceList['Result']['OutLongitude'] && attendanceList['Result']['OutDescription']) {
+      if (attendanceList['Result']['OutLatitude'] && attendanceList['Result']['OutLongitude'] && attendanceList['Result']['OutDescription']) {
         this.attendanceMarked = true;
         console.log(" marked true");
         this.submitDisabled = true;
@@ -69,12 +68,12 @@ export class AddAttendancePage implements OnInit {
       console.error('Error fetching attendance:', error);
     });
   }
-//dsadadssddsadsadsddnsdn
+
   checkAttendanceStatus() {
-    const EmployeeId = 38;
+    const EmployeeId = 6;
     const today = new Date().toISOString().slice(0, 10);
     console.log(today); // replace with the actual employee id
-    this.api.getAttendanceById(EmployeeId,today).then(response => {
+    this.api.getAttendanceById(EmployeeId,today).then(async response => {
       const attendanceList = JSON.parse(response.data);
       console.log(attendanceList);
       this.details = attendanceList['Result'];
@@ -92,6 +91,12 @@ export class AddAttendancePage implements OnInit {
           // Employee has already punched out for the day
           this.submitDisabled = true;
           console.log('User has already punched out for the day');
+          const toast = await this.toastController.create({
+            message: 'User has already punched out for the day',
+            duration: 2000,
+            position: 'bottom'
+          });
+          toast.present();
         } else {
           // Employee has only punched in for the day
           // this.attendanceMarked = false;
@@ -157,7 +162,7 @@ export class AddAttendancePage implements OnInit {
   //     .catch(error => {
   //       console.error('Error adding user:', error);
   //     });   
-  // }
+  // }hxshdxsaddhvxjhasdxasdasdwadwadwaddxXDasdxasda
 
 
   navigate() {
@@ -190,8 +195,6 @@ export class AddAttendancePage implements OnInit {
     });
   }
 
-  //yaha se change kiya hai
-//essgdbdbdbscsbjcsjdskjab
     onPunchIn() {
       // const today = new Date().toISOString().slice(0, 10);
       // this.api.checkAttendance(1,today).then((data:any)=>{
@@ -225,8 +228,9 @@ export class AddAttendancePage implements OnInit {
       //   }
       // })
    // Logic for punch-in action
-    this.api.addAttendance(this.data,38)
+    this.api.addAttendance(this.data,6)
       .then(async response => {
+        this.api.showLoader();
         console.log('added successfully:', response);
         this.api.EmployeeId = JSON.parse(response.data)
         this.api.EmployeeId = this.api.EmployeeId['Result']
@@ -239,9 +243,9 @@ export class AddAttendancePage implements OnInit {
           position: 'bottom'
         });
         toast.present();
-        setTimeout(() => {
-          // this.navigate();
-        }, 2000);
+        toast.onDidDismiss().then(() => {
+          this.api.hideLoader();
+        });
       })
       .catch(error => {
         console.error('Error adding user:', error);
@@ -251,8 +255,8 @@ export class AddAttendancePage implements OnInit {
   }
 
   onPunchOut() {
-    // Logic for punch-out action
-    this.api.updateAttedance(this.data)
+    // Logic for punch-out actiondfdfsdfsadsdsafsdfsdcdsadsadasdsaddfcfesfsdffrdgdegrfesdsv ccscssdvdgsgg
+    this.api.updateAttedance(this.data,6)
       .then(async response => {
         this.api.showLoader();
         console.log('updated successfully:', response);
@@ -271,13 +275,19 @@ export class AddAttendancePage implements OnInit {
           this.api.hideLoader();
         });
       })
-      .catch(error => {
+      .catch(async error => {
         console.error('Error updating data:', error);
+        const toast = await this.toastController.create({
+          message: 'Error updating attendance data. Please try again later.',
+          duration: 2000,
+          position: 'bottom'
+        });
+        toast.present();
       });
     this.isPunchedIn = false;
   }
 
-
+// cjsnsjnccsdcsdsadcdsxZAsdsdsasasaadasa
 
   ngOnInit() {
 

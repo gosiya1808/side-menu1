@@ -9,11 +9,11 @@
   <ion-card class="ion-padding">
     <ion-item class="ion-padding" shape="round" lines="full" fill="outline">
       <ion-icon name="mail-outline" class="mr-5"></ion-icon>
-      <ion-input size="50%" type="text" class="my-input" placeholder="Enter Email" [(ngModel)]="username" required></ion-input>
+      <ion-input type="text" class="my-input" placeholder="Enter Email" [(ngModel)]="username" required></ion-input>
     </ion-item>
-    <ion-item class="ion-padding"  shape="round" lines="full" fill="outline" >
+    <ion-item class="ion-padding" shape="round" lines="full" fill="outline" >
       <ion-icon name="lock-closed-outline" class="mr-5"></ion-icon>
-      <ion-input size="30%" placeholder="Enter Password"  class="my-input" [type]="passwordType" [(ngModel)]="password"required></ion-input>
+      <ion-input placeholder="Enter Password" class="my-input" [type]="passwordType" [(ngModel)]="password"required></ion-input>
       <a class="type-toggle" (click)="togglePassword()">
         <ion-icon size="large" class="show-option" [hidden]="passwordShown" name="eye-off-outline" class="ion-padding-top"></ion-icon>
         <ion-icon size="large" class="hide-option" [hidden]="!passwordShown" name="eye-outline" class="ion-padding-top"></ion-icon>

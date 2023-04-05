@@ -34,29 +34,29 @@ export class PunchOutPage implements OnInit {
   
     
   }
-  onSubmit() {
-    //this.details.EndingTime = new Date().toLocaleTimeString();
-     this.api.updateAttedance(this.dummy)
-       .then(async response => {
-         console.log('updated successfully:', response);
-          this.dataJson = JSON.parse(response.data);
-          console.log(this.dataJson);
-          this.dummy = this.dataJson['Result'];   
-          console.log(this.dummy);
-          const toast = await this.toastController.create({
-            message: 'You have attendance successfully!',
-            duration: 2000, 
-            position: 'bottom' 
-          });
-          toast.present(); 
-          toast.onDidDismiss().then(() => {
-            this.navigate();
-          });
-       })
-       .catch(error => {
-         console.error('Error updating data:', error);
-       });
-   }
+  // onSubmit() {
+  //   //this.details.EndingTime = new Date().toLocaleTimeString();
+  //    this.api.updateAttedance(this.dummy)
+  //      .then(async response => {
+  //        console.log('updated successfully:', response);
+  //         this.dataJson = JSON.parse(response.data);
+  //         console.log(this.dataJson);
+  //         this.dummy = this.dataJson['Result'];   
+  //         console.log(this.dummy);
+  //         const toast = await this.toastController.create({
+  //           message: 'You have attendance successfully!',
+  //           duration: 2000, 
+  //           position: 'bottom' 
+  //         });
+  //         toast.present(); 
+  //         toast.onDidDismiss().then(() => {
+  //           this.navigate();
+  //         });
+  //      })
+  //      .catch(error => {
+  //        console.error('Error updating data:', error);
+  //      });
+  //  }
  
 
    navigate(){

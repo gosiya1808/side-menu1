@@ -14,7 +14,7 @@ export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
   //EmployeeId: number | null = null;
-  baseUrl = 'https://b731-2402-3a80-16a1-7044-60df-7c30-34d5-fe52.in.ngrok.io/';
+  baseUrl = 'https://d82d-116-72-9-56.in.ngrok.io/';
   attendance = new Attendance();
   PageNumber:number|any;
   
@@ -65,7 +65,7 @@ export class ApiServicesService {
   }
 
   //ye attendance ke liye kiya hai
-  getAttendanceByEmployeeId(EmployeeId: number): Observable<Attendance>{ 
+  getAttendanceByEmployeeIdxyz(EmployeeId: number): Observable<Attendance>{ 
     return from(this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?employeeId='+EmployeeId,{},{})).pipe(
       map((data: any) => {
         const serverDateTime = new Attendance();
@@ -84,7 +84,7 @@ export class ApiServicesService {
     return this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?employeeId='+EmployeeId+'&date='+Date,{},{});
   }
 
-  checkAttendanceForPunchOut(EmployeeId: any){
+  checkAttendanceForPunchOut(EmployeeId: number){
     return this.http.get(this.baseUrl+'api/Attendance/AttendanceStatus?employeeId='+EmployeeId,{},{});
   }
 
@@ -104,10 +104,10 @@ export class ApiServicesService {
     return this.http.post(this.baseUrl+'api/Attendance/SaveAttendanceDetails', attendance,{});
   }
   //parameter change kiya hai 
-  updateAttedance(attendance: Attendance){
+  updateAttedance(attendance: Attendance,EmployeeId:number){
     const g={
       //"AttendanceId":this.AttendanceId,nahi ho to ye comment remove kar dena 
-      "EmployeeId":this.EmployeeId,
+      "EmployeeId":EmployeeId,
       "OutLatitude":attendance.OutLatitude,
       "OutLongitude":attendance.OutLongitude,
       "OutDiscription":attendance.OutDiscription
@@ -115,6 +115,10 @@ export class ApiServicesService {
     return this.http.post(this.baseUrl+'api/Attendance/UpdateAttendance',g,{});
   }
   
+  getAttendanceByEmployeeId(EmployeeId: number){
+    return this.http.get(this.baseUrl+'api/Attendance/GetAllAttendanceById?employeeId='+EmployeeId,{},{});
+  }
+
   async showLoader()
   {
     const loading = await this.loadingController.create({

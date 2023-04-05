@@ -11,34 +11,44 @@ import { ApiServicesService } from 'src/app/Services/api-services.service';
 })
 export class EmployeeDetailsPage implements OnInit {
 
-  EmployeeId: number |any;
-  detailsJson:string|any;
-  employees:Employee |any;
+  EmployeeId: number | any;
+  detailsJson: string | any;
+  employees: Employee | any;
 
-  constructor( private api: ApiServicesService,private route: ActivatedRoute,) {
-    
-   }
+  constructor(private api: ApiServicesService, private route: ActivatedRoute,) {
 
-  async ngOnInit() {
-    this.EmployeeId=this.route.snapshot.queryParams['id'];
-    console.log(this.EmployeeId)
-    await this.api.getEmployessById(this.EmployeeId).then((res:any)=>{
+  }
+
+  async ionViewDidEnter() {
+    await this.employeeDetails();
+  }
+
+  employeeDetails() {
+    this.EmployeeId = this.route.snapshot.queryParams['id'];
+    console.log(this.EmployeeId);
+    this.api.showLoader();
+    this.api.getEmployessById(this.EmployeeId).then((res: any) => {
       console.log(res);
       try {
         this.detailsJson = JSON.parse(res.data);
         console.log(this.detailsJson);
-        this.employees = this.detailsJson['Result'];   
+        this.employees = this.detailsJson['Result'];
         console.log(this.employees);
+        this.api.hideLoader();
         // const dateParts = this.employees.BirthDate.slice(0, 10).split('-');
         // this.employees = {
         //   year: dateParts[0],
         //   month: dateParts[1],
         //  day: dateParts[2],
         // }
-      }catch (error) {
+      } catch (error) {
         console.error('Error parsing JSON:', error);
       }
     })
+  }
+
+  ngOnInit() {
+
   }
 
 }
