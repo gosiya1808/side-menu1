@@ -4,74 +4,82 @@
     <ion-buttons slot="start">
       <ion-back-button>Back</ion-back-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Add-attendance</ion-title>
+    <ion-title>Add-attendance</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <p align="center"><ion-img src="assets/images/hrms.svg" height="45px" class="ion-padding-bottom"></ion-img></p>
+<ion-content class="ion-padding" scroll="true">
+  <p align="center"><ion-img src="assets/images/mb5.svg" style="width:310px;" class="ion-padding-bottom"></ion-img></p>
   <div *ngIf="!isPunchedIn">
-    <form #form="ngForm">
+    <h3 class="ion-text-center"><b>Add your today's Attendance here!!!</b></h3>
       <ion-card class="ion-padding">
-        <ion-item lines="full" class="my-input" fill="outline" shape="round">
+        <h2 class="ion-text-center" style="color: white;"><b>Punch In</b></h2>
+        <form #form="ngForm" class="my-input">
+        <ion-item lines="full" class="my-input" fill="outline">
           <ion-label position="floating">Starting Latitude</ion-label>
-          <ion-input disabled type="number" class="my-input" placeholder="Enter latitude" name="InLatitude"
+          <ion-input disabled type="number"  placeholder="Enter latitude" name="InLatitude"
             [(ngModel)]="data.InLatitude" required>
           </ion-input>
           <ion-note *ngIf="!desc.valid && desc.touched" color="danger">Latitude is required</ion-note>
         </ion-item>
-        <ion-item lines="full" class="my-input" fill="outline" shape="round">
+        <ion-item lines="full" class="my-input" fill="outline">
           <ion-label position="floating">Starting Longitude</ion-label>
-          <ion-input disabled class="my-input" type="number" placeholder="Enter latitude" name="InLongitude"
+          <ion-input disabled  type="number" placeholder="Enter latitude" name="InLongitude"
             [(ngModel)]="data.InLongitude" required>
           </ion-input>
           <ion-note *ngIf="!desc.valid && desc.touched" color="danger">Longitude is required</ion-note>
         </ion-item>
-        <ion-item lines="full" fill="outline" class="my-input" shape="round">
+        <ion-item lines="full" fill="outline" class="my-input">
           <ion-label position="floating">Enter Description</ion-label>
-          <ion-input type="text" class="my-input" placeholder="Enter discription" maxlength="200" name="InDiscription"
+          <ion-input type="text" placeholder="Enter discription" maxlength="200" name="InDiscription"
             [(ngModel)]="data.InDiscription" required #desc="ngModel"></ion-input>
           <ion-note *ngIf="!desc.valid && desc.touched" color="danger">Description is required</ion-note>
         </ion-item>
-      </ion-card>
-      <ion-button size="default" [disabled]="submitDisabled|| !form.valid|| isWeekend" type="submit" shape="round"
+        <ion-button size="default" [disabled]="submitDisabled|| !form.valid|| isWeekend" type="submit" shape="round"
         class="ion-margin-top" expand="block" (click)="onPunchIn()"><ion-icon name="add-circle-outline" class="mr-5"
           color="black"></ion-icon>Add Attendance</ion-button>
       <!-- attendanceMarked || isWeekend || !form.valid ||  -->
       <ion-button size="default" type="submit" shape="round" class="ion-margin-top" expand="block"
         (click)="getCurrentCoordinates()"><ion-icon name="location-outline" class="mr-5"></ion-icon>Get Current
         Location</ion-button>
-    </form>
+        <h4 class="ion-text-center" style="color:white">Click here !! For your Current location</h4>
+
+      </form>
+      </ion-card>
   </div>
   <div *ngIf="isPunchedIn">
     <form #form="ngForm">
+      <h3 class="ion-text-center"><b>Add your today's Attendance here!!!</b></h3>
       <ion-card class="ion-padding">
-        <ion-item lines="full" class="my-input" fill="outline" shape="round">
+        <h2 class="ion-text-center" style="color: white;"><b>Punch Out</b></h2>
+        <ion-item lines="full" class="my-input" fill="outline">
           <ion-label position="floating">Ending Latitude</ion-label>
           <ion-input disabled type="number" placeholder="Enter latitude" class="my-input" name="OutLatitude"
             [(ngModel)]="data.OutLatitude" required>
           </ion-input>
           <ion-note *ngIf="!desc.valid && desc.touched" color="danger">Latitude is required</ion-note>
         </ion-item>
-        <ion-item lines="full" class="my-input" fill="outline" shape="round">
+        <ion-item lines="full" class="my-input" fill="outline">
           <ion-label position="floating">Ending Longitude</ion-label>
           <ion-input disabled type="number" placeholder="Enter latitude" class="my-input" name="OutLongitude"
             [(ngModel)]="data.OutLongitude" required>
           </ion-input>
           <ion-note *ngIf="!desc.valid && desc.touched" color="danger">Longitude is required</ion-note>
         </ion-item>
-        <ion-item lines="full" fill="outline" class="my-input" shape="round">
+        <ion-item lines="full" fill="outline" class="my-input">
           <ion-label position="floating">Enter Description</ion-label>
           <ion-input type="text" pattern="[a-zA-Z ]*" class="my-input" placeholder="Enter discription" maxlength="200"
             name="OutDiscription" [(ngModel)]="data.OutDiscription" required #desc="ngModel"></ion-input>
           <ion-note *ngIf="!desc.valid && desc.touched" color="danger">Description is required</ion-note>
         </ion-item>
-      </ion-card>
-      <ion-button size="default" class="ion-margin-top" [disabled]="submitDisabled|| !form.valid|| isWeekend" type="submit" shape="round"
+        <ion-button size="default" class="ion-margin-top" [disabled]="submitDisabled|| !form.valid|| isWeekend" type="submit" shape="round"
         expand="block" (click)="onPunchOut()"><ion-icon name="person-circle-outline" class="mr-5"></ion-icon>Punch
         Out</ion-button>
       <ion-button size="default" class="ion-margin-top" type="submit" shape="round" expand="block"
         (click)="getCurrentCoordinatesPunchOut()"><ion-icon name="location-outline" class="mr-5"></ion-icon>Get Current
         Location</ion-button>
+        <h4 class="ion-text-center" style="color: white;">Click here !! For your Current location</h4>
+      </ion-card>
+      
   </form>
   </div>
   <!-- <div class="ion-padding-top">

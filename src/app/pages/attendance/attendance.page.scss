@@ -30,3 +30,8 @@ ion-label {
   font-size: large;
 }
 
+ion-toolbar {
+  --background: linear-gradient(180deg, rgba(12, 62, 120, 0.81) 0%, rgba(35, 166, 239, 0.81) 99.98%, rgba(9, 51, 135, 0.453094) 99.99%, rgba(5, 37, 153, 0) 100%);
+  --border-radius: 100px;
+  color: white;
+}

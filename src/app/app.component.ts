@@ -15,6 +15,7 @@ import { Geolocation} from '@ionic-native/geolocation/ngx';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+
   constructor(
     private diagnostic: Diagnostic,
     private alertController: AlertController,

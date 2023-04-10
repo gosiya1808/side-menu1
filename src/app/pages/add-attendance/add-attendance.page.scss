@@ -15,30 +15,53 @@ ion-item{
 // --background:rgba(253, 108, 106, 1);
 // }
 ion-button{
-  --background:#1e90ff ;
+  --background: #b8375d;
+--border-radius: 100px;
+width: 300px;
+height: 50px;
+margin-left: 40px;
+margin-top: 20px;
   // --background:rgba(253, 108, 106, 1);
 }
 .my-input {
     border-radius: 30px;
-    --border-color:#1e90ff;
+    --border-color:#b063e05c;
     --border-width: 2px;
 }
 ion-content {
-  --background: #0e0e23; 
-}
-ion-toolbar {
-  --background:#1e90ff ;
+  --background: white; 
 }
 ion-card{
-  border-radius: 20px;
-  // --background:#1e90ff ;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  // --background:#800080;
+//  
+// --background: #c6c8f3;
+// --background: -webkit-linear-gradient(225deg, #c6c8f3 0%, #ca6bfa 100%);
+// --background: linear-gradient(225deg, #c6c8f3 0%, #ca6bfa 100%);
+--background: #0f0f5e;
+// --background: -webkit-linear-gradient(26deg, #c6c8f3 0%, #be56fb 100%);
+// --background: linear-gradient(26deg, #c6c8f3 0%, #b167df9c 100%);
+padding-top: 20px;
+  margin-left: -20px;
+    width: 420px;
+    height: 510px;
+    border-top-right-radius: 40px;
+    border-top-left-radius: 40px;
+    margin-bottom: -30px;
+    // --background: url('/assets/images/animation.svg');
 }
 .mr-5{
   margin-right: 10px;
 }
 
+ion-toolbar {
+  --background: #0f0f5e;
+  color: white;
+}
 
 
+
+.item-native {
+  --native-padding-left: 16px;
+  border-radius: 16
+px
+;
+}

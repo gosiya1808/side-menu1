@@ -51,10 +51,10 @@ export class AttendancePage implements OnInit {
   }
 
   attendance() {
-    const EmployeeId = 5;
+    const EmployeeId = 47;
     console.log(EmployeeId)
     const today = new Date().toISOString().slice(0, 10);
-    this.api.showLoader();
+    // this.api.showLoader();
     this.api.getAttendanceById(EmployeeId,today).then((res:any)=>{
       console.log(res);
         this.detailsJson = JSON.parse(res.data);
@@ -80,7 +80,7 @@ export class AttendancePage implements OnInit {
           //   // InHours: inTimeParts[0],
           //   // InMinutes: inTimeParts[1],
           //   // InSeconds: inTimeParts[2],
-          //   // OutHours: outTimeParts[0],
+          //   // OutHours: outTimeParts[0],sxsxs
           //   // OutMinutes: outTimeParts[1],
           //   // OutSeconds: outTimeParts[2],
           // };

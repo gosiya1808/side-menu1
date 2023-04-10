@@ -70,7 +70,7 @@ export class AddAttendancePage implements OnInit {
   }
 
   checkAttendanceStatus() {
-    const EmployeeId = 6;
+    const EmployeeId = 5;
     const today = new Date().toISOString().slice(0, 10);
     console.log(today); // replace with the actual employee id
     this.api.getAttendanceById(EmployeeId,today).then(async response => {
@@ -228,7 +228,7 @@ export class AddAttendancePage implements OnInit {
       //   }
       // })
    // Logic for punch-in action
-    this.api.addAttendance(this.data,6)
+    this.api.addAttendance(this.data,5)
       .then(async response => {
         this.api.showLoader();
         console.log('added successfully:', response);
@@ -255,8 +255,7 @@ export class AddAttendancePage implements OnInit {
   }
 
   onPunchOut() {
-    // Logic for punch-out actiondfdfsdfsadsdsafsdfsdcdsadsadasdsaddfcfesfsdffrdgdegrfesdsv ccscssdvdgsgg
-    this.api.updateAttedance(this.data,6)
+    this.api.updateAttedance(this.data,5)
       .then(async response => {
         this.api.showLoader();
         console.log('updated successfully:', response);

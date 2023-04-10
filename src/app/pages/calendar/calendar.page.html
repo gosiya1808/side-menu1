@@ -1,9 +1,9 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button>BACK</ion-back-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Attendance</ion-title>
+    <ion-title>Attendance</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -37,12 +37,12 @@
 
     <ion-col size="2" class="ion-padding top">
       <ion-button fill="clear" (click)="next()">
-        <ion-icon name="arrow-forward" slot="icon-only" class=".mr-6"></ion-icon>
+        <ion-icon name="arrow-forward" slot="icon-only" class="mr-6"></ion-icon>
       </ion-button>
     </ion-col>
 
   </ion-row>
-    <div>
+  <ion-card>
       <calendar
         [eventSource]="eventSource"
         [calendarMode]="calendar.mode"
@@ -50,7 +50,7 @@
         (onTitleChanged)="onViewTitleChanged($event)"
         (onEventSelected)="onEventSelected($event)"
       ></calendar>
-    </div>
+    </ion-card>
     <!-- // -->
 
 

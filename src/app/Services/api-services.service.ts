@@ -7,6 +7,8 @@ import { Observable, from } from 'rxjs';
 import { Platform } from '@ionic/angular';
 
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +16,7 @@ export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
   //EmployeeId: number | null = null;
-  baseUrl = 'https://d82d-116-72-9-56.in.ngrok.io/';
+  baseUrl = 'https://31cf-2402-3a80-e63-5adb-1da7-ea1e-169d-f4a3.ngrok-free.app/';
   attendance = new Attendance();
   PageNumber:number|any;
   
@@ -122,10 +124,10 @@ export class ApiServicesService {
   async showLoader()
   {
     const loading = await this.loadingController.create({
-      message:'Loading.....',
-      spinner:'crescent',
+      message:'<div class="spinner"><div></div><div></div><div></div><div></div><div></div></div>',
+      spinner:null,
       translucent: true,
-      cssClass: 'custom-loading'
+      cssClass: 'custom-loading',
     });
     await loading.present();
   }
