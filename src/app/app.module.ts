@@ -11,8 +11,9 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import  { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Storage } from '@ionic/storage-angular';
-import { SwiperModule } from 'swiper/angular'; //na work kare to remove karna 
+import { SwiperModule } from 'swiper/angular'; //na work kare to remove karna
 
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,7 @@ import { SwiperModule } from 'swiper/angular'; //na work kare to remove karna
     Geolocation,
     Diagnostic,
     AndroidPermissions,
-    Storage,
+    Storage,LocationAccuracy,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     HTTP
   ],
