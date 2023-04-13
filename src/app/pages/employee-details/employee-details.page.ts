@@ -14,6 +14,8 @@ export class EmployeeDetailsPage implements OnInit {
   EmployeeId: number | any;
   detailsJson: string | any;
   employees: Employee | any;
+  birthdate = new Date().toISOString().slice(0, 10);
+  bday:string|any;
 
   constructor(private api: ApiServicesService, private route: ActivatedRoute,) {
 
@@ -34,6 +36,8 @@ export class EmployeeDetailsPage implements OnInit {
         console.log(this.detailsJson);
         this.employees = this.detailsJson['Result'];
         console.log(this.employees);
+        this.bday = this.birthdate+'T'+this.employees.BirthDate+'Z' 
+        console.log(this.bday);
         this.api.hideLoader();
         // const dateParts = this.employees.BirthDate.slice(0, 10).split('-');
         // this.employees = {

@@ -11,11 +11,11 @@
 </ion-header>
 
 <ion-content>
-  <div class="skill">
+  <!-- <div class="skill" *ngIf="attendance">
     <div class="outer">
       <div class="inner">
         <div id="number">
-            
+          {{ progressPercentage.toFixed(2) }}%
         </div>
       </div>
     </div>
@@ -27,8 +27,26 @@
             <stop offset="100%" stop-color="#673ab7" />
          </linearGradient>
       </defs>
-      <circle cx="80" cy="80" r="70" stroke-linecap="round" />
+      <circle cx="80" cy="80" r="70" stroke-linecap="round" /> -->
+      <!-- <circle class="dynamic-circle" cx="80" cy="80" r="70" stroke-linecap="round" [style.stroke]="'url(#GradientColor)'" [style.stroke-dasharray.%]="'100, ' + progressPercentage" [style.stroke-dashoffset.%]="100 - progressPercentage" />
+    <animate attributeName="stroke-dashoffset" [attr.from]="100" [attr.to]="100 - progressPercentage" dur="2s" />
     </svg>
-  </div>
+  </div> -->
+  
+
+   <!-- <div *ngIf="attendance">
+    <h1>Punch In Time: {{ punchInTime | date:'mediumTime' }}</h1>
+    <h1>Punch Out Time: {{ punchOutTime | date:'mediumTime' }}</h1>
+    <h1>Progress: {{ progressPercentage.toFixed(2) }}%</h1>
+  </div> -->
+
+  <!-- <div *ngIf="attendance">
+    <h1>Punch In Time: {{ punchInTime | date:'mediumTime' }}</h1>
+    <h1>Punch Out Time: {{ punchOutTime | date:'mediumTime' }}</h1>
+    <div class="progress-bar">
+      <div class="progress-bar-inner" [ngStyle]="{'width': progressPercentage + '%'}"></div>
+    </div>
+    <h1>Progress: {{ progressPercentage.toFixed(2) }}%</h1>
+  </div> xzxasxa-->
   
 </ion-content>

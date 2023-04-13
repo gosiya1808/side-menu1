@@ -16,7 +16,7 @@ export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
   //EmployeeId: number | null = null;
-  baseUrl = 'https://31cf-2402-3a80-e63-5adb-1da7-ea1e-169d-f4a3.ngrok-free.app/';
+  baseUrl = 'https://cd08-2402-3a80-16a6-5572-184a-32ac-17a5-70f2.ngrok-free.app/';
   attendance = new Attendance();
   PageNumber:number|any;
   
@@ -32,20 +32,13 @@ export class ApiServicesService {
     this.http.setHeader('Access-Aontrol-Allow-Origin',this.baseUrl,'')
   });
   }
-
- 
-
-  // getEmployess(): Observable<Employee[]>{
-  //   return this.http.get(this.baseUrl+'api/Employee/GetAllEmployees/')
-  // }
-  //get ki jagah post kiya 
   getEmployess(PageNumber:number,PageSize:number=50): Observable<Employee[]>{
     const gg={
       'CurrentPageNumber':PageNumber,
       'PageSize':PageSize
     }
     return new Observable<Employee[]>(observer => {
-      this.http.post(this.baseUrl+'api/Employee/GetAllEmployees',gg, {}).then(response => {
+      this.http.post(this.baseUrl+'api/Employee/GetAllEmployee',gg, {}).then(response => {
         observer.next(response.data);
         observer.complete();
       }).catch(error => {
@@ -55,18 +48,11 @@ export class ApiServicesService {
   }
 
   getEmployessById(EmployeeId: number){
-    // const params = {
-    //   'EmployeeId': this.EmployeeId
-    // };
     return this.http.get(this.baseUrl+'api/Employee/GetEmployeeById?employeeId='+EmployeeId,{},{});
   }
- 
-  //yaha pe date add kiya hai wokr na kare to nikal dena abhi ye attendance// ke baad change kiya 
-  getAttendanceById(EmployeeId: number, Date:String){
+   getAttendanceById(EmployeeId: number, Date:String){
     return this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?employeeId='+EmployeeId+'&date='+Date,{},{});
   }
-
-  //ye attendance ke liye kiya hai
   getAttendanceByEmployeeIdxyz(EmployeeId: number): Observable<Attendance>{ 
     return from(this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?employeeId='+EmployeeId,{},{})).pipe(
       map((data: any) => {
@@ -80,9 +66,6 @@ export class ApiServicesService {
   }
   
   checkAttendance(EmployeeId: number, Date:string){
-    // const g={
-    //   "Date":Date
-    // }
     return this.http.get(this.baseUrl+'api/Attendance/GetAttendanceById?employeeId='+EmployeeId+'&date='+Date,{},{});
   }
 
@@ -105,10 +88,8 @@ export class ApiServicesService {
     attendance.EmployeeId = employeeId;
     return this.http.post(this.baseUrl+'api/Attendance/SaveAttendanceDetails', attendance,{});
   }
-  //parameter change kiya hai 
   updateAttedance(attendance: Attendance,EmployeeId:number){
     const g={
-      //"AttendanceId":this.AttendanceId,nahi ho to ye comment remove kar dena 
       "EmployeeId":EmployeeId,
       "OutLatitude":attendance.OutLatitude,
       "OutLongitude":attendance.OutLongitude,
@@ -128,6 +109,7 @@ export class ApiServicesService {
       spinner:null,
       translucent: true,
       cssClass: 'custom-loading',
+      // duration:10
     });
     await loading.present();
   }

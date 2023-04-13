@@ -6,6 +6,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Geolocation} from '@ionic-native/geolocation/ngx';
 import { LocationService } from './Services/location.service';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { MenuController } from '@ionic/angular';
 
 import { Router } from '@angular/router';
 @Component({
@@ -19,12 +20,10 @@ export class AppComponent implements OnInit {
     private alertCtrl: AlertController,
     private navCtrl:  NavController,
     public plt: Platform,
+    private locationAccuracy:LocationAccuracy,
     private androidPermissions: AndroidPermissions,
     private geolocation: Geolocation,
-    private router : Router,
-    private locationAccuracy: LocationAccuracy,
-
-
+    private menuController: MenuController,
   ) {
    // this.initializeApp();
   }
@@ -168,7 +167,7 @@ export class AppComponent implements OnInit {
 
 
 
-   //--------------------------------------------------Gosiya Code
+   //--------------------------------------------------Gosiya Code fsdgvddfsfdsfdfdsfffgdf
   // async showLocationSettingsAlert() {
   //   console.log('showLocationSettingsAlert() called');
   //     const alert = await this.alertController.create({

@@ -21,8 +21,15 @@
       <ion-button size="large" slot="end" fill="clear" (click)="onNavigate(i.EmployeeId)">
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-button>
+      
     </ion-item>
   </ion-card>
+  <ion-infinite-scroll>
+    <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <!-- <ion-infinite-scroll  (ionInfinite)="showData()" >
+    <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
   <!-- <h1>Employee List</h1>
   <ion-item *ngFor="let i of employeeList"  
   (click)="onNavigate(i.EmployeeId)">

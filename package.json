@@ -30,6 +30,7 @@
     "@ionic/cordova-builders": "^8.0.0",
     "@ionic/storage-angular": "^3.0.6",
     "@types/swiper": "^6.0.0",
+    "chart.js": "^4.2.1",
     "ionic2-calendar": "^1.0.1",
     "ionicons": "^6.0.3",
     "moment": "^2.29.4",
@@ -55,9 +56,10 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
-    "cordova-android": "^11.0.0",
+    "cordova-android": "^10.1.2",
     "cordova-plugin-advanced-http": "^3.3.1",
     "cordova-plugin-android-permissions": "^1.1.5",
+    "cordova-plugin-androidx": "^3.0.0",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-file": "^7.0.0",
     "cordova-plugin-geolocation": "^4.1.0",
@@ -103,7 +105,8 @@
       "cordova-plugin-android-permissions": {},
       "cordova-plugin-request-location-accuracy": {
         "PLAY_SERVICES_LOCATION_VERSION": "16.+"
-      }
+      },
+      "cordova-plugin-androidx": {}
     },
     "platforms": [
       "android"

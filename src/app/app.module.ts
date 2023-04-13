@@ -14,6 +14,7 @@ import { Storage } from '@ionic/storage-angular';
 import { SwiperModule } from 'swiper/angular'; //na work kare to remove karna
 
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { Chart } from 'chart.js';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
     Geolocation,
     Diagnostic,
     AndroidPermissions,
-    Storage,LocationAccuracy,
+    Storage,LocationAccuracy,Chart,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     HTTP
   ],

@@ -36,19 +36,22 @@ export class LoginPage implements OnInit {
   }
   onSubmit(){
     if(this.username=='admin' && this.password=='admin'){
-    this.api.showLoader();
+    // this.api.showLoader();
+    // this.api.hideLoader();
     this.router.navigate(['/home']);
-    this.api.hideLoader();
+  //   setTimeout(() => {
+  //     this.api.hideLoader();ghvg
+  // }, 500);
    }
   }
 
-  onViewWillEnter() {
-    this.menuController.enable(false,'gg');
+  ionViewWillEnter() {
+    this.menuController.enable(false,'main-menu');
     console.log("fired");
   }
 
   ionViewWillLeave() {
-    this.menuController.enable(true,'gg');
+    this.menuController.enable(true,'main-menu');
     console.log("fired1");
   }
 

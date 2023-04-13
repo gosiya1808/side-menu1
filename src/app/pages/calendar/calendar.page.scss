@@ -1,6 +1,4 @@
-.mr-5{
-    margin-right: 10px;
-  }
+
   .mr-6{
     margin-left: -20px;
   }
@@ -19,6 +17,13 @@
   --background: blue($color: #000000);
  }
   
+ .margin{
+  margin-left: 5px;
+ }
+ ion-content {
+  --background: url('/assets/images/image.png');
+  // --background-size: cover;
+}
   // <div>
   //   <h2 class="mb-2">Attendance Details</h2>
   //   <p><ion-icon name="time-outline" class="icon"></ion-icon><span class="ml-2">InTime:</span> <span class="fw-bold">${event.inTime}</span></p>

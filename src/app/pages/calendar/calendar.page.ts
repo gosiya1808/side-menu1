@@ -144,13 +144,12 @@ export class CalendarPage implements OnInit {
     const end = formatDate(event.endTime, 'medium', 'en-US');
     console.log(this.eventSource);
     const alert = await this.alertCtrl.create({
-      // message: `<div class="cal-alert-time"><ion-icon class="cal-alert-svg" name="time-outline"></ion-icon>${start}</div><div class="cal-alert-time fw-bold"><ion-icon class="cal-alert-svg"  name="person-sharp"></ion-icon> ${event.ApplicantName}</div><div class="cal-alert-interviewer"><span><ion-icon class="cal-alert-svg2" name="attach-outline"></ion-icon></span>${event.InterviewerName}</div>`, <span>${event.Outdesc}</span></p>
       message: `<div>
       <h2 class="mb-2">Attendance Details</h2>
-      <p  class="mb-1"><span class="mr-2"><ion-icon name="time-outline" class="mr-5"></ion-icon></span><span>InTime: <span class="fw-bold">${event.inTime}</span></span></p>
-      <p  class="mb-1"><span class="mr-2"><ion-icon name="document-text-outline"class="mr-5"></ion-icon></span><span>InDesc: <span class="fw-bold">${event.Indesc}</span></span></p>
-      <p  class="mb-1"><span class="mr-2"> <ion-icon name="time-outline" class="mr-5"></ion-icon>OutTime: ${event.outTime} </span></p>
-      <p  class="mb-1"><span class="mr-2"><ion-icon name="document-text-outline" class="mr-5"></ion-icon></span><span>OutDesc: <span class="fw-bold">${event.Outdesc}</span></span></p>
+      <p><span><ion-icon name="time-outline"></ion-icon></span><span class="margin">InTime: <span>${event.inTime}</span></span></p>
+      <p><span><ion-icon name="document-text-outline"></ion-icon></span><span  class="margin">InDesc: <span>${event.Indesc}</span></span></p>
+      <p><span> <ion-icon name="time-outline"></ion-icon><span  class="margin">OutTime: ${event.outTime}</span></span></p>
+      <p><span><ion-icon name="document-text-outline"></ion-icon></span><span class="margin">OutDesc: <span>${event.Outdesc}</span></span></p>
       </div>`,
        buttons:  [{
         text: 'ok',

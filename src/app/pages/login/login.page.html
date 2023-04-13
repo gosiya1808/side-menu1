@@ -5,13 +5,13 @@
   <p align="center"><ion-img src="assets/images/Group10.png" height="55px" class="ion-padding-bottom"></ion-img></p>
   <ion-card class="card-bottom">
     <p align="center"><ion-img src="assets/images/hrms.png" class="logo"></ion-img></p>
-    <ion-item shape="round" lines="full" fill="outline">
+    <ion-item lines="full" fill="outline">
       <ion-icon name="mail-outline" class="mr-5"></ion-icon>
-      <ion-input type="text" placeholder="Email" [(ngModel)]="username"></ion-input>
+      <ion-input type="text" placeholder="Email"  [(ngModel)]="username"></ion-input>
     </ion-item>
-    <ion-item shape="round" lines="full" fill="outline">
+    <ion-item lines="full" fill="outline" >
       <ion-icon name="lock-closed-outline" class="mr-5"></ion-icon>
-      <ion-input placeholder="Password" [type]="passwordType" [(ngModel)]="password"></ion-input>
+      <ion-input placeholder="Password"  [type]="passwordType" [(ngModel)]="password"></ion-input>
       <a class="type-toggle" (click)="togglePassword()">
         <ion-icon size="large" class="show-option" [hidden]="passwordShown" name="eye-off-outline" class="eye"></ion-icon>
         <ion-icon size="large" class="hide-option" [hidden]="!passwordShown" name="eye-outline" class="eye"></ion-icon>
@@ -20,6 +20,7 @@
     <div class="ion-padding-top">
       <ion-button fill="solid" shape="round" type="submit" expand="block" (click)="onSubmit()"><ion-icon name="person-circle-outline" class="mr-5"></ion-icon>
         Login</ion-button>
+        <h4 class="ion-text-center" style="color: black;">Login here!! for using this application.</h4>
     </div> 
   </ion-card>   
 </ion-content>
