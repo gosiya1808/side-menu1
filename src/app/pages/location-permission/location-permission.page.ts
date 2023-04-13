@@ -24,40 +24,30 @@ export class LocationPermissionPage implements OnInit {
 
   ) { }
 
-    // async alertMsg(){
-    //   console.log('showLocationSettingsAlert() called');
-    //   const alert = await this.alertController.create({
-    //     header: 'Location permission required',
-    //     message: 'Please enable location access in app settings to use this feature',
-    //     buttons: [
-    //       {
-    //         text: 'Cancel',
-    //         role: 'cancel'
-    //       },
-    //       {
-    //         text: 'Go To Setting',
-    //         handler: () => {
-    //           this.diagnostic.switchToSettings();
-    //         }
-    //       }
-    //     ]
-    //   });
-    //   await alert.present();
-    // }
-
 
     ngOnInit() {
-      // this.plt.ready().then(()=>{
-      //   console.log('running1');
-      //   this.checkPermission();
-      // })
+      this.plt.ready().then(()=>{
+        console.log('running1');
+        this.route();
+      })
+    }
+
+    loc: boolean = false;
+
+
+  //Condition for Routing to direct LOGIN PAGE if both permission  & location are enabled
+   async route(){
+      if( (this.diagnostic.permissionStatus.GRANTED || this.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE) && await this.diagnostic.isLocationEnabled() === true ){
+        this.router.navigate(['login'],{ replaceUrl: true });
+        console.log('Routered')
+      }
+
     }
 
 
+    //Function For checking Permission & routing
     checkPermission(){
-
       this.diagnostic.requestLocationAuthorization().then(async (status) => {
-
         console.log(status);
         //this switch case check the permissions
         switch (status) {
@@ -69,6 +59,7 @@ export class LocationPermissionPage implements OnInit {
            break;
 
            case this.diagnostic.permissionStatus.DENIED_ALWAYS :
+            console.log('Denied IN')
               const alert1 = this.alertCtrl.create({
                   header: 'Location Permission',
                   message: 'Please go to your app settings to enable location permission.',
@@ -84,10 +75,10 @@ export class LocationPermissionPage implements OnInit {
                });
               (await alert1).present();
               this.checkLocaction();
-            break;
+           break;
 
            case this.diagnostic.permissionStatus.DENIED_ONCE:
-               console.log('Location permission has been denied');
+               console.log('Location permission has been denied ONCE');
                const alert = this.alertCtrl.create({
                     header: 'Location Permission',
                     message: 'Please go to your app settings to enable location permission.',
@@ -105,22 +96,22 @@ export class LocationPermissionPage implements OnInit {
                           this.checkLocaction();
             break;
 
-
             case this.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE :
                 console.log('Location permission has been granted only when the app is in use');
                 this.checkLocaction();
+                if(this.loc){
+                  this.router.navigate(['login'],{ replaceUrl: true })
+                }
             break;
+
          }
 
-         this.diagnostic.isLocationEnabled().then((ok)=>{
-             this.router.navigate(['login'],{ replaceUrl: true })
-         })
        }).catch((error) => {
          console.error(error);
        });
      }
 
-     //give the Alert message for asking location  permission
+     //Alert message for asking location  permission
      async alertMsg(){
       console.log('showLocationSettingsAlert() called');
       const alert = await this.alertController.create({
@@ -142,10 +133,11 @@ export class LocationPermissionPage implements OnInit {
       await alert.present();
     }
 
-    //this will function will check if location is enable or not & ask for location permission
+    //Function will check if location is enable or not & ask for location permission
     async checkLocaction(){
       this.diagnostic.isLocationEnabled().then(async (isEnabled) => {
         if (isEnabled) {
+          this.loc = true;
           console.log('Location services are enabled');
         } else {
           console.log('Location services are disabled');
