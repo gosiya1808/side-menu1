@@ -17,10 +17,14 @@
         <ion-icon size="large" class="hide-option" [hidden]="!passwordShown" name="eye-outline" class="eye"></ion-icon>
       </a>
     </ion-item>
+    <!-- <ion-checkbox [(ngModel)]="rememberMe" slot="start"></ion-checkbox>
+    <ion-label>Remember Me</ion-label> -->
+
     <div class="ion-padding-top">
       <ion-button fill="solid" shape="round" type="submit" expand="block" (click)="onSubmit()"><ion-icon name="person-circle-outline" class="mr-5"></ion-icon>
         Login</ion-button>
         <h4 class="ion-text-center" style="color: black;">Login here!! for using this application.</h4>
     </div> 
+   
   </ion-card>   
 </ion-content>

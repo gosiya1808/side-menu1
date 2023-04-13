@@ -34,6 +34,7 @@
     "ionic2-calendar": "^1.0.1",
     "ionicons": "^6.0.3",
     "moment": "^2.29.4",
+    "ng2-charts": "^4.1.1",
     "rxjs": "^6.5.0",
     "simple-circular-progress": "^1.0.2",
     "swiper": "^8.4.6",

@@ -2,6 +2,7 @@ import { Component, ContentChild,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { ApiServicesService } from 'src/app/Services/api-services.service';
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -16,9 +17,10 @@ export class LoginPage implements OnInit {
 
   username:string|any;
   password:string|any;
+  rememberMe = false;
   
 
-  constructor( private router:Router,    private menuController: MenuController,  private api: ApiServicesService  ) { }
+  constructor( private router:Router,    private menuController: MenuController,  private api: ApiServicesService,private alertController: AlertController  ) { }
 
   ngOnInit() {
   }
@@ -39,10 +41,19 @@ export class LoginPage implements OnInit {
     // this.api.showLoader();
     // this.api.hideLoader();
     this.router.navigate(['/home']);
+    this.rememberMe = true;
   //   setTimeout(() => {
   //     this.api.hideLoader();ghvg
   // }, 500);
    }
+  }
+  async showAlertF() {
+    const alert = await this.alertController.create({
+      header: 'INVAILD',
+      message: 'EMAIL or Password is wrong',
+      buttons: ['OK']
+    });
+     await alert.present();
   }
 
   ionViewWillEnter() {
