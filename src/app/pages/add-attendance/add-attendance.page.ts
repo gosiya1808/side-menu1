@@ -34,6 +34,7 @@ export class AddAttendancePage implements OnInit {
     private toastController: ToastController,
     private storage: Storage
   ) {
+    // this.getCurrentCoordinatesPunchOut();
   }
 
   async ionViewDidEnter() {
@@ -67,7 +68,7 @@ export class AddAttendancePage implements OnInit {
   // }
 
   checkAttendanceStatus() {
-    const EmployeeId = 40;
+    const EmployeeId = 12;
     const today = new Date().toISOString().slice(0, 10);
     console.log(today);
     this.api.showLoader();
@@ -94,6 +95,9 @@ export class AddAttendancePage implements OnInit {
             position: 'bottom'
           });
           toast.present();
+          toast.onDidDismiss().then(() => {
+            this.navigate();
+          });
         } else {
           this.submitDisabled = false;
           console.log(" submitted false");
@@ -163,33 +167,106 @@ export class AddAttendancePage implements OnInit {
     });
   }
 
+  // onPunchIn() {
+  //   this.api.addAttendance(this.data,2)
+  //     .then(async response => {
+  //       this.api.showLoader();
+  //       this.getCurrentCoordinates();
+  //       console.log('added successfully:', response);
+  //       this.api.EmployeeId = JSON.parse(response.data)
+  //       this.api.EmployeeId = this.api.EmployeeId['Result']
+  //       console.log(this.api.EmployeeId)
+  //       const toast = await this.toastController.create({
+  //         message: 'You have attendance successfully!',
+  //         duration: 2000,
+  //         position: 'bottom'
+  //       });
+  //       toast.present();
+  //       toast.onDidDismiss().then(() => {
+  //         this.api.hideLoader();
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.error('Error adding user:', error);
+  //     });
+  //   this.isPunchedIn = true;
+
+  // }
   onPunchIn() {
-    this.api.addAttendance(this.data,40)
-      .then(async response => {
-        this.api.showLoader();
-        console.log('added successfully:', response);
-        this.api.EmployeeId = JSON.parse(response.data)
-        this.api.EmployeeId = this.api.EmployeeId['Result']
-        console.log(this.api.EmployeeId)
-        const toast = await this.toastController.create({
-          message: 'You have attendance successfully!',
-          duration: 2000,
-          position: 'bottom'
-        });
-        toast.present();
-        toast.onDidDismiss().then(() => {
+    this.api.showLoader();
+    this.geolocation.getCurrentPosition().then((resp) => {
+      console.log(resp);
+      this.data.InLatitude = resp.coords.latitude;
+      this.data.InLongitude = resp.coords.longitude;
+
+      this.api.addAttendance(this.data, 12)
+        .then(async response => {
+          console.log('added successfully:', response);
+          this.api.EmployeeId = JSON.parse(response.data)
+          this.api.EmployeeId = this.api.EmployeeId['Result']
+          console.log(this.api.EmployeeId)
+          const toast = await this.toastController.create({
+            message: 'You have attendance successfully!',
+            duration: 2000,
+            position: 'bottom'
+          });
+          toast.present();
+          toast.onDidDismiss().then(() => {
+            this.api.hideLoader();
+          });
+        })
+        .catch(error => {
+          console.error('Error adding user:', error);
+          // Handle error response from API
+          // ...
+        })
+        .finally(() => {
           this.api.hideLoader();
         });
-      })
-      .catch(error => {
-        console.error('Error adding user:', error);
-      });
-    this.isPunchedIn = true;
-
+      this.isPunchedIn = true;
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
 
-  onPunchOut() {
-    this.api.updateAttedance(this.data,1)
+  // onPunchOut() {
+  //   this.api.updateAttedance(this.data, 9)
+  //     .then(async response => {
+  //       this.api.showLoader();
+  //       console.log('updated successfully:', response);
+  //       this.dataJson = JSON.parse(response.data);
+  //       console.log(this.dataJson);
+  //       this.data = this.dataJson['Result'];
+  //       console.log(this.data);
+  //       const toast = await this.toastController.create({
+  //         message: 'You have attendance successfully!',
+  //         duration: 2000,
+  //         position: 'bottom'
+  //       });
+  //       toast.present();
+  //       toast.onDidDismiss().then(() => {
+  //         this.navigate();
+  //         this.api.hideLoader();
+  //       });
+  //     })
+  //     .catch(async error => {
+  //       console.error('Error updating data:', error);
+  //       const toast = await this.toastController.create({
+  //         message: 'Error updating attendance data. Please try again later.',
+  //         duration: 2000,
+  //         position: 'bottom'
+  //       });
+  //       toast.present();
+  //     });
+  //   this.isPunchedIn = false;
+  // }
+  onPunchOut(){
+    this.api.showLoader();
+    this.geolocation.getCurrentPosition().then((resp) => {
+      console.log(resp);
+      this.data.OutLatitude = resp.coords.latitude;
+      this.data.OutLongitude = resp.coords.longitude;
+      this.api.updateAttedance(this.data, 12)
       .then(async response => {
         this.api.showLoader();
         console.log('updated successfully:', response);
@@ -198,7 +275,7 @@ export class AddAttendancePage implements OnInit {
         this.data = this.dataJson['Result'];
         console.log(this.data);
         const toast = await this.toastController.create({
-          message: 'You have attendance successfully!',
+          message: 'You have Punch Out successfully!',
           duration: 2000,
           position: 'bottom'
         });
@@ -214,10 +291,13 @@ export class AddAttendancePage implements OnInit {
           message: 'Error updating attendance data. Please try again later.',
           duration: 2000,
           position: 'bottom'
+        })
+        .finally(() => {
+          this.api.hideLoader();
         });
-        toast.present();
       });
     this.isPunchedIn = false;
+    })
   }
 
   ngOnInit() {

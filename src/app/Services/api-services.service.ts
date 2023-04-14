@@ -16,7 +16,7 @@ export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
   //EmployeeId: number | null = null;
-  baseUrl = 'https://cd08-2402-3a80-16a6-5572-184a-32ac-17a5-70f2.ngrok-free.app/';
+  baseUrl = 'https://d72d-2402-3a80-e44-9544-b0c1-556f-e214-7683.ngrok-free.app/';
   attendance = new Attendance();
   PageNumber:number|any;
   

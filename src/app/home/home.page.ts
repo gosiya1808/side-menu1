@@ -10,15 +10,8 @@ import { Chart } from 'chart.js';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements AfterViewInit {
-  // attendance: Attendance | any;
-  // punchInTime!: Date;
-  // punchOutTime!: Date;
-  // progressPercentage: number = 0;
-  // totalTime: number = 60; // total time in seconds
-  // intervalId: any; 
-  // strokeDashArray: string = '0, 439.8223650461362';
-  private punchInTime: Date = new Date(2023, 3, 13, 9, 0, 0); // Static punch in time (9:00 AM)
-  private punchOutTimee: Date = new Date(2023, 3, 13, 17, 0, 0);
+  private punchInTime: Date = new Date(2023, 3, 14, 9, 0, 0); // Static punch in time (9:00 AM)
+  private punchOutTimee: Date = new Date(2023, 3, 14, 17, 0, 0);
   private remainingTime: string = '';
   doughnutChart: any;
 
@@ -34,7 +27,7 @@ export class HomePage implements AfterViewInit {
   dummy = '2023-04-03T11:29:23.051Z';
 
   @ViewChild('doughnutCanvas') private doughnutCanvas!: ElementRef;
-  @ViewChild('titleDiv') titleDiv!: ElementRef;
+  @ViewChild('completedTime') public completedTime!: ElementRef;
   
   constructor(private api: ApiServicesService) {}
 
@@ -51,58 +44,64 @@ export class HomePage implements AfterViewInit {
     this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: ['Punch-in', 'Punch-out'],
+        labels: ['Punch-in', 'Current-time'],
         datasets: [{
           label: 'timing',
           data: [0, 0],
           backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)'
+            '#4242A6',
+            '#adadde',
           ],
-          hoverBackgroundColor: [
-            '#FFCE56',
-            '#FF6384',
-          ]
+          // hoverBackgroundColor: [
+          //   '#FFCE56',
+          //   '#FF6384',
+          // ]
         }]
       },
       options: {
-        animation: { // Add animation options
+        cutout:98,
+        responsive:true,
+        animation: { // Add animation optionsxaxax
           animateRotate: true,
-          animateScale: true
+          animateScale: true,
         },
+        
       }
+    
+      
       
     });
   }
   startDynamicAnimation(): void {
-    // Update the chart data with 0 values initially
     this.doughnutChart.data.datasets[0].data = [0, 0];
     this.doughnutChart.update();
-
-    // Start updating the chart data and title at regular intervals
     setInterval(() => {
       const now = new Date();
       const elapsed = now.getTime() - this.punchInTime.getTime();
       const totalDuration = this.punchOutTimee.getTime() - this.punchInTime.getTime();
-      const remaining = this.punchOutTimee.getTime() - now.getTime(); // Fix this line
-
-      // Update the chart data with the elapsed time in percentage
+      // const remaining = this.punchOutTimee.getTime() - now.getTime(); 
+      
       this.doughnutChart.data.datasets[0].data = [
         elapsed / totalDuration * 100,
         (totalDuration - elapsed) / totalDuration * 100
       ];
       this.doughnutChart.update();
-
-      // Update the remaining time in the middle of the chart
-      const remainingTime = new Date(remaining);
-      const remainingHours = Math.floor(remainingTime.getTime() / (60 * 60 * 1000));
-      const remainingMinutes = Math.floor(remainingTime.getTime() % (60 * 60 * 1000) / (60 * 1000));
-      // this.titleDiv.textContent = `${remainingHours} hours ${remainingMinutes} minutes`;
-    }, 1000); // Update every 1 second
+      // const remainingTime = new Date(remaining);fgbhfdh
+      // // console.log(remainingTime)
+      // const remainingHours = Math.floor(remainingTime.getTime() / (60 * 60 * 1000));
+      // const remainingMinutes = Math.floor(remainingTime.getTime() % (60 * 60 * 1000) / (60 * 1000));
+      // const completedTime = `${remainingHours} hrs ${remainingMinutes} mins`;
+      // console.log(completedTime)
+      const elapsedHours = Math.floor(elapsed / (60 * 60 * 1000));
+      const elapsedMinutes = Math.floor(elapsed % (60 * 60 * 1000) / (60 * 1000));
+      const elapsedTimeString = `${elapsedHours} hrs: ${elapsedMinutes} mins`;
+      (<HTMLSpanElement>document.getElementById('remainingTime')).textContent = elapsedTimeString;
+      
+    }, 1000); 
   }
 
   attendance() {
-    const EmployeeId = 1;
+    const EmployeeId = 4;
     console.log(EmployeeId)
     const today = new Date().toISOString().slice(0, 10);
     // this.api.showLoader();

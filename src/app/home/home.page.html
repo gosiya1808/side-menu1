@@ -13,22 +13,29 @@
 <ion-content>
   <ion-card>
     <ion-card-content class="card">
-      <ion-label><h2 class="ion-text-center" style="color: black;">Employee Attandance</h2></ion-label>
+      <ion-label><h2 class="ion-text-center" style="color: black;">Employee Attandance Details</h2></ion-label>
     </ion-card-content>
   </ion-card>
-  <ion-card>
-    <ion-card-header>
-      Doughnut Chart
+  <ion-card class="card">
+    <ion-card-header class="ion-text-center">
+     Attendance Progress
     </ion-card-header>
-    <ion-card-content>
-      <canvas #doughnutCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+    <ion-card-content class="card-canvas">
+      <!-- <canvas #doughnutCanvas style="position: relative; height:50px; width:50px"></canvas>
+      <span id="remainingTime"></span> -->
+      <div style="position: relative;">
+        <canvas #doughnutCanvas style="width: 200px;"></canvas>
+        <div style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+          <span id="remainingTime" style="font-size: 18px; color: black;"></span>
+        </div>
+      </div>
     </ion-card-content>
   </ion-card>
   <ion-card>
     <ion-card-header>
       <ion-card-title class="ion-text-center">Punch In</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content class="ion-text-center">
       <ion-item *ngIf="details">
         <!-- <ion-thumbnail slot="end">
           <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
@@ -74,7 +81,7 @@
       </ion-item>  
     </ion-card-content>
   </ion-card>
-  <ion-card>
+  <ion-card class="cardxyz">
     <ion-card-header>
       <ion-card-title class="ion-text-center">Punch out</ion-card-title>
     </ion-card-header>
@@ -107,42 +114,7 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- <div class="skill" *ngIf="attendance">
-    <div class="outer">
-      <div class="inner">
-        <div id="number">
-          {{ progressPercentage.toFixed(2) }}%
-        </div>
-      </div>
-    </div>
-
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="160px" height="160px">
-      <defs>
-         <linearGradient id="GradientColor">
-            <stop offset="0%" stop-color="#e91e63" />
-            <stop offset="100%" stop-color="#673ab7" />
-         </linearGradient>
-      </defs>
-      <circle cx="80" cy="80" r="70" stroke-linecap="round" /> -->
-      <!-- <circle class="dynamic-circle" cx="80" cy="80" r="70" stroke-linecap="round" [style.stroke]="'url(#GradientColor)'" [style.stroke-dasharray.%]="'100, ' + progressPercentage" [style.stroke-dashoffset.%]="100 - progressPercentage" />
-    <animate attributeName="stroke-dashoffset" [attr.from]="100" [attr.to]="100 - progressPercentage" dur="2s" />
-    </svg>
-  </div> -->
   
 
-   <!-- <div *ngIf="attendance">
-    <h1>Punch In Time: {{ punchInTime | date:'mediumTime' }}</h1>
-    <h1>Punch Out Time: {{ punchOutTime | date:'mediumTime' }}</h1>
-    <h1>Progress: {{ progressPercentage.toFixed(2) }}%</h1>
-  </div> -->
-
-  <!-- <div *ngIf="attendance">
-    <h1>Punch In Time: {{ punchInTime | date:'mediumTime' }}</h1>
-    <h1>Punch Out Time: {{ punchOutTime | date:'mediumTime' }}</h1>
-    <div class="progress-bar">
-      <div class="progress-bar-inner" [ngStyle]="{'width': progressPercentage + '%'}"></div>
-    </div>
-    <h1>Progress: {{ progressPercentage.toFixed(2) }}%</h1>
-  </div> xzxasxa-->
   
 </ion-content>
