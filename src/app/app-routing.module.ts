@@ -20,14 +20,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/employee-enrollment/employee-enrollment.module').then( m => m.EmployeeEnrollmentPageModule)
   },
   {
-    path: 'department',
-    loadChildren: () => import('./pages/department/department.module').then( m => m.DepartmentPageModule)
-  },
-  {
-    path: 'designation',
-    loadChildren: () => import('./pages/designation/designation.module').then( m => m.DesignationPageModule)
-  },
-  {
     path: 'attendance',
     loadChildren: () => import('./pages/attendance/attendance.module').then( m => m.AttendancePageModule)
   },

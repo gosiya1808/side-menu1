@@ -10,8 +10,8 @@ import { Chart } from 'chart.js';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements AfterViewInit {
-  private punchInTime: Date = new Date(2023, 3, 14, 9, 0, 0); // Static punch in time (9:00 AM)
-  private punchOutTimee: Date = new Date(2023, 3, 14, 17, 0, 0);
+  private punchInTime: Date = new Date(2023, 3, 17, 9, 0, 0); // Static punch in time (9:00 AM)
+  private punchOutTimee: Date = new Date(2023, 3, 17, 17, 0, 0);
   private remainingTime: string = '';
   doughnutChart: any;
 
@@ -72,6 +72,41 @@ export class HomePage implements AfterViewInit {
       
     });
   }
+  // startDynamicAnimation(): void {
+  //   const EmployeeId = 1;
+  //   console.log(EmployeeId)
+  //   const today = new Date().toISOString().slice(0, 10);
+  //   this.api.getAttendanceById(EmployeeId, today).then(res=>{
+  //     console.log(res);
+  //     const punchInTime = new Date(this.data.punchInTime);
+  //     console.log(punchInTime);
+  //     this.doughnutChart.data.datasets[0].data = [0, 0];
+  //   this.doughnutChart.update();
+  //   setInterval(() => {
+  //     const now = new Date();
+  //     const elapsed = now.getTime() - punchInTime.getTime();
+  //     const totalDuration = this.punchOutTimee.getTime() - punchInTime.getTime();
+  //     // const remaining = this.punchOutTimee.getTime() - now.getTime(); 
+      
+  //     this.doughnutChart.data.datasets[0].data = [
+  //       elapsed / totalDuration * 100,
+  //       (totalDuration - elapsed) / totalDuration * 100
+  //     ];
+  //     this.doughnutChart.update();
+  //     // const remainingTime = new Date(remaining);fgbhfxvcvdh
+  //     // // console.log(remainingTime)
+  //     // const remainingHours = Math.floor(remainingTime.getTime() / (60 * 60 * 1000));
+  //     // const remainingMinutes = Math.floor(remainingTime.getTime() % (60 * 60 * 1000) / (60 * 1000));
+  //     // const completedTime = `${remainingHours} hrs ${remainingMinutes} mins`;
+  //     // console.log(completedTime)
+  //     const elapsedHours = Math.floor(elapsed / (60 * 60 * 1000));
+  //     const elapsedMinutes = Math.floor(elapsed % (60 * 60 * 1000) / (60 * 1000));
+  //     const elapsedTimeString = `${elapsedHours} hrs: ${elapsedMinutes} mins`;
+  //     (<HTMLSpanElement>document.getElementById('remainingTime')).textContent = elapsedTimeString;
+      
+  //   }, 1000); 
+  //   })
+  // }
   startDynamicAnimation(): void {
     this.doughnutChart.data.datasets[0].data = [0, 0];
     this.doughnutChart.update();
@@ -101,7 +136,7 @@ export class HomePage implements AfterViewInit {
   }
 
   attendance() {
-    const EmployeeId = 4;
+    const EmployeeId = 1;
     console.log(EmployeeId)
     const today = new Date().toISOString().slice(0, 10);
     // this.api.showLoader();

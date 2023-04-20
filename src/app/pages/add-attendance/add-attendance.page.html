@@ -11,7 +11,6 @@
   <p align="center"><ion-img src="assets/images/mb5.svg" style="width:310px;" class="ion-padding-bottom"></ion-img></p>
   <div *ngIf="!isPunchedIn">
     <!-- <h3 class="ion-text-center"><b>Add your today's Attendance here!!!</b></h3> -->
-    <form #form="ngForm" class="my-input">
       <ion-card class="ion-padding">
         <h2 class="ion-text-center" style="color: white;"><b>Punch In</b></h2>
         <p align="center"><ion-img src="assets/images/clock.svg" style="width:80px;" class="ion-padding-bottom"></ion-img></p>
@@ -32,22 +31,27 @@
         <ion-item lines="full" fill="outline" class="my-input">
           <ion-label position="floating">Enter Description</ion-label>
           <ion-input type="text" placeholder="Enter discription" maxlength="200" name="InDiscription"
-            [(ngModel)]="data.InDiscription" required #desc="ngModel"></ion-input>
-          <ion-note *ngIf="!desc.valid && desc.touched" color="danger">Description is required</ion-note>
+            [(ngModel)]="data.InDiscription" required></ion-input>
+          <!-- <ion-note color="danger">Description is required</ion-note> -->
         </ion-item>
-        <ion-button size="default" [disabled]="submitDisabled|| !form.valid|| isWeekend" type="submit" shape="round"
+        <ion-button size="expand" [disabled]="submitDisabled||isWeekend" type="submit" shape="round"
           class="ion-margin-top" expand="block" (click)="onPunchIn()"><ion-icon name="add-circle-outline" class="mr-5"
             color="black"></ion-icon>Add Attendance</ion-button>
+            <!-- <ion-button size="default" class="ion-margin-top" 
+          type="submit" shape="round" expand="block" (click)="startCamera()"><ion-icon name="person-circle-outline"
+            class="mr-5"></ion-icon>Camera</ion-button> -->
+            <ion-button size="default" class="ion-margin-top" 
+          type="submit" shape="round" expand="block" (click)="captureImage()"><ion-icon name="person-circle-outline"
+            class="mr-5"></ion-icon>captureImage</ion-button>
         <!-- <ion-button size="default" type="submit" shape="round" class="ion-margin-top" expand="block"
           (click)="getCurrentCoordinates()"><ion-icon name="location-outline" class="mr-5"></ion-icon>Get Current
           Location</ion-button> -->
         <h4 class="ion-text-center" style="color:white">Click here !! For your Attendance.</h4>
 
       </ion-card>
-    </form>
   </div>
   <div *ngIf="isPunchedIn">
-    <form #form="ngForm">
+    <!-- <form #form="ngForm"> -->
       <!-- <h3 class="ion-text-center"><b>Add your today's Attendance here!!!</b></h3> -->
       <ion-card class="ion-padding">
         <h2 class="ion-text-center" style="color: white;"><b>Punch Out</b></h2>
@@ -69,13 +73,16 @@
         <ion-item lines="full" fill="outline" class="my-input">
           <ion-label position="floating">Enter Description</ion-label>
           <ion-input type="text" class="my-input" placeholder="Enter discription" maxlength="200" name="OutDiscription"
-            [(ngModel)]="data.OutDiscription" required #desc="ngModel"></ion-input>
-          <ion-note *ngIf="!desc.valid && desc.touched" color="danger">Description is required</ion-note>
+            [(ngModel)]="data.OutDiscription"></ion-input>
+          <!-- <ion-note *ngIf="!desc.valid && desc.touched" color="danger" #desc="ngModel">Description is required</ion-note> -->
         </ion-item>
-        <ion-button size="default" class="ion-margin-top" [disabled]="submitDisabled|| !form.valid|| isWeekend"
+        <ion-button size="default" class="ion-margin-top" [disabled]="submitDisabled||isWeekend"
           type="submit" shape="round" expand="block" (click)="onPunchOut()"><ion-icon name="person-circle-outline"
             class="mr-5"></ion-icon>Punch
           Out</ion-button>
+          <ion-button size="default" class="ion-margin-top" 
+          type="submit" shape="round" expand="block" (click)="requestCameraPermission()"><ion-icon name="person-circle-outline"
+            class="mr-5"></ion-icon>Camera</ion-button>
         <!-- <ion-button size="default" class="ion-margin-top" type="submit" shape="round" expand="block"
           (click)="getCurrentCoordinatesPunchOut()"><ion-icon name="location-outline" class="mr-5"></ion-icon>Get
           Current
@@ -83,6 +90,6 @@
         <h4 class="ion-text-center" style="color: white;">Click here !! For your Attendance</h4>
       </ion-card>
 
-    </form>
+    <!-- </form> -->
   </div>
 </ion-content>

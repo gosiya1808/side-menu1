@@ -17,8 +17,12 @@ margin-top: 20px;
     --border-color:#b063e05c;
     --border-width: 2px;
 }
-ion-content {
-  --background: white; 
+// ion-content {
+//   --background:transparent;
+// }
+
+html, body, .ion-app, .ion-content {
+  background-color: transparent;
 }
 ion-card{
 --background: #0f0f5e;

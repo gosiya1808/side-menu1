@@ -15,6 +15,10 @@ import { SwiperModule } from 'swiper/angular'; //na work kare to remove karna
 
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { NgChartsModule } from 'ng2-charts';
+import { CameraPreview } from '@ionic-native/camera-preview/ngx'; // Import CameraPreview module
+import { File } from '@ionic-native/file/ngx';
+
+
 
 
 
@@ -25,7 +29,7 @@ import { NgChartsModule } from 'ng2-charts';
     Geolocation,
     Diagnostic,
     AndroidPermissions,
-    Storage,LocationAccuracy,
+    Storage,LocationAccuracy,CameraPreview,File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     HTTP
   ],

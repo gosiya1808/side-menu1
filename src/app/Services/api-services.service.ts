@@ -15,8 +15,8 @@ import { Platform } from '@ionic/angular';
 export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
-  //EmployeeId: number | null = null;
-  baseUrl = 'https://d72d-2402-3a80-e44-9544-b0c1-556f-e214-7683.ngrok-free.app/';
+  //EmployeeId: number | null = null;gfhvjcxkzcbhz
+  baseUrl = 'https://68fc-2402-3a80-16a8-6d4e-f4ac-fce4-124d-38e7.ngrok-free.app/';
   attendance = new Attendance();
   PageNumber:number|any;
   
@@ -30,7 +30,12 @@ export class ApiServicesService {
   ) {
     this.plt.ready().then((_readySource: any) => {
     this.http.setHeader('Access-Aontrol-Allow-Origin',this.baseUrl,'')
+    // this.http.setHeader('',__RequestAuthToken,this.getToken);
   });
+  }
+
+  getToken(){
+
   }
   getEmployess(PageNumber:number,PageSize:number=50): Observable<Employee[]>{
     const gg={
@@ -38,7 +43,7 @@ export class ApiServicesService {
       'PageSize':PageSize
     }
     return new Observable<Employee[]>(observer => {
-      this.http.post(this.baseUrl+'api/Employee/GetAllEmployee',gg, {}).then(response => {
+      this.http.post(this.baseUrl+'api/Employee/GetAllEmployees',gg, {}).then(response => {
         observer.next(response.data);
         observer.complete();
       }).catch(error => {
@@ -120,4 +125,16 @@ export class ApiServicesService {
       await loading.dismiss();
     }
   }
+
+  uploadImage(formData: any=''){
+    // Replace the API endpoint URL with your actual API endpoint
+  this.http.setDataSerializer('multipart')
+  return this.http.post(this.baseUrl+'api/Upload/UploadAttendanceImage',formData,{});
+  this.http.setDataSerializer('json')
+  }
+
+  loginPage(){
+    return this.http.post(this.baseUrl+'api/Account/Login',{},{})
+  }
+
 }
