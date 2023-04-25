@@ -10,8 +10,8 @@ import { Chart } from 'chart.js';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements AfterViewInit {
-  private punchInTime: Date = new Date(2023, 3, 17, 9, 0, 0); // Static punch in time (9:00 AM)
-  private punchOutTimee: Date = new Date(2023, 3, 17, 17, 0, 0);
+  private punchInTime: Date = new Date(2023, 3, 24, 9, 0, 0); // Static punch in time (9:00 AM)
+  private punchOutTimee: Date = new Date(2023, 3, 24, 19, 0, 0);
   private remainingTime: string = '';
   doughnutChart: any;
 
@@ -136,11 +136,11 @@ export class HomePage implements AfterViewInit {
   }
 
   attendance() {
-    const EmployeeId = 1;
-    console.log(EmployeeId)
+    const employeeId = this.api.getEmployeeId();
+    console.log(employeeId)
     const today = new Date().toISOString().slice(0, 10);
     // this.api.showLoader();
-    this.api.getAttendanceById(EmployeeId, today).then((res: any) => {
+    this.api.getAttendanceById(employeeId,today).then((res: any) => {
       console.log(res);
       this.detailsJson = JSON.parse(res.data);
       console.log(this.detailsJson);
@@ -183,7 +183,7 @@ export class HomePage implements AfterViewInit {
   }
   
   ngOnInit() {
- 
+   
   }
    
 }

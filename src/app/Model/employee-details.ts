@@ -4,6 +4,7 @@ export class EmployeeDetails {
    
 }
 
+
 export class Employee{
     EmployeeId!: number;
     FirstName!: string;
@@ -40,13 +41,7 @@ export class Employee{
     UpdatedDate!: Date;
     IsActive!: string;
 
-    // constructor(data: string) {
-    //     const parsedData = JSON.parse(data);
-    //     this.EmployeeId = parsedData.EmployeeId;
-    //     this.FirstName = parsedData.FirstName;
-    //     this.LastName = parsedData.LastName;
-    //     // Map other properties...
-    //   }
+   
 }
 
 
@@ -88,4 +83,11 @@ export class Attendance{
     InDiscription! : string;
     OutDiscription! : string;
     status!: string;
+}
+
+export class UserAuth{
+    UserName!:string;
+    UserPassword!:string;
+    RememberMe!:boolean;
+    // role!: string;
 }

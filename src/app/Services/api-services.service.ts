@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
-import { Attendance, Employee } from '../Model/employee-details';
+import { Attendance, Employee, UserAuth } from '../Model/employee-details';
 import { LoadingController } from '@ionic/angular';
 import { map } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
 import { Platform } from '@ionic/angular';
-
 
 
 
@@ -16,9 +15,12 @@ export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
   //EmployeeId: number | null = null;gfhvjcxkzcbhz
-  baseUrl = 'https://68fc-2402-3a80-16a8-6d4e-f4ac-fce4-124d-38e7.ngrok-free.app/';
+  baseUrl = 'https://8880-2402-3a80-e7e-a010-48b0-1ecc-9c09-f912.ngrok-free.app/';
   attendance = new Attendance();
   PageNumber:number|any;
+  loginData: UserAuth|any;
+  private role!: string;
+  RoleId: any;
   
 
 
@@ -29,14 +31,19 @@ export class ApiServicesService {
 
   ) {
     this.plt.ready().then((_readySource: any) => {
+      this.http.setDataSerializer('json')
     this.http.setHeader('Access-Aontrol-Allow-Origin',this.baseUrl,'')
     // this.http.setHeader('',__RequestAuthToken,this.getToken);
   });
   }
-
-  getToken(){
-
+  setRole(role: string) {
+    this.role = role;
   }
+
+  getRole(): string {
+    return this.role;
+  }
+
   getEmployess(PageNumber:number,PageSize:number=50): Observable<Employee[]>{
     const gg={
       'CurrentPageNumber':PageNumber,
@@ -130,11 +137,41 @@ export class ApiServicesService {
     // Replace the API endpoint URL with your actual API endpoint
   this.http.setDataSerializer('multipart')
   return this.http.post(this.baseUrl+'api/Upload/UploadAttendanceImage',formData,{});
-  this.http.setDataSerializer('json')
+
+  }
+  imageWithattendance(EmployeeId: number,FileName: string, FilePath: string){
+    const gg ={
+      "FileName":FileName,
+      "FilePath": FilePath
+    }
+    return this.http.post(this.baseUrl+'api/Attendance/UploadImage?EmployeeId='+EmployeeId,gg,{});
   }
 
-  loginPage(){
-    return this.http.post(this.baseUrl+'api/Account/Login',{},{})
+  login(loginData:UserAuth){
+     // Replace with your login API endpoint
+    return this.http.post(this.baseUrl+'api/Account/Login',loginData,{});
   }
+
+  setEmployeeId(employeeId: number) {
+    this.EmployeeId = employeeId;
+    console.log(this.EmployeeId)
+  }
+
+  getEmployeeId(): number {
+    return this.EmployeeId;
+  }
+  handleMessageType(response:any){
+    if(response['MessageType']===1){
+      return true
+    }
+    else{
+      return false
+    }
+
+  }
+  setUserRole(role: string) {
+    localStorage.setItem(String(this.RoleId),role);
+  }
+  
 
 }

@@ -27,6 +27,7 @@ export class AddAttendancePage implements OnInit {
   AttendanceId: any;
   employeeId: number | any;
   submitDisabled?: boolean;
+  detailsJson!: any;
 
   constructor(
     private api: ApiServicesService,
@@ -47,7 +48,17 @@ export class AddAttendancePage implements OnInit {
     this.startCamera();
   }
 
- 
+  ionViewDidLeave() {
+    this.cameraPreview.stopCamera().then(() => {
+      console.log('Camera preview stopped successfully');
+    }).catch(err => {
+      console.error('Failed to stop camera preview', err);
+    });
+  }
+
+
+
+
 
   // checkPunchOutStatus() {
   //   const employeeId = 46;
@@ -74,12 +85,13 @@ export class AddAttendancePage implements OnInit {
   //   });
   // }
 
+  //i changes only EmployeeID = 36
   checkAttendanceStatus() {
-    const EmployeeId = 6;
+    const employeeId = this.api.getEmployeeId();
     const today = new Date().toISOString().slice(0, 10);
     console.log(today);
     this.api.showLoader();
-    this.api.getAttendanceById(EmployeeId, today).then(async response => {
+    this.api.getAttendanceById(employeeId, today).then(async response => {
       const attendanceList = JSON.parse(response.data);
       console.log(attendanceList);
       this.details = attendanceList['Result'];
@@ -188,19 +200,34 @@ export class AddAttendancePage implements OnInit {
   //   this.isPunchedIn = true;
 
   // }
-  onPunchIn() {
+  async onPunchIn() {
     this.api.showLoader();
     this.geolocation.getCurrentPosition().then(async (resp) => {
       console.log(resp);
       this.data.InLatitude = resp.coords.latitude;
       this.data.InLongitude = resp.coords.longitude;
       // this.captureImage();
-      await this.api.addAttendance(this.data, 6)
+      await this.api.addAttendance(this.data,this.api.getEmployeeId())
         .then(async response => {
           console.log('added successfully:', response);
           this.api.EmployeeId = JSON.parse(response.data)
           this.api.EmployeeId = this.api.EmployeeId['Result']
           console.log(this.api.EmployeeId)
+
+          //here is the image upload api
+          await this.api.imageWithattendance(this.api.getEmployeeId(),
+            "0d9ea527-3c88-4849-900f-d3a519e5a2fc",
+            "F:\\Project\\HRMS_Project\\MVCProject.Api\\Attachments\\Attendance\\0d9ea527-3c88-4849-900f-d3a519e5a2fc")
+            .then(response => {
+              console.log('image uploaded successfully:', response);
+              // Handle success response from imageWithattendance() API
+              // ...
+            })
+            .catch(error => {
+              console.error('Error uploading image:', error);
+              // Handle error response from imageWithattendance() API
+              // ...
+            });
           const toast = await this.toastController.create({
             message: 'You have attendance successfully!',
             duration: 2000,
@@ -256,13 +283,14 @@ export class AddAttendancePage implements OnInit {
   //     });
   //   this.isPunchedIn = false;
   // }
+
   onPunchOut() {
     this.api.showLoader();
     this.geolocation.getCurrentPosition().then((resp) => {
       console.log(resp);
       this.data.OutLatitude = resp.coords.latitude;
       this.data.OutLongitude = resp.coords.longitude;
-      this.api.updateAttedance(this.data, 4)
+      this.api.updateAttedance(this.data, this.api.getEmployeeId())//36 ki jagah pe ye copy kiya
         .then(async response => {
           this.api.showLoader();
           console.log('updated successfully:', response);
@@ -270,6 +298,19 @@ export class AddAttendancePage implements OnInit {
           console.log(this.dataJson);
           this.data = this.dataJson['Result'];
           console.log(this.data);
+          await this.api.imageWithattendance(this.api.getEmployeeId(),
+            "7ee0cc58-66fb-4e95-93b6-16e12b526ab3",
+            "F:\\Project\\HRMS_Project\\MVCProject.Api\\Attachments\\Attendance\\7ee0cc58-66fb-4e95-93b6-16e12b526ab3")
+            .then(response => {
+              console.log('image uploaded successfully:', response);
+              // Handle success response from imageWithattendance() API
+              // ...
+            })
+            .catch(error => {
+              console.error('Error uploading image:', error);
+              // Handle error response from imageWithattendance() API
+              // ...
+            });
           const toast = await this.toastController.create({
             message: 'You have Punch Out successfully!',
             duration: 2000,
@@ -349,7 +390,6 @@ export class AddAttendancePage implements OnInit {
       console.log('Start to capture the image ', base64Data);
       let imageData = 'data:image/jpeg;base64,' + base64Data;
       console.log(imageData)
-
       const byteCharacters = atob(imageData.split(',')[1]);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
@@ -360,8 +400,14 @@ export class AddAttendancePage implements OnInit {
       const formData = new FormData
       formData.append('file', blob)
       this.api.showLoader()
-      this.api.uploadImage(formData).then(async res => {
+      this.api.uploadImage(formData).then(async (res: any) => {
         console.log(res)
+        this.detailsJson = JSON.parse(res.data);
+        console.log(this.detailsJson);
+        this.detailsJson = this.detailsJson['Result'];
+        console.log(this.detailsJson);
+
+
         const toast = await this.toastController.create({
           message: 'User has captured image succesfully',
           duration: 2000,
@@ -415,7 +461,7 @@ export class AddAttendancePage implements OnInit {
   //     console.log('Camera preview started successfully');
 
   //     // Capture an image
-  //     // setTimeout(() => {
+  //     // setTimeout(() => kjjhjh{
   //       this.cameraPreview.takeSnapshot({ width: 640, height: 640, quality: 85 }).then(base64Data => {
   //         // Process the captured image data
   //         // ...

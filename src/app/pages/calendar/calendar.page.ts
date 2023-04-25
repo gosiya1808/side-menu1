@@ -94,9 +94,9 @@ export class CalendarPage implements OnInit {
 
   onloadAttendanceDetails() {
     const today = new Date().toISOString().slice(0, 10);
-    const EmployeeId = 5;
+    const employeeId = this.api.getEmployeeId();
     const events: any[] = [];
-    this.api.getAttendanceByEmployeeId(EmployeeId).then(res => {
+    this.api.getAttendanceByEmployeeId(employeeId).then(res => {
       this.list = JSON.parse(res.data);
       this.list = this.list['Result'];
       console.log(this.list);
