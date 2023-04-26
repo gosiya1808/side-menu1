@@ -86,16 +86,19 @@ export class LoginPage implements OnInit {
     console.log(this.loginData.RememberMe)
     const Username = this.loginData.UserName;
     const Userpassword= this.loginData.UserPassword;
+    this.api.showLoader()
       this.login();
       if (this.loginData.RememberMe) {
         localStorage.setItem('username', Username);
         localStorage.setItem('password', Userpassword);
       }
       else{
-        localStorage.setItem('username','');
-        localStorage.setItem('password','');
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
       }  
-   
+      
+      this.loginData.resetFields(); 
+      this.api.hideLoader();
   }
 // login() {
 //   console.log(this.loginData)
@@ -132,9 +135,9 @@ export class LoginPage implements OnInit {
         console.log('EmployeeId:', dummy['EmployeeId']);
         console.log('RoleId:', dummy['RoleId']);
         this.api.setEmployeeId(dummy['EmployeeId'])
-        this.api.setUserRole(dummy['RoleId'])
+        // this.api.setUserRole(dummy['RoleId'])
         this.router.navigate(['/home']); 
-        this.loginData = { UserName: '', UserPassword: '', RememberMe: false }; 
+        // this.loginData = { UserName: '', UserPassword: '', RememberMe: false }; 
       },
       (error) => {
         console.error('Login failed:', error);

@@ -206,28 +206,11 @@ export class AddAttendancePage implements OnInit {
       console.log(resp);
       this.data.InLatitude = resp.coords.latitude;
       this.data.InLongitude = resp.coords.longitude;
-      // this.captureImage();
-      await this.api.addAttendance(this.data,this.api.getEmployeeId())
-        .then(async response => {
-          console.log('added successfully:', response);
-          this.api.EmployeeId = JSON.parse(response.data)
-          this.api.EmployeeId = this.api.EmployeeId['Result']
-          console.log(this.api.EmployeeId)
-
-          //here is the image upload api
-          await this.api.imageWithattendance(this.api.getEmployeeId(),
-            "0d9ea527-3c88-4849-900f-d3a519e5a2fc",
-            "F:\\Project\\HRMS_Project\\MVCProject.Api\\Attachments\\Attendance\\0d9ea527-3c88-4849-900f-d3a519e5a2fc")
-            .then(response => {
-              console.log('image uploaded successfully:', response);
-              // Handle success response from imageWithattendance() API
-              // ...
-            })
-            .catch(error => {
-              console.error('Error uploading image:', error);
-              // Handle error response from imageWithattendance() API
-              // ...
-            });
+      //  debugger
+      this.api.addAttendance(this.data, this.api.getEmployeeId()).then(async (res: any) => {
+        console.log(res)
+        if (res) {
+          console.log('added successfully');
           const toast = await this.toastController.create({
             message: 'You have attendance successfully!',
             duration: 2000,
@@ -237,19 +220,22 @@ export class AddAttendancePage implements OnInit {
           toast.onDidDismiss().then(() => {
             this.api.hideLoader();
           });
-        })
-        .catch(error => {
-          console.error('Error adding user:', error);
-          // Handle error response from API
-          // ...
-        })
-        .finally(() => {
-          this.api.hideLoader();
-        });
+        }
+      })
+      // if (this.api.addAttendance(this.data, this.api.getEmployeeId())) {
+      //   console.log('added successfully');
+      //   const toast = await this.toastController.create({
+      //     message: 'You have attendance successfully!',
+      //     duration: 2000,
+      //     position: 'bottom'
+      //   });
+      //   toast.present();
+      //   toast.onDidDismiss().then(() => {
+      //     this.api.hideLoader();
+      //   });
+      // }
       this.isPunchedIn = true;
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
+    })
   }
 
   // onPunchOut() {
@@ -286,53 +272,68 @@ export class AddAttendancePage implements OnInit {
 
   onPunchOut() {
     this.api.showLoader();
-    this.geolocation.getCurrentPosition().then((resp) => {
+    this.geolocation.getCurrentPosition().then(async (resp) => {
       console.log(resp);
       this.data.OutLatitude = resp.coords.latitude;
       this.data.OutLongitude = resp.coords.longitude;
-      this.api.updateAttedance(this.data, this.api.getEmployeeId())//36 ki jagah pe ye copy kiya
-        .then(async response => {
-          this.api.showLoader();
-          console.log('updated successfully:', response);
-          this.dataJson = JSON.parse(response.data);
-          console.log(this.dataJson);
-          this.data = this.dataJson['Result'];
-          console.log(this.data);
-          await this.api.imageWithattendance(this.api.getEmployeeId(),
-            "7ee0cc58-66fb-4e95-93b6-16e12b526ab3",
-            "F:\\Project\\HRMS_Project\\MVCProject.Api\\Attachments\\Attendance\\7ee0cc58-66fb-4e95-93b6-16e12b526ab3")
-            .then(response => {
-              console.log('image uploaded successfully:', response);
-              // Handle success response from imageWithattendance() API
-              // ...
-            })
-            .catch(error => {
-              console.error('Error uploading image:', error);
-              // Handle error response from imageWithattendance() API
-              // ...
-            });
+      this.api.updateAttedance(this.data, this.api.getEmployeeId()).then(async (res: any) => {
+        console.log(res)
+        if (res) {
+          console.log('updated successfully');
           const toast = await this.toastController.create({
-            message: 'You have Punch Out successfully!',
+            message: 'You have attendance successfully!',
             duration: 2000,
             position: 'bottom'
           });
           toast.present();
           toast.onDidDismiss().then(() => {
-            this.navigate();
             this.api.hideLoader();
+            this.navigate();
           });
-        })
-        .catch(async error => {
-          console.error('Error updating data:', error);
-          const toast = await this.toastController.create({
-            message: 'Error updating attendance data. Please try again later.',
-            duration: 2000,
-            position: 'bottom'
-          })
-            .finally(() => {
-              this.api.hideLoader();
-            });
-        });
+        }
+      })
+      //36 ki jagah pe ye copy kiya
+      //     .then(async response => {
+      //       this.api.showLoader();
+      //       console.log('updated successfully:', response);
+      //       this.dataJson = JSON.parse(response.data);
+      //       console.log(this.dataJson);
+      //       this.data = this.dataJson['Result'];
+      //       console.log(this.data);
+      //       await this.api.imageWithattendance(this.api.getEmployeeId(),
+      //       this.api.getImagefilename(),this.api.getImagefilepath())
+      //         .then(response => {
+      //           console.log('image uploaded successfully:', response);
+      //           // Handle success response from imageWithattendance() API
+      //           // ...
+      //         })
+      //         .catch(error => {
+      //           console.error('Error uploading image:', error);
+      //           // Handle error response from imageWithattendance() API
+      //           // ...
+      //         });
+      //       const toast = await this.toastController.create({
+      //         message: 'You have Punch Out successfully!',
+      //         duration: 2000,
+      //         position: 'bottom'
+      //       });
+      //       toast.present();
+      //       toast.onDidDismiss().then(() => {
+      //         this.navigate();
+      //         this.api.hideLoader();
+      //       });
+      //     })
+      //     .catch(async error => {
+      //       console.error('Error updating data:', error);
+      //       const toast = await this.toastController.create({
+      //         message: 'Error updating attendance data. Please try again later.',
+      //         duration: 2000,
+      //         position: 'bottom'
+      //       })
+      //         .finally(() => {
+      //           this.api.hideLoader();
+      //         });
+      //     });
       this.isPunchedIn = false;
     })
   }
@@ -406,7 +407,10 @@ export class AddAttendancePage implements OnInit {
         console.log(this.detailsJson);
         this.detailsJson = this.detailsJson['Result'];
         console.log(this.detailsJson);
-
+        // let dummy = this.detailsJson['Result']
+        // console.log(dummy);
+        this.api.setImagefilename(this.detailsJson['FileName'])//added this
+        this.api.setImagefilepath(this.detailsJson['FilePath'])
 
         const toast = await this.toastController.create({
           message: 'User has captured image succesfully',

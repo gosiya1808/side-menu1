@@ -10,8 +10,8 @@ import { Chart } from 'chart.js';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements AfterViewInit {
-  private punchInTime: Date = new Date(2023, 3, 24, 9, 0, 0); // Static punch in time (9:00 AM)
-  private punchOutTimee: Date = new Date(2023, 3, 24, 19, 0, 0);
+  private punchInTime: Date = new Date(2023, 3, 26, 9, 0, 0); // Static punch in time (9:00 AM)
+  private punchOutTimee: Date = new Date(2023, 3, 26, 19, 0, 0);
   private remainingTime: string = '';
   doughnutChart: any;
 

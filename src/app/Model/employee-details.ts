@@ -90,4 +90,15 @@ export class UserAuth{
     UserPassword!:string;
     RememberMe!:boolean;
     // role!: string;
+    constructor() {
+        this.UserName = '';
+        this.UserPassword = '';
+        this.RememberMe = false;
+      }
+    
+      resetFields(): void {
+        this.UserName = '';
+        this.UserPassword = '';
+        this.RememberMe = false;
+      }
 }

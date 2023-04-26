@@ -15,12 +15,14 @@ export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
   //EmployeeId: number | null = null;gfhvjcxkzcbhz
-  baseUrl = 'https://8880-2402-3a80-e7e-a010-48b0-1ecc-9c09-f912.ngrok-free.app/';
+  baseUrl = 'https://001a-2402-3a80-16a0-7837-862-26b4-928e-b275.ngrok-free.app/';
   attendance = new Attendance();
   PageNumber:number|any;
   loginData: UserAuth|any;
   private role!: string;
   RoleId: any;
+  filename!:string;
+  filepath!:string;
   
 
 
@@ -31,7 +33,7 @@ export class ApiServicesService {
 
   ) {
     this.plt.ready().then((_readySource: any) => {
-      this.http.setDataSerializer('json')
+    this.http.setDataSerializer('json')
     this.http.setHeader('Access-Aontrol-Allow-Origin',this.baseUrl,'')
     // this.http.setHeader('',__RequestAuthToken,this.getToken);
   });
@@ -96,18 +98,57 @@ export class ApiServicesService {
     });
   }
   
-  addAttendance(attendance: Attendance,employeeId: number) {
+  addAttendance(attendance: Attendance, employeeId: number): Promise<boolean> {
+    this.http.setDataSerializer('json');
+  
     attendance.EmployeeId = employeeId;
-    return this.http.post(this.baseUrl+'api/Attendance/SaveAttendanceDetails', attendance,{});
+    
+    return new Promise<boolean>((resolve, reject) => {
+      this.http.post(this.baseUrl + 'api/Attendance/SaveAttendanceDetails', attendance, {}).then((res) => {
+        const gg = {
+          "FileName": this.getImagefilename(),
+          "FilePath": this.getImagefilepath()
+        };
+  
+        this.http.post(this.baseUrl + 'api/Attendance/UploadImage?EmployeeId=' + employeeId, gg, {}).then((res1) => {
+          resolve(true);
+        }).catch((error) => {
+          console.log('Error: upload', error);
+          reject(false);
+        });
+      }).catch((error) => {
+        console.log('Error: add att', error);
+        reject(false);
+      });
+    });
   }
-  updateAttedance(attendance: Attendance,EmployeeId:number){
+
+  updateAttedance(attendance: Attendance,EmployeeId:number):Promise<boolean>{
+    this.http.setDataSerializer('json')
     const g={
       "EmployeeId":EmployeeId,
       "OutLatitude":attendance.OutLatitude,
       "OutLongitude":attendance.OutLongitude,
       "OutDiscription":attendance.OutDiscription
     }
-    return this.http.post(this.baseUrl+'api/Attendance/UpdateAttendance',g,{});
+    return new Promise<boolean>((resolve, reject) => {
+    this.http.post(this.baseUrl+'api/Attendance/UpdateAttendance',g,{}).then((res)=>{
+      console.log(res);
+      const gg ={
+        "FileName":this.getImagefilename(),
+        "FilePath": this.getImagefilepath()
+      }
+      this.http.post(this.baseUrl + 'api/Attendance/UploadImage?EmployeeId=' + EmployeeId, gg, {}).then((res1) => {
+        resolve(true);
+      }).catch((error) => {
+        console.log('Error: upload', error);
+        reject(false);
+      });
+    }).catch((error) => {
+      console.log('Error: add att', error);
+      reject(false);
+    });
+  });
   }
   
   getAttendanceByEmployeeId(EmployeeId: number){
@@ -136,16 +177,19 @@ export class ApiServicesService {
   uploadImage(formData: any=''){
     // Replace the API endpoint URL with your actual API endpoint
   this.http.setDataSerializer('multipart')
-  return this.http.post(this.baseUrl+'api/Upload/UploadAttendanceImage',formData,{});
+  return this.http.post(this.baseUrl+'api/Upload/UploadAttendanceImage',formData,{})
 
   }
-  imageWithattendance(EmployeeId: number,FileName: string, FilePath: string){
-    const gg ={
-      "FileName":FileName,
-      "FilePath": FilePath
-    }
-    return this.http.post(this.baseUrl+'api/Attendance/UploadImage?EmployeeId='+EmployeeId,gg,{});
-  }
+  // imageWithattendance(EmployeeId: number,FileName: string, FilePath: string){
+  //   debugger
+  //   const gg ={
+  //     "FileName":FileName,
+  //     "FilePath": FilePath
+  //   }
+  //   this.http.setDataSerializer('json')
+  //   return this.http.post(this.baseUrl+'api/Attendance/UploadImage?EmployeeId='+EmployeeId,gg,{});
+  
+  // }
 
   login(loginData:UserAuth){
      // Replace with your login API endpoint
@@ -160,18 +204,34 @@ export class ApiServicesService {
   getEmployeeId(): number {
     return this.EmployeeId;
   }
-  handleMessageType(response:any){
-    if(response['MessageType']===1){
-      return true
-    }
-    else{
-      return false
-    }
 
+  setImagefilename(FileName:any){
+    this.filename = FileName;
+    console.log(this.filename);
   }
-  setUserRole(role: string) {
-    localStorage.setItem(String(this.RoleId),role);
+  setImagefilepath(FilePath:any){
+    this.filepath = FilePath;
+    console.log(this.filepath);
   }
+  getImagefilename(){
+    return this.filename;
+  }
+  getImagefilepath(){
+    return this.filepath
+  }
+
+  // handleMessageType(response:any){
+  //   if(response['MessageType']===1){
+  //     return true
+  //   }
+  //   else{
+  //     return false
+  //   }
+
+  // }
+  // setUserRole(role: string) {
+  //   localStorage.setItem(String(this.RoleId),role);
+  // }
   
 
 }

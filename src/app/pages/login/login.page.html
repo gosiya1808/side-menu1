@@ -3,15 +3,18 @@
 </ion-header>
 <ion-content scroll-y="false" class="my-scrollable-element ion-padding">
   <p align="center"><ion-img src="assets/images/Group10.png" height="55px" class="ion-padding-bottom"></ion-img></p>
+  <form #form="ngForm">
   <ion-card class="card-bottom">
     <p align="center"><ion-img src="assets/images/LOGIN.svg" class="logo"></ion-img></p>
     <ion-item lines="full" fill="outline">
       <ion-icon name="mail-outline" class="mr-5"></ion-icon>
-      <ion-input type="text" placeholder="UserName"  name="UserName" [(ngModel)]="loginData.UserName"></ion-input>
+      <ion-input type="text" placeholder="UserName"  name="UserName" [(ngModel)]="loginData.UserName" required  #desc="ngModel"></ion-input>
+      <ion-note *ngIf="!desc.valid && desc.touched" color="danger">UserName is required</ion-note>
     </ion-item>
     <ion-item lines="full" fill="outline" >
       <ion-icon name="lock-closed-outline" class="mr-5"></ion-icon>
-      <ion-input placeholder="Password"  [type]="passwordType" name="UserPassword" [(ngModel)]="loginData.UserPassword"></ion-input>
+      <ion-input placeholder="Password"  [type]="passwordType" name="UserPassword" [(ngModel)]="loginData.UserPassword" required #desc="ngModel"></ion-input>
+      <ion-note *ngIf="!desc.valid && desc.touched" color="danger">Password is required</ion-note>
       <a class="type-toggle" (click)="togglePassword()">
         <ion-icon size="large" class="show-option" [hidden]="passwordShown" name="eye-off-outline" class="eye"></ion-icon>
         <ion-icon size="large" class="hide-option" [hidden]="!passwordShown" name="eye-outline" class="eye"></ion-icon>
@@ -29,10 +32,11 @@
       <ion-label>Remember Me</ion-label>
     </ion-item>
     <div class="ion-padding-top">
-      <ion-button fill="solid" shape="round" type="submit" expand="block" (click)="onSubmit()"><ion-icon name="person-circle-outline" class="mr-5"></ion-icon>
+      <ion-button fill="solid" shape="round" type="submit" expand="block" [disabled]="!form.valid" (click)="onSubmit()"><ion-icon name="person-circle-outline" class="mr-5"></ion-icon>
         Login</ion-button>
         <h4 class="ion-text-center" style="color: black;">Login here!! for using this application.</h4>
     </div> 
-  </ion-card>   
+  </ion-card>
+</form>   
 
 </ion-content>
