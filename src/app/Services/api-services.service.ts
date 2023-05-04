@@ -15,7 +15,7 @@ export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
   //EmployeeId: number | null = null;gfhvjcxkzcbhz
-  baseUrl = 'https://001a-2402-3a80-16a0-7837-862-26b4-928e-b275.ngrok-free.app/';
+  baseUrl = 'https://d19b-2402-3a80-16a2-6e2e-3c73-48e2-9464-2b94.ngrok-free.app/';
   attendance = new Attendance();
   PageNumber:number|any;
   loginData: UserAuth|any;
@@ -23,6 +23,11 @@ export class ApiServicesService {
   RoleId: any;
   filename!:string;
   filepath!:string;
+
+  private username!: string;
+  private password!: string;
+
+  private UserId!:number;
   
 
 
@@ -218,6 +223,28 @@ export class ApiServicesService {
   }
   getImagefilepath(){
     return this.filepath
+  }
+
+  multiRole(EmployeeId:number){
+    return this.http.get(this.baseUrl+'api/Designations/GetRoles?UserId='+EmployeeId,{},{})
+  }
+  setUserId(userId:number){
+    this.UserId = userId
+  }
+  getUserId(){
+    return this.UserId
+  }
+
+  logout(){
+    return this.http.post(this.baseUrl+'api/Account/Logout',{},{}).then(() => {
+      // ...
+    }, (error:any) => {
+      console.error(error);
+    });
+  }
+
+  getProgressData(EmployeeId: number, Date:String){
+    return this.http.get(this.baseUrl+'api/Attendance/GetInTimeByEmployeeId?employeeId='+EmployeeId+'&date='+Date,{},{});
   }
 
   // handleMessageType(response:any){

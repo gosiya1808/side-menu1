@@ -25,17 +25,15 @@ html, body, .ion-app, .ion-content {
   background-color: transparent;
 }
 ion-card{
---background: #0f0f5e;
-// --background: -webkit-linear-gradient(26deg, #c6c8f3 0%, #be56fb 100%);
-// --background: linear-gradient(26deg, #c6c8f3 0%, #b167df9c 100%);
-padding-top: 20px;
-  margin-left: -20px;
-    width: 420px;
-    height: 510px;
-    border-top-right-radius: 40px;
-    border-top-left-radius: 40px;
-    margin-bottom: -30px;
-    // --background: url('/assets/images/animation.svg');
+  --background: #0f0f5e;
+  padding-top: 10px;
+  margin-left: -19px;
+  /* padding: 10px; */
+  width: 110%;
+  height: 510px;
+  border-top-right-radius: 40px;
+  border-top-left-radius: 40px;
+  margin-bottom: -30px;
 }
 .mr-5{
   margin-right: 10px;

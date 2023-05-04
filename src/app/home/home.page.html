@@ -7,11 +7,41 @@
     <ion-buttons slot="start">
       <ion-menu-button menu="main-menu"></ion-menu-button>
     </ion-buttons>
+    
+      <!-- <ion-icon size="large" (click)="showRoles()" name="ellipsis-vertical-outline" slot="end"></ion-icon> -->
+      <!-- <ion-buttons slot="end">
+        <ion-icon  id="role" name="ellipsis-vertical" slot="icon-only" (click)="roles()" ></ion-icon>
+      </ion-buttons> -->
+
+      <ion-buttons slot="end">
+        <ion-icon id="role" name="ellipsis-vertical" slot="icon-only" (click)="getRoles()" ></ion-icon>
+      </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <ion-popover trigger="role">
+    <ng-template >
+      <ion-content>
+        <ion-radio-group [(ngModel)]="selectedRole">
+          <ion-item *ngFor="let role1 of employee">
+            <ion-label>{{role1.UserRoleName}}</ion-label>
+            <ion-radio slot="start" value="{{role1.RoleId}}">  </ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-content>
+    </ng-template>
+</ion-popover>
+  
+    <!-- <ion-popover>
+    <ion-radio-group [(ngModel)]="selectedRole">
+      <ion-item *ngFor="let role of roles">
+        <ion-label>{{role.Name}}</ion-label>
+        <ion-radio slot="end" [value]="role.id"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    </ion-popover> -->
+   <ion-card>
     <ion-card-content class="card">
       <ion-label><h2 class="ion-text-center" style="color: black;">Employee Attandance Details</h2></ion-label>
     </ion-card-content>

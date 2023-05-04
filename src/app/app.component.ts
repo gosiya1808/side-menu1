@@ -7,8 +7,10 @@ import { Geolocation} from '@ionic-native/geolocation/ngx';
 import { LocationService } from './Services/location.service';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { MenuController } from '@ionic/angular';
-
+import { ApiServicesService } from 'src/app/Services/api-services.service';
 import { Router } from '@angular/router';
+import { UserAuth } from 'src/app/Model/employee-details';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -24,9 +26,13 @@ export class AppComponent implements OnInit {
     private androidPermissions: AndroidPermissions,
     private geolocation: Geolocation,
     private menuController: MenuController,
+    private api:ApiServicesService,
+    private router:Router
   ) {
    // this.initializeApp();
   }
+
+  loginData: UserAuth = new UserAuth();
 
   ngOnInit() {
       this.plt.ready().then(()=>{
@@ -40,6 +46,22 @@ export class AppComponent implements OnInit {
   // }
 
 
+  onLogout() {
+    this.api.showLoader
+    this.api.logout()
+      .then(() => {
+        // Remove local data
+       
+        console.log('logout');
+        // localStorage.removeItem('authToken');
+        // Navigate to login page
+        this.router.navigate(['/login']); 
+        this.api.hideLoader()
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
   checkLocationPermission(){
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
       result => {

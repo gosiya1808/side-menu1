@@ -31,7 +31,14 @@
               <ion-lable>Calendar</ion-lable>
            </ion-item>
         </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item routerLink="profile">
+            <ion-icon name="person" slot="start"></ion-icon>
+              <ion-lable>Pofile</ion-lable>
+           </ion-item>
+        </ion-menu-toggle>
       </ion-list>
+      <ion-button class="ion-padding" color="danger" expand="block" (click)="onLogout()"><ion-icon name="log-out" slot="start"></ion-icon>Logout</ion-button>
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="main"></ion-router-outlet>

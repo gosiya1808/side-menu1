@@ -89,16 +89,13 @@ export class UserAuth{
     UserName!:string;
     UserPassword!:string;
     RememberMe!:boolean;
-    // role!: string;
-    constructor() {
-        this.UserName = '';
-        this.UserPassword = '';
-        this.RememberMe = false;
-      }
-    
-      resetFields(): void {
-        this.UserName = '';
-        this.UserPassword = '';
-        this.RememberMe = false;
-      }
+    role!: string;
+   
 }
+
+export class ProgressData {
+    punchInTime!: string;
+    elapsed!: number;
+   totalDuration!: number;
+    // Other properties as needed
+  }

@@ -29,12 +29,23 @@ export class LoginPage implements OnInit {
   
 
   constructor(private router:Router,private menuController: MenuController,  private api: ApiServicesService,private alertController: AlertController,) {
-
+     this.user = {
+      UserName: '',
+      UserPassword: '',
+      RememberMe: false
+    };
    }
 
   ngOnInit() {
-    
+    this.loginData.UserName = '';
+    this.loginData.UserPassword = '';
+    this.loginData.RememberMe=false;
   }
+  // ngOnDestroy() {
+  //   // clear stored login data
+  //   localStorage.removeItem('username');
+  //   localStorage.removeItem('password');
+  // }
   public togglePassword(){
     if(this.passwordShown){
       this.passwordShown = false;
@@ -96,8 +107,9 @@ export class LoginPage implements OnInit {
         localStorage.removeItem('username');
         localStorage.removeItem('password');
       }  
-      
-      this.loginData.resetFields(); 
+      this.loginData.UserName="";
+      this.loginData.UserPassword="";
+      // this.loginData.resetFields(); 
       this.api.hideLoader();
   }
 // login() {
@@ -135,6 +147,9 @@ export class LoginPage implements OnInit {
         console.log('EmployeeId:', dummy['EmployeeId']);
         console.log('RoleId:', dummy['RoleId']);
         this.api.setEmployeeId(dummy['EmployeeId'])
+        this.api.setRole(dummy['RoleId'])
+        console.log(this.api.getRole())
+        this.api.setUserId(dummy['UserId'])
         // this.api.setUserRole(dummy['RoleId'])
         this.router.navigate(['/home']); 
         // this.loginData = { UserName: '', UserPassword: '', RememberMe: false }; 

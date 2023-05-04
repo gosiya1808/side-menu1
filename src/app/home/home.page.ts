@@ -1,7 +1,13 @@
-import {AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { ApiServicesService } from 'src/app/Services/api-services.service';
-import { Attendance, Employee } from '../Model/employee-details';
+import { Attendance, Employee, ProgressData, UserAuth } from '../Model/employee-details';
 import { Chart } from 'chart.js';
+import { AlertController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
+
+
 
 
 @Component({
@@ -10,8 +16,10 @@ import { Chart } from 'chart.js';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements AfterViewInit {
-  private punchInTime: Date = new Date(2023, 3, 26, 9, 0, 0); // Static punch in time (9:00 AM)
-  private punchOutTimee: Date = new Date(2023, 3, 26, 19, 0, 0);
+
+  private punchInTime: Date = new Date(2023, 5, 4, 9, 0, 0); // Static punch in time (9:00 AM)
+  private punchOutTimee: Date = new Date(2023, 5, 4, 15, 0, 0);
+
   private remainingTime: string = '';
   doughnutChart: any;
 
@@ -19,26 +27,92 @@ export class HomePage implements AfterViewInit {
   EmployeeId: number | any;
   detailsJson: string | any;
   details: Attendance | any;
-  data: Attendance | any;
+  data: UserAuth | any;
   punchIntime!: string;
   punchOutTime!: string;
+  progressData: ProgressData | any;
 
   dateFromApi!: string;
   dummy = '2023-04-03T11:29:23.051Z';
 
+  employee: any;
+  roles: any[] = [];
+
+
   @ViewChild('doughnutCanvas') private doughnutCanvas!: ElementRef;
   @ViewChild('completedTime') public completedTime!: ElementRef;
-  
-  constructor(private api: ApiServicesService) {}
+
+  constructor(private api: ApiServicesService, private alertController: AlertController, private popoverController: PopoverController, private router: Router) { }
+
+  showRoleList = false;
+  // selectedRole!:string
+  selectedRole = this.api.getRole();
+
+
+  getRoles() {
+    this.api.multiRole(this.api.getUserId()).then((res: any) => {
+      // debugger
+      console.log(res);
+      this.detailsJson = JSON.parse(res.data);
+      console.log(this.detailsJson);
+      this.employee = this.detailsJson['Result'];
+      if (this.employee) {
+        this.selectedRole = this.api.getRole();
+        console.log(this.selectedRole)
+      }
+      console.log(this.employee);
+      // if (this.selectedRole === 'HR') {
+      //   this.router.navigate(['/employee-enrollment']);
+      //   console.log('emloyee enrollment page')
+      // } else if(this.selectedRole === 'Employee'){
+      //   this.router.navigate(['/home'])
+      // }
+    })
+  }
+  async roless(ev: any) {
+
+    // Call API function to fetch data
+    this.api.multiRole(this.api.EmployeeId).then(
+      async (response: any) => {
+        console.log(response);
+        const popover = await this.popoverController.create({
+          component: PopoverController,
+          event: ev,
+
+          componentProps: {
+            roles: response.roles // Pass fetched roles data as component property
+          }
+        });
+        await popover.present();
+      },
+      (error: any) => {
+
+        console.error('Error fetching roles: ', error);
+      }
+    );
+  }
+
+  selectRole() {
+    this.popoverController.dismiss(this.selectedRole);
+  }
+  async presentPopover(event: any) {
+    const popover = await this.popoverController.create({
+      component: 'rolePopover',
+      event: event
+    });
+    await popover.present();
+  }
+
 
 
   async ionViewDidEnter() {
     await this.attendance();
   }
-  
+
   ngAfterViewInit() {
-    this.doughnutChartMethod(); 
-    this.startDynamicAnimation();
+    this.doughnutChartMethod();
+    this.startDynamicChart();
+    // this.startDynamicAnimation();
   }
   doughnutChartMethod() {
     this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
@@ -59,54 +133,61 @@ export class HomePage implements AfterViewInit {
         }]
       },
       options: {
-        cutout:98,
-        responsive:true,
+        cutout: 98,
+        responsive: true,
         animation: { // Add animation optionsxaxax
           animateRotate: true,
           animateScale: true,
         },
-        
+
       }
-    
-      
-      
     });
   }
-  // startDynamicAnimation(): void {
-  //   const EmployeeId = 1;
-  //   console.log(EmployeeId)
-  //   const today = new Date().toISOString().slice(0, 10);
-  //   this.api.getAttendanceById(EmployeeId, today).then(res=>{
-  //     console.log(res);
-  //     const punchInTime = new Date(this.data.punchInTime);
-  //     console.log(punchInTime);
-  //     this.doughnutChart.data.datasets[0].data = [0, 0];
-  //   this.doughnutChart.update();
-  //   setInterval(() => {
-  //     const now = new Date();
-  //     const elapsed = now.getTime() - punchInTime.getTime();
-  //     const totalDuration = this.punchOutTimee.getTime() - punchInTime.getTime();
-  //     // const remaining = this.punchOutTimee.getTime() - now.getTime(); 
-      
-  //     this.doughnutChart.data.datasets[0].data = [
-  //       elapsed / totalDuration * 100,
-  //       (totalDuration - elapsed) / totalDuration * 100
-  //     ];
-  //     this.doughnutChart.update();
-  //     // const remainingTime = new Date(remaining);fgbhfxvcvdh
-  //     // // console.log(remainingTime)
-  //     // const remainingHours = Math.floor(remainingTime.getTime() / (60 * 60 * 1000));
-  //     // const remainingMinutes = Math.floor(remainingTime.getTime() % (60 * 60 * 1000) / (60 * 1000));
-  //     // const completedTime = `${remainingHours} hrs ${remainingMinutes} mins`;
-  //     // console.log(completedTime)
-  //     const elapsedHours = Math.floor(elapsed / (60 * 60 * 1000));
-  //     const elapsedMinutes = Math.floor(elapsed % (60 * 60 * 1000) / (60 * 1000));
-  //     const elapsedTimeString = `${elapsedHours} hrs: ${elapsedMinutes} mins`;
-  //     (<HTMLSpanElement>document.getElementById('remainingTime')).textContent = elapsedTimeString;
-      
-  //   }, 1000); 
-  //   })
-  // }
+  startDynamicChart() {
+    this.doughnutChart.data.datasets[0].data = [0, 0];
+    this.doughnutChart.update();
+    const employeeId = this.api.getEmployeeId();
+    console.log(employeeId)
+    const today = new Date().toISOString().slice(0, 10);
+
+    // Call the API service and update the progress data dynamically
+    this.api.getProgressData(employeeId, today).then((res: any) => {
+      console.log(res);
+      this.detailsJson = JSON.parse(res.data);
+      console.log(this.detailsJson);
+      this.details = this.detailsJson['Result'];
+      // const punchIntime = new Date(res.InTime);
+      // console.log(punchIntime)
+      // const punchInTime = new Date(this.detailsJson['Result']['InTime']);
+      // console.log(punchInTime)
+      let dummy = this.detailsJson['Result'];
+      console.log(dummy);
+      console.log('EmployeeId:', dummy['EmployeeId']);
+      const punchInTime = new Date(this.details[0]['InTime']);
+      console.log(punchInTime);
+      const punchIntime = today + 'T' + this.details.InTime + 'Z'
+      console.log(punchIntime)
+      const now = new Date();
+      const elapsed = now.getTime() - punchInTime.getTime();
+      const totalDuration = 10 * 60 * 60 * 1000; // 8 hours in milliseconds
+
+      this.doughnutChart.data.datasets[0].data = [
+        elapsed / totalDuration * 100,
+        (totalDuration - elapsed) / totalDuration * 100
+      ];
+      this.doughnutChart.update();
+
+      const elapsedHours = Math.floor(elapsed / (60 * 60 * 1000));
+      const elapsedMinutes = Math.floor(elapsed % (60 * 60 * 1000) / (60 * 1000));
+      const elapsedTimeString = `${elapsedHours} hrs: ${elapsedMinutes} mins`;
+
+      const remainingTimeElement = document.getElementById('remainingTime');
+      if (remainingTimeElement) {
+        remainingTimeElement.textContent = elapsedTimeString;
+      }
+    });
+  }
+
   startDynamicAnimation(): void {
     this.doughnutChart.data.datasets[0].data = [0, 0];
     this.doughnutChart.update();
@@ -115,7 +196,7 @@ export class HomePage implements AfterViewInit {
       const elapsed = now.getTime() - this.punchInTime.getTime();
       const totalDuration = this.punchOutTimee.getTime() - this.punchInTime.getTime();
       // const remaining = this.punchOutTimee.getTime() - now.getTime(); 
-      
+
       this.doughnutChart.data.datasets[0].data = [
         elapsed / totalDuration * 100,
         (totalDuration - elapsed) / totalDuration * 100
@@ -130,9 +211,12 @@ export class HomePage implements AfterViewInit {
       const elapsedHours = Math.floor(elapsed / (60 * 60 * 1000));
       const elapsedMinutes = Math.floor(elapsed % (60 * 60 * 1000) / (60 * 1000));
       const elapsedTimeString = `${elapsedHours} hrs: ${elapsedMinutes} mins`;
-      (<HTMLSpanElement>document.getElementById('remainingTime')).textContent = elapsedTimeString;
-      
-    }, 1000); 
+      // (<HTMLSpanElement>document.getElementById('remainingTime')!).textContent = elapsedTimeString;
+      const remainingTimeElement = document.getElementById('remainingTime');
+      if (remainingTimeElement) {
+        remainingTimeElement.textContent = elapsedTimeString;
+      }
+    }, 1000);
   }
 
   attendance() {
@@ -140,7 +224,7 @@ export class HomePage implements AfterViewInit {
     console.log(employeeId)
     const today = new Date().toISOString().slice(0, 10);
     // this.api.showLoader();
-    this.api.getAttendanceById(employeeId,today).then((res: any) => {
+    this.api.getAttendanceById(employeeId, today).then((res: any) => {
       console.log(res);
       this.detailsJson = JSON.parse(res.data);
       console.log(this.detailsJson);
@@ -181,9 +265,11 @@ export class HomePage implements AfterViewInit {
       console.log("error getting data", error);
     })
   }
-  
+
+
   ngOnInit() {
-   
+    // this.getRoles();
+    console.log('Selected role  ', this.selectedRole)
   }
-   
+
 }

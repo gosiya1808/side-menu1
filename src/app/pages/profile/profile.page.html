@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>Back</ion-back-button>
+    </ion-buttons>
+    <ion-title>Employee-details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="padding" *ngIf="employees">
+    <ion-avatar>
+      <ion-icon name="person-circle-outline" class="icon" style="color: black; filter: grayscale(100%)"></ion-icon>
+    </ion-avatar>
+  </div><br><br>
+  <div *ngIf="employees">
+    <h2 class="ion-text-center" style="color: black;">{{ employees.FirstName }} {{ employees.LastName }}</h2>
+    <ion-badge class="ion-padding">Dept:{{ employees.DepartmentName }}</ion-badge>
+  </div>
+  <ion-card class="card1">
+  
+</ion-card>
+  <div>
+    <ion-card class="card2 " *ngIf="employees">
+      <hr class="new1">
+      <ion-item lines="none" class="input-wrapper">
+        <ion-icon class="mr-5" name="person-outline" size="medium" outline="true" slot="end" style="color:white"></ion-icon>
+        <ion-label>
+          <h2>{{ employees.GenderName }}</h2>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon class="mr-5" name="medal-outline" size="medium" outline="true" slot="end" style="color:white"></ion-icon>
+        <ion-label>
+          <h2>{{ employees.DesignationName }} </h2>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" >
+        <ion-icon class="mr-5" name="mail-outline" size="medium" outline="true" slot="end" style="color:white"></ion-icon>
+        <ion-label>
+          <h2>{{ employees.Email }} </h2>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" style="margin-left: -4px;">
+        <ion-grid>
+          <ion-row>
+            <ion-label>
+              <h2>Birthdate:</h2>
+            </ion-label>
+          </ion-row>
+          <ion-row>
+            <h2>{{ employees.BirthDate }}</h2>
+          </ion-row>
+        </ion-grid>
+        <ion-icon class="mr-5" size="medium" name="calendar-outline" outline="true" slot="end" style="color:white"></ion-icon>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon class="mr-5" size="medium" name="call-outline" outline="true" slot="end" style="color:white"></ion-icon>
+        <ion-label>
+          <h2>{{ employees.PhoneNumber }} </h2>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon class="mr-5" size="medium" name="location-outline" outline="true" slot="end" style="color:white"></ion-icon>
+        <ion-label>
+          <h2>{{ employees.PermanentAddress }} </h2>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+</ion-content>
