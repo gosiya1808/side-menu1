@@ -158,15 +158,25 @@ export class HomePage implements AfterViewInit {
       this.details = this.detailsJson['Result'];
       // const punchIntime = new Date(res.InTime);
       // console.log(punchIntime)
-      // const punchInTime = new Date(this.detailsJson['Result']['InTime']);
+      
+      // const punchInTime = new Date(this.detailsJson['Result'][0]['InTime']);
+      // const now = new Date();
+      // punchInTime.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
       // console.log(punchInTime)
-      let dummy = this.detailsJson['Result'];
-      console.log(dummy);
-      console.log('EmployeeId:', dummy['EmployeeId']);
-      const punchInTime = new Date(this.details[0]['InTime']);
-      console.log(punchInTime);
-      const punchIntime = today + 'T' + this.details.InTime + 'Z'
-      console.log(punchIntime)
+      const punchInTimeStr = this.detailsJson['Result'][0]['InTime'];
+      const [hours, minutes, seconds] = punchInTimeStr.split(':');
+      const punchInTime = new Date();
+      punchInTime.setHours(parseInt(hours));
+      punchInTime.setMinutes(parseInt(minutes));
+      punchInTime.setSeconds(parseInt(seconds));
+      console.log(punchInTime)
+      
+      
+      const Employee = this.detailsJson['Result'][0]['EmployeeId'];
+      console.log(Employee)
+     
+      
+      setInterval(() => {
       const now = new Date();
       const elapsed = now.getTime() - punchInTime.getTime();
       const totalDuration = 10 * 60 * 60 * 1000; // 8 hours in milliseconds
@@ -179,13 +189,15 @@ export class HomePage implements AfterViewInit {
 
       const elapsedHours = Math.floor(elapsed / (60 * 60 * 1000));
       const elapsedMinutes = Math.floor(elapsed % (60 * 60 * 1000) / (60 * 1000));
-      const elapsedTimeString = `${elapsedHours} hrs: ${elapsedMinutes} mins`;
-
+      // const elapsedSeconds = Math.floor(elapsed / 1000);
+      const elapsedTimeString = `${elapsedHours} hrs: ${elapsedMinutes} mins:`;//${elapsedSeconds}
       const remainingTimeElement = document.getElementById('remainingTime');
       if (remainingTimeElement) {
         remainingTimeElement.textContent = elapsedTimeString;
       }
+    }, 1000);
     });
+    
   }
 
   startDynamicAnimation(): void {
