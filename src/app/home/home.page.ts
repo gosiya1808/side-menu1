@@ -5,6 +5,7 @@ import { Chart } from 'chart.js';
 import { AlertController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
+// import 'chartjs-plugin-legend';
 
 
 
@@ -112,7 +113,7 @@ export class HomePage implements AfterViewInit {
   ngAfterViewInit() {
     this.doughnutChartMethod();
     this.startDynamicChart();
-    // this.startDynamicAnimation();
+  // this.startDynamicAnimation();
   }
   doughnutChartMethod() {
     this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
@@ -139,7 +140,11 @@ export class HomePage implements AfterViewInit {
           animateRotate: true,
           animateScale: true,
         },
-
+        // plugins: {
+        //   legend: {
+        //     position: 'right',
+        //   }
+        // }
       }
     });
   }

@@ -15,7 +15,7 @@ export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
   //EmployeeId: number | null = null;gfhvjcxkzcbhz
-  baseUrl = 'https://d19b-2402-3a80-16a2-6e2e-3c73-48e2-9464-2b94.ngrok-free.app/';
+  baseUrl = 'http://askesquare.southindia.cloudapp.azure.com:61159/api/';
   attendance = new Attendance();
   PageNumber:number|any;
   loginData: UserAuth|any;
