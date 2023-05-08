@@ -14,7 +14,7 @@ import { Storage } from '@ionic/storage-angular';
 import { SwiperModule } from 'swiper/angular'; //na work kare to remove karna
 
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-import { NgChartsModule } from 'ng2-charts';
+import { ChartsModule } from 'ng2-charts';
 import { CameraPreview } from '@ionic-native/camera-preview/ngx'; // Import CameraPreview module
 import { File } from '@ionic-native/file/ngx';
 
@@ -24,7 +24,7 @@ import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,SwiperModule,NgChartsModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,SwiperModule,ChartsModule],
   providers: [
     Geolocation,
     Diagnostic,

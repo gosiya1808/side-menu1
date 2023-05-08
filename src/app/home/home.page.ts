@@ -134,7 +134,7 @@ export class HomePage implements AfterViewInit {
         }]
       },
       options: {
-        cutout: 98,
+        cutoutPercentage: 50,
         responsive: true,
         animation: { // Add animation optionsxaxax
           animateRotate: true,
@@ -163,7 +163,7 @@ export class HomePage implements AfterViewInit {
       this.details = this.detailsJson['Result'];
       // const punchIntime = new Date(res.InTime);
       // console.log(punchIntime)
-      
+
       // const punchInTime = new Date(this.detailsJson['Result'][0]['InTime']);
       // const now = new Date();
       // punchInTime.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
@@ -175,12 +175,12 @@ export class HomePage implements AfterViewInit {
       punchInTime.setMinutes(parseInt(minutes));
       punchInTime.setSeconds(parseInt(seconds));
       console.log(punchInTime)
-      
-      
+
+
       const Employee = this.detailsJson['Result'][0]['EmployeeId'];
       console.log(Employee)
-     
-      
+
+
       setInterval(() => {
       const now = new Date();
       const elapsed = now.getTime() - punchInTime.getTime();
@@ -202,7 +202,7 @@ export class HomePage implements AfterViewInit {
       }
     }, 1000);
     });
-    
+
   }
 
   startDynamicAnimation(): void {
@@ -212,7 +212,7 @@ export class HomePage implements AfterViewInit {
       const now = new Date();
       const elapsed = now.getTime() - this.punchInTime.getTime();
       const totalDuration = this.punchOutTimee.getTime() - this.punchInTime.getTime();
-      // const remaining = this.punchOutTimee.getTime() - now.getTime(); 
+      // const remaining = this.punchOutTimee.getTime() - now.getTime();
 
       this.doughnutChart.data.datasets[0].data = [
         elapsed / totalDuration * 100,
