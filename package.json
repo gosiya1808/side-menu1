@@ -32,6 +32,7 @@
     "@ionic/cordova-builders": "^8.0.0",
     "@ionic/storage-angular": "^3.0.6",
     "@types/swiper": "^6.0.0",
+    "bootstrap": "^5.2.3",
     "chart.js": "^2.9.4",
     "ionic2-calendar": "^1.0.1",
     "ionicons": "^6.0.3",

@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
 
 
   onLogout() {
-    this.api.showLoader
+    this.api.showLoader()
     this.api.logout()
       .then(() => {
         // Remove local data

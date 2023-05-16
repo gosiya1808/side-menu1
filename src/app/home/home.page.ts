@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiServicesService } from 'src/app/Services/api-services.service';
 import { Attendance, Employee, ProgressData, UserAuth } from '../Model/employee-details';
 import { Chart } from 'chart.js';
 import { AlertController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
-// import 'chartjs-plugin-legend';
+
 
 
 
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements AfterViewInit {
+export class HomePage implements AfterViewInit, OnInit {
 
   private punchInTime: Date = new Date(2023, 5, 4, 9, 0, 0); // Static punch in time (9:00 AM)
   private punchOutTimee: Date = new Date(2023, 5, 4, 15, 0, 0);
@@ -29,7 +29,7 @@ export class HomePage implements AfterViewInit {
   detailsJson: string | any;
   details: Attendance | any;
   data: UserAuth | any;
-  punchIntime!: string;
+  punchIntime!: string | any;
   punchOutTime!: string;
   progressData: ProgressData | any;
 
@@ -37,7 +37,7 @@ export class HomePage implements AfterViewInit {
   dummy = '2023-04-03T11:29:23.051Z';
 
   employee: any;
-  roles: any[] = [];
+  roles: any = [];
 
 
   @ViewChild('doughnutCanvas') private doughnutCanvas!: ElementRef;
@@ -46,52 +46,29 @@ export class HomePage implements AfterViewInit {
   constructor(private api: ApiServicesService, private alertController: AlertController, private popoverController: PopoverController, private router: Router) { }
 
   showRoleList = false;
-  // selectedRole!:string
   selectedRole = this.api.getRole();
 
+  setActiveRole(event: any) {
+    const roleid = event.target.value;
+  }
 
   getRoles() {
     this.api.multiRole(this.api.getUserId()).then((res: any) => {
-      // debugger
       console.log(res);
       this.detailsJson = JSON.parse(res.data);
       console.log(this.detailsJson);
       this.employee = this.detailsJson['Result'];
-      if (this.employee) {
-        this.selectedRole = this.api.getRole();
-        console.log(this.selectedRole)
-      }
       console.log(this.employee);
       // if (this.selectedRole === 'HR') {
       //   this.router.navigate(['/employee-enrollment']);
       //   console.log('emloyee enrollment page')
       // } else if(this.selectedRole === 'Employee'){
       //   this.router.navigate(['/home'])
+      //   console.log('home page')
       // }
     })
   }
-  async roless(ev: any) {
-
-    // Call API function to fetch data
-    this.api.multiRole(this.api.EmployeeId).then(
-      async (response: any) => {
-        console.log(response);
-        const popover = await this.popoverController.create({
-          component: PopoverController,
-          event: ev,
-
-          componentProps: {
-            roles: response.roles // Pass fetched roles data as component property
-          }
-        });
-        await popover.present();
-      },
-      (error: any) => {
-
-        console.error('Error fetching roles: ', error);
-      }
-    );
-  }
+  
 
   selectRole() {
     this.popoverController.dismiss(this.selectedRole);
@@ -103,23 +80,21 @@ export class HomePage implements AfterViewInit {
     });
     await popover.present();
   }
-
-
-
   async ionViewDidEnter() {
     await this.attendance();
-  }
-
-  ngAfterViewInit() {
-    this.doughnutChartMethod();
     this.startDynamicChart();
-  // this.startDynamicAnimation();
+  }
+  ngAfterViewInit() {
+    this.getRoles();
+    console.log('Selected role  ', this.selectedRole)
+    this.doughnutChartMethod();
+    // this.startDynamicAnimation();
   }
   doughnutChartMethod() {
     this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: ['Punch-in', 'Current-time'],
+        // labels: ['Punch-in', 'Current-time'],
         datasets: [{
           label: 'timing',
           data: [0, 0],
@@ -134,64 +109,86 @@ export class HomePage implements AfterViewInit {
         }]
       },
       options: {
-        cutoutPercentage: 50,
+        aspectRatio: 1,
+        cutoutPercentage: 75,
         responsive: true,
         animation: { // Add animation optionsxaxax
           animateRotate: true,
           animateScale: true,
-        },
-        // plugins: {
-        //   legend: {
-        //     position: 'right',
-        //   }
-        // }
+        }
       }
     });
   }
   startDynamicChart() {
+
     this.doughnutChart.data.datasets[0].data = [0, 0];
-    this.doughnutChart.update();
+    // this.doughnutChart.update();
     const employeeId = this.api.getEmployeeId();
     console.log(employeeId)
     const today = new Date().toISOString().slice(0, 10);
-
-    // Call the API service and update the progress data dynamically
     this.api.getProgressData(employeeId, today).then((res: any) => {
       console.log(res);
       this.detailsJson = JSON.parse(res.data);
       console.log(this.detailsJson);
       this.details = this.detailsJson['Result'];
-      // const punchIntime = new Date(res.InTime);
-      // console.log(punchIntime)
+      const inputTime = this.detailsJson['Result'][0]['InTime'];
 
-      // const punchInTime = new Date(this.detailsJson['Result'][0]['InTime']);
-      // const now = new Date();
-      // punchInTime.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
-      // console.log(punchInTime)
-      const punchInTimeStr = this.detailsJson['Result'][0]['InTime'];
-      const [hours, minutes, seconds] = punchInTimeStr.split(':');
-      const punchInTime = new Date();
-      punchInTime.setHours(parseInt(hours));
-      punchInTime.setMinutes(parseInt(minutes));
-      punchInTime.setSeconds(parseInt(seconds));
-      console.log(punchInTime)
+      console.log('outtime', this.punchOutTime)
+      const [hours, minutes, seconds] = inputTime.split(':').map(Number);
 
+      const date = new Date();
+      date.setHours(hours + 5);
+      date.setMinutes(minutes + 30);
+      date.setSeconds(seconds);
 
-      const Employee = this.detailsJson['Result'][0]['EmployeeId'];
-      console.log(Employee)
+      const options = { timeZone: 'Asia/Kolkata', hour12: false };
+      const outputTime = date.toLocaleTimeString('en-US', options);
+      const chart_punchIntime = new Date(date);
+      this.punchIntime = chart_punchIntime
+      this.punchIntime = outputTime;
 
+      console.log(chart_punchIntime);
+      console.log(this.punchIntime);
 
-      setInterval(() => {
+      const gg = setInterval(() => {
+        if (this.punchOutTime) {
+          clearInterval(gg);
+        }
+        //    const now = new Date();
+        //    console.log('chat punch ',chart_punchIntime)
+        //   const elapsed = now.getTime() - chart_punchIntime.getTime();//Thu May 11 2023 05:29:52 GMT+0530 (India Standard Time)
+        //   const totalDuration =28800000 ; // 8 hours in milliseconds
+        //   console.log('Elapsed', elapsed);
+
+        //   this.doughnutChart.data.datasets[0].data = [
+        //      elapsed, (8 * 60 * 60 * 1000) - (elapsed),
+        //   ];
+        //   this.doughnutChart.update();
+
+        //   const elapsedHours = Math.floor(elapsed / (60 * 60 * 1000));
+        //   const elapsedMinutes = Math.floor(elapsed % (60 * 60 * 1000) / (60 * 1000));
+        //   // const elapsedSeconds = Math.floor(elapsed / 1000);
+        //   const elapsedTimeString = `${elapsedHours} hrs: ${elapsedMinutes} mins:`;//${elapsedSeconds}
+        //   const remainingTimeElement = document.getElementById('remainingTime');
+        //   if (remainingTimeElement) {
+        //     remainingTimeElement.textContent = elapsedTimeString;
+        //   }
+      }, 1000);
+      // Update the punchInTime and punchOutTime variables with actual values
+
+      // Calculate elapsed time
+      const punchInTime = new Date(chart_punchIntime); // Replace with actual punch in time
+      const punchOutTime = new Date(this.punchOutTime); // Replace with actual punch out time (or null if not available)
       const now = new Date();
-      const elapsed = now.getTime() - punchInTime.getTime();
-      const totalDuration = 10 * 60 * 60 * 1000; // 8 hours in milliseconds
+      const eightHoursInMillis = 8 * 60 * 60 * 1000;
+      const elapsed = Math.min(now.getTime() - punchInTime.getTime(), eightHoursInMillis); // Limit elapsed time to 8 hours
 
-      this.doughnutChart.data.datasets[0].data = [
-        elapsed / totalDuration * 100,
-        (totalDuration - elapsed) / totalDuration * 100
-      ];
+      // Calculate remaining time
+      const remaining = eightHoursInMillis - elapsed;
+
+      // Update chart data and labels
+      this.doughnutChart.data.datasets[0].data = [elapsed, remaining];
       this.doughnutChart.update();
-
       const elapsedHours = Math.floor(elapsed / (60 * 60 * 1000));
       const elapsedMinutes = Math.floor(elapsed % (60 * 60 * 1000) / (60 * 1000));
       // const elapsedSeconds = Math.floor(elapsed / 1000);
@@ -200,14 +197,13 @@ export class HomePage implements AfterViewInit {
       if (remainingTimeElement) {
         remainingTimeElement.textContent = elapsedTimeString;
       }
-    }, 1000);
-    });
 
+    });
   }
 
   startDynamicAnimation(): void {
     this.doughnutChart.data.datasets[0].data = [0, 0];
-    this.doughnutChart.update();
+    // this.doughnutChart.update();
     setInterval(() => {
       const now = new Date();
       const elapsed = now.getTime() - this.punchInTime.getTime();
@@ -243,40 +239,42 @@ export class HomePage implements AfterViewInit {
     // this.api.showLoader();
     this.api.getAttendanceById(employeeId, today).then((res: any) => {
       console.log(res);
+
       this.detailsJson = JSON.parse(res.data);
       console.log(this.detailsJson);
       this.details = this.detailsJson['Result'];
-      this.punchIntime = today + 'T' + this.details.InTime + 'Z'
-      console.log(this.punchIntime)
-      this.punchOutTime = today + 'T' + this.details.OutTime + 'Z'
-      console.log(this.punchOutTime)
-      console.log(this.details);
-      this.api.hideLoader();
-      console.log(this.details.InTime);
-      console.log(this.details.OutTime);
-      // const inTimeParts = this.details.InTime.split(/[:.]/);
-      // const outTimeParts = this.details.OutTime.split(/[:.]/);
-      //const dateParts = this.details.Date.slice(0, 10).split('-');
+      // this.punchIntime = today + 'T' + this.details.InTime + 'Z'
+      // console.log(this.punchIntime)
+      // this.punchOutTime = today + 'T' + this.details.OutTime + 'Z'
+      // console.log(this.punchOutTime)
+      // console.log(this.details);
+      const inputTime = this.details.InTime;
+      //       const [hours, minutes, seconds] = inputTime.split(':').map(Number);
 
-      // this.data = {
-      //   year: dateParts[0],
-      //   month: dateParts[1],
-      //   day: dateParts[2],
-      //   // InHours: inTimeParts[0],
-      //   // InMinutes: inTimeParts[1],
-      //   // InSeconds: inTimeParts[2],
-      //   // OutHours: outTimeParts[0],sxsxs
-      //   // OutMinutes: outTimeParts[1],
-      //   // OutSeconds: outTimeParts[2],
-      // };
-      // for (let i = 0; i < this.details.length; i++) {
-      //   // Check if the attendance has punch-in time but no punch-out time
-      //   if (this.details[i]['punchIntime'] !== null && this.details[i]['punchOutTime'] === null) {
-      //     // Display the punch-in time and leave the punch-out time blank
-      //     console.log('Punch In: ' + this.details['punchIntime']);
-      //     console.log('Punch Out: ',"");
-      //   }
-      // }
+      //       const date = new Date();
+      //       date.setHours(hours);
+      //       date.setMinutes(minutes);
+      //       date.setSeconds(seconds);
+
+      const options = { timeZone: 'Asia/Kolkata', hour12: false };
+      //       const outputTime = date.toLocaleString('en-US', options);
+
+      //       this.punchIntime = new Date(outputTime).toISOString();
+      // console.log(this.punchIntime);
+
+      // Parse the punch out time and construct a Date object
+      const OutTime = this.details.OutTime;
+      const [hours1, minutes1, seconds1] = OutTime.split(':').map(Number);
+
+      const date1 = new Date();
+      date1.setHours(hours1);
+      date1.setMinutes(minutes1);
+      date1.setSeconds(seconds1);
+      const outputTime1 = date1.toLocaleTimeString('en-US', options);
+
+      this.punchOutTime = outputTime1;
+      console.log(this.punchOutTime);
+      //  this.api.hideLoader();
 
     }).catch(error => {
       console.log("error getting data", error);
@@ -285,8 +283,7 @@ export class HomePage implements AfterViewInit {
 
 
   ngOnInit() {
-    // this.getRoles();
-    console.log('Selected role  ', this.selectedRole)
+
   }
 
 }

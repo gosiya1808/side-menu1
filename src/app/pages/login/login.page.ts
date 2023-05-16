@@ -4,6 +4,8 @@ import { MenuController } from '@ionic/angular';
 import { ApiServicesService } from 'src/app/Services/api-services.service';
 import { AlertController } from '@ionic/angular';
 import { UserAuth } from 'src/app/Model/employee-details';
+import { ToastController } from '@ionic/angular';
+
 
 
 
@@ -28,7 +30,7 @@ export class LoginPage implements OnInit {
   userDetails:any=[]
   
 
-  constructor(private router:Router,private menuController: MenuController,  private api: ApiServicesService,private alertController: AlertController,) {
+  constructor(private router:Router,private menuController: MenuController,  private api: ApiServicesService,private alertController: AlertController, private toastController: ToastController,) {
      this.user = {
       UserName: '',
       UserPassword: '',
@@ -97,7 +99,7 @@ export class LoginPage implements OnInit {
     console.log(this.loginData.RememberMe)
     const Username = this.loginData.UserName;
     const Userpassword= this.loginData.UserPassword;
-    this.api.showLoader()
+    // this.api.showLoader()
       this.login();
       if (this.loginData.RememberMe) {
         localStorage.setItem('username', Username);
@@ -110,7 +112,7 @@ export class LoginPage implements OnInit {
       this.loginData.UserName="";
       this.loginData.UserPassword="";
       // this.loginData.resetFields(); 
-      this.api.hideLoader();
+      // this.api.hideLoader();
   }
 // login() {
 //   console.log(this.loginData)
@@ -136,7 +138,7 @@ export class LoginPage implements OnInit {
   login() {
     console.log(this.loginData)
     this.api.login(this.loginData).then(
-      (response) => {
+      async (response) => {
         console.log('Login successful:', response);
         this.dataJson = JSON.parse(response.data);
         console.log(this.dataJson);
@@ -151,8 +153,26 @@ export class LoginPage implements OnInit {
         console.log(this.api.getRole())
         this.api.setUserId(dummy['UserId'])
         // this.api.setUserRole(dummy['RoleId'])
-        this.router.navigate(['/home']); 
+
+        // this.router.navigate(['/home']); 
         // this.loginData = { UserName: '', UserPassword: '', RememberMe: false }; 
+
+        if(dummy['UserId'] && dummy['EmployeeId'] && dummy['RoleId']) {
+          this.api.setEmployeeId(dummy['EmployeeId']);
+          this.api.setRole(dummy['RoleId']);
+          console.log(this.api.getRole());
+          this.api.setUserId(dummy['UserId']);
+          // this.api.setUserRole(dummy['RoleId'])
+          this.router.navigate(['/home']);
+        } else {
+          console.error('Invalid login credentials');
+          const toast = await this.toastController.create({
+            message: 'Invalid Username and password',
+            duration: 2000,
+            position: 'bottom'
+          });
+          toast.present();
+        }
       },
       (error) => {
         console.error('Login failed:', error);

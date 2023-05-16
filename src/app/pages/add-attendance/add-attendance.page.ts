@@ -164,12 +164,12 @@ export class AddAttendancePage implements OnInit {
   }
   getCurrentCoordinates() {
     this.api.showLoader();
-    this.geolocation.getCurrentPosition().then((resp) => {
+    this.geolocation.getCurrentPosition().then((resp:any) => {
       console.log(resp)
       this.data.InLatitude = resp.coords.latitude;
       this.data.InLongitude = resp.coords.longitude;
       this.api.hideLoader();
-    }).catch((error) => {
+    }).catch((error:any) => {
       console.log('Error getting location', error);
     });
   }

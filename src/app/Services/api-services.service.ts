@@ -14,8 +14,7 @@ import { Platform } from '@ionic/angular';
 export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
-  //EmployeeId: number | null = null;gfhvjcxkzcbhz
-  baseUrl = 'http://askesquare.southindia.cloudapp.azure.com:61159/api/';
+  baseUrl = 'https://b4d9-116-73-212-234.ngrok-free.app/';
   attendance = new Attendance();
   PageNumber:number|any;
   loginData: UserAuth|any;
@@ -180,24 +179,12 @@ export class ApiServicesService {
   }
 
   uploadImage(formData: any=''){
-    // Replace the API endpoint URL with your actual API endpoint
   this.http.setDataSerializer('multipart')
   return this.http.post(this.baseUrl+'api/Upload/UploadAttendanceImage',formData,{})
 
   }
-  // imageWithattendance(EmployeeId: number,FileName: string, FilePath: string){
-  //   debugger
-  //   const gg ={
-  //     "FileName":FileName,
-  //     "FilePath": FilePath
-  //   }
-  //   this.http.setDataSerializer('json')
-  //   return this.http.post(this.baseUrl+'api/Attendance/UploadImage?EmployeeId='+EmployeeId,gg,{});
-  
-  // }
 
   login(loginData:UserAuth){
-     // Replace with your login API endpoint
     return this.http.post(this.baseUrl+'api/Account/Login',loginData,{});
   }
 
@@ -245,20 +232,6 @@ export class ApiServicesService {
 
   getProgressData(EmployeeId: number, Date:String){
     return this.http.get(this.baseUrl+'api/Attendance/GetInTimeByEmployeeId?employeeId='+EmployeeId+'&date='+Date,{},{});
-  }
-
-  // handleMessageType(response:any){
-  //   if(response['MessageType']===1){
-  //     return true
-  //   }
-  //   else{
-  //     return false
-  //   }
-
-  // }
-  // setUserRole(role: string) {
-  //   localStorage.setItem(String(this.RoleId),role);
-  // }
-  
+  } 
 
 }

@@ -50,6 +50,10 @@ const routes: Routes = [
     path: 'salary',
     loadChildren: () => import('./pages/salary/salary.module').then( m => m.SalaryPageModule)
   },
+  {
+    path: 'forget-password',
+    loadChildren: () => import('./pages/forget-password/forget-password.module').then( m => m.ForgetPasswordPageModule)
+  },
 
 
 ];

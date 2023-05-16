@@ -14,7 +14,7 @@
       </ion-buttons> -->
 
       <ion-buttons slot="end">
-        <ion-icon id="role" name="ellipsis-vertical" slot="icon-only" (click)="getRoles()" ></ion-icon>
+        <ion-icon id="role" name="ellipsis-vertical" slot="icon-only"  ></ion-icon>
       </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -23,10 +23,10 @@
   <ion-popover trigger="role">
     <ng-template >
       <ion-content>
-        <ion-radio-group [(ngModel)]="selectedRole">
+        <ion-radio-group [(ngModel)]="selectedRole" (ionChange)="setActiveRole($event)">
           <ion-item *ngFor="let role1 of employee">
             <ion-label>{{role1.UserRoleName}}</ion-label>
-            <ion-radio slot="start" value="{{role1.RoleId}}">  </ion-radio>
+            <ion-radio slot="start" [value]="role1.RoleId"></ion-radio>
           </ion-item>
         </ion-radio-group>
       </ion-content>
@@ -46,15 +46,16 @@
       <ion-label><h2 class="ion-text-center" style="color: black;">Employee Attandance Details</h2></ion-label>
     </ion-card-content>
   </ion-card>
-  <ion-card class="card">
+  <ion-card>
     <ion-card-header class="ion-text-center">
      Attendance Progress
     </ion-card-header>
-    <ion-card-content class="card-canvas">
+    <ion-card-content>
       <!-- <canvas #doughnutCanvas style="position: relative; height:50px; width:50px"></canvas>
       <span id="remainingTime"></span> -->
       <div style="position: relative;">
-        <canvas #doughnutCanvas style="width: 200px;"></canvas>
+        
+        <canvas #doughnutCanvas ></canvas>
         <div style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
           <span id="remainingTime" style="font-size: 18px; color: black;"></span>
         </div>
@@ -67,38 +68,18 @@
     </ion-card-header>
     <ion-card-content class="ion-text-center">
       <ion-item *ngIf="details">
-        <!-- <ion-thumbnail slot="end">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-        </ion-thumbnail> -->
-        <!-- <ion-label><h2><ion-icon name="calendar-outline" class="mr-5" size="large"></ion-icon>
-          <ion-datetime-button datetime="date" color="" > </ion-datetime-button>
-          <ion-modal [keepContentsMounted]="true">
-            <ng-template>
-              <ion-datetime disabled presentation="date" [showDefaultButtons]="true" displayFormat="YYYY-DD-MM"  id="date"  name="dob" required [(ngModel)]="details.Date"></ion-datetime>
-           </ng-template>
-          </ion-modal></h2><br>
-          <h2><ion-icon name="alarm-outline" class="mr-5" size="large"></ion-icon><ion-datetime-button datetime="time" color="" > </ion-datetime-button>
-            <ion-modal [keepContentsMounted]="true">
-              <ng-template>
-                <ion-datetime disabled presentation="time" [showDefaultButtons]="true" displayFormat="hh:mm A"  id="time"  name="InTime" required [(ngModel)]="details.InTime"></ion-datetime>
-             </ng-template>
-            </ion-modal>
-          </h2>
-        </ion-label>zxxz -->
-        <p>
           <ion-datetime-button datetime="date" color="" > </ion-datetime-button>
           <ion-modal [keepContentsMounted]="true">
             <ng-template>
               <ion-datetime disabled presentation="date" [showDefaultButtons]="true" displayFormat="YYYY-DD-MM"  id="date"  name="dob" required [(ngModel)]="details.Date"></ion-datetime>
            </ng-template>
           </ion-modal>
-        </p>
-        <h2>
           <ion-datetime-button datetime="datetime1" color="" > </ion-datetime-button>
           <ion-modal [keepContentsMounted]="true">
             <ng-template>
               <ion-datetime 
-              disabled 
+              disabled aria-readonly="true"
+              displayFormat="h:mm A"
               presentation="time" 
               [showDefaultButtons]="true"
               id="datetime1"  
@@ -107,7 +88,6 @@
               [(ngModel)]="punchIntime"></ion-datetime>
            </ng-template>
           </ion-modal>
-       </h2>
        <ion-icon class="icon" name="arrow-back-circle-outline" slot="end" size="large"></ion-icon>  
       </ion-item>
     </ion-card-content>
