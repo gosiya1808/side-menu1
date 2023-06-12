@@ -112,7 +112,7 @@ export class LoginPage implements OnInit {
       this.loginData.UserName="";
       this.loginData.UserPassword="";
       // this.loginData.resetFields(); 
-      // this.api.hideLoader();
+      //  this.api.hideLoader();
   }
 // login() {
 //   console.log(this.loginData)
@@ -136,6 +136,7 @@ export class LoginPage implements OnInit {
 //   this.performActionBasedOnRole()
 // }
   login() {
+    this.api.showLoader();
     console.log(this.loginData)
     this.api.login(this.loginData).then(
       async (response) => {
@@ -163,7 +164,8 @@ export class LoginPage implements OnInit {
           console.log(this.api.getRole());
           this.api.setUserId(dummy['UserId']);
           // this.api.setUserRole(dummy['RoleId'])
-          this.router.navigate(['/home']);
+          this.router.navigateByUrl('/menu/home', { replaceUrl: true });
+          this.api.hideLoader()
         } else {
           console.error('Invalid login credentials');
           const toast = await this.toastController.create({

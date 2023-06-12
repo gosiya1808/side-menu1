@@ -28,7 +28,21 @@ export class AddAttendancePage implements OnInit {
   employeeId: number | any;
   submitDisabled?: boolean;
   detailsJson!: any;
+  isLocation?:boolean;
 
+  officeLocation = {
+    latitude: 21.182448, // Latitude of the office location
+    longitude: 72.808102 // Longitude of the office location
+  };
+  
+  // attendanceLocation = {
+  //   latitude: 21.215094, // Latitude of the attendance location
+  //   longitude: 72.795231 // Longitude of the attendance location
+  // };
+
+
+ distanceThreshold = 0.05;
+ 
   constructor(
     private api: ApiServicesService,
     public modalCtrl: ModalController,
@@ -46,6 +60,7 @@ export class AddAttendancePage implements OnInit {
     await this.checkAttendanceStatus();
     this.checkWeekend();
     this.startCamera();
+    this.getLocation();
   }
 
   ionViewDidLeave() {
@@ -56,47 +71,104 @@ export class AddAttendancePage implements OnInit {
     });
   }
 
+  calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const earthRadius = 6371; // Radius of the Earth in kilometers
+  
+    // Convert latitude and longitude to radians
+    const lat1Rad = this.degreesToRadians(lat1);
+    const lon1Rad = this.degreesToRadians(lon1);
+    const lat2Rad = this.degreesToRadians(lat2);
+    const lon2Rad = this.degreesToRadians(lon2);
+  
+    // Calculate the differences between the coordinates
+    const latDiff = lat2Rad - lat1Rad;
+    const lonDiff = lon2Rad - lon1Rad;
+  
+    // Apply the Haversine formula
+    const a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
+              Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+              Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = earthRadius * c;
+  
+    return distance; // Distance in kilometers
+  }
+
+  degreesToRadians(degrees: number): number {
+    return degrees * (Math.PI / 180);
+  }
+
+  getLocation() {
+    if (!navigator.geolocation) {
+      console.log('Geolocation is not supported');
+    }
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const userLat = position.coords.latitude;
+        console.log(userLat)
+        const userLon = position.coords.longitude;
+        console.log(userLon)
+
+        const distance = this.calculateDistance( this.officeLocation.latitude,
+          this.officeLocation.longitude, userLat, userLon);
+
+        if (distance <= this.distanceThreshold) {
+         console.log("Permission Granted")
+         this.isLocation = false // Permission granted for attendance
+        } else {
+         console.log("permission denied")
+         this.isLocation = true
+           const toast = await this.toastController.create({
+             message: 'Sorry!! location not matched',
+             duration: 2000,
+             position: 'bottom'
+           });
+           toast.present();
+           toast.onDidDismiss().then(() => {
+             this.navigate();
+           }); // Permission denied for attendance
+        }
+      },
+      (error) => {
+       console.log('Error getting user location: ' + error.message);
+      }
+    );
+    }
+    
 
 
-
-
-  // checkPunchOutStatus() {
-  //   const employeeId = 46;
-  //   const today = new Date().toISOString().slice(0, 10);
-  //   console.log(today); 
-  //   this.api.getAttendanceById(employeeId, today).then(response => {
-  //     const attendanceList = JSON.parse(response.data);
-  //     console.log(attendanceList);
-  //     this.details = attendanceList['Result'];
-  //     console.log(this.details);
-  //     if (attendanceList['Result']['OutLatitude'] && attendanceList['Result']['OutLongitude'] && attendanceList['Result']['OutDescription']) {
-  //       this.attendanceMarked = true;
-  //       console.log(" marked true");
-  //       this.submitDisabled = true;
-  //       console.log(" submitted true");
-  //     } else {
-  //       this.attendanceMarked = false;
-  //       console.log(" markedfalse");
-  //       this.submitDisabled = false;
-  //       console.log(" submitted false");
-  //     }
-  //   }).catch((error: any) => {
-  //     console.error('Error fetching attendance:', error);
-  //   });
-  // }
-
-  //i changes only EmployeeID = 36
   checkAttendanceStatus() {
+    // this.api.showLoader();
     const employeeId = this.api.getEmployeeId();
     const today = new Date().toISOString().slice(0, 10);
     console.log(today);
-    this.api.showLoader();
     this.api.getAttendanceById(employeeId, today).then(async response => {
       const attendanceList = JSON.parse(response.data);
       console.log(attendanceList);
       this.details = attendanceList['Result'];
       console.log(this.details);
-      this.api.hideLoader();
+
+      //lat long dunctions
+      // this.getLocation()
+      // if (this.distance <= this.distanceThreshold) {
+      //   console.log('Permission granted for attendance');
+      //   this.isLocation = false
+      //   // Perform attendance-related actions here
+      // } else {
+      //   console.log('Permission denied for attendance');
+      //   this.isLocation = true
+      //   const toast = await this.toastController.create({
+      //     message: 'Sorry!! location not matched',
+      //     duration: 2000,
+      //     position: 'bottom'
+      //   });
+      //   toast.present();
+      //   toast.onDidDismiss().then(() => {
+      //     this.navigate();
+      //   });
+      //   // Optionally, display a message or take appropriate actions
+      // }
+      
       if (this.details) {
         this.attendanceMarked = true;
         console.log('attendance marked is true');
@@ -116,6 +188,7 @@ export class AddAttendancePage implements OnInit {
           toast.present();
           toast.onDidDismiss().then(() => {
             this.navigate();
+            // this.api.hideLoader();
           });
         } else {
           this.submitDisabled = false;
@@ -128,6 +201,7 @@ export class AddAttendancePage implements OnInit {
         console.log('You can do attendance today!!');
         this.isPunchedIn = false;
         console.log('punched marked is false');
+        // this.api.hideLoader();
       }
     }).catch(error => {
       console.error('Error fetching attendance:', error);
@@ -157,18 +231,19 @@ export class AddAttendancePage implements OnInit {
   }
 
   navigate() {
-    this.router.navigate(['home'])
+    this.router.navigate(['/menu/home'])
+    this.api.hideLoader();
   }
   async dismiss() {
     return await this.modalCtrl.dismiss();
   }
   getCurrentCoordinates() {
-    this.api.showLoader();
+    // this.api.showLoader();
     this.geolocation.getCurrentPosition().then((resp:any) => {
       console.log(resp)
       this.data.InLatitude = resp.coords.latitude;
       this.data.InLongitude = resp.coords.longitude;
-      this.api.hideLoader();
+      // this.api.hideLoader();
     }).catch((error:any) => {
       console.log('Error getting location', error);
     });
@@ -287,53 +362,10 @@ export class AddAttendancePage implements OnInit {
           });
           toast.present();
           toast.onDidDismiss().then(() => {
-            this.api.hideLoader();
             this.navigate();
           });
         }
       })
-      //36 ki jagah pe ye copy kiya
-      //     .then(async response => {
-      //       this.api.showLoader();
-      //       console.log('updated successfully:', response);
-      //       this.dataJson = JSON.parse(response.data);
-      //       console.log(this.dataJson);
-      //       this.data = this.dataJson['Result'];
-      //       console.log(this.data);
-      //       await this.api.imageWithattendance(this.api.getEmployeeId(),
-      //       this.api.getImagefilename(),this.api.getImagefilepath())
-      //         .then(response => {
-      //           console.log('image uploaded successfully:', response);
-      //           // Handle success response from imageWithattendance() API
-      //           // ...
-      //         })
-      //         .catch(error => {
-      //           console.error('Error uploading image:', error);
-      //           // Handle error response from imageWithattendance() API
-      //           // ...
-      //         });
-      //       const toast = await this.toastController.create({
-      //         message: 'You have Punch Out successfully!',
-      //         duration: 2000,
-      //         position: 'bottom'
-      //       });
-      //       toast.present();
-      //       toast.onDidDismiss().then(() => {
-      //         this.navigate();
-      //         this.api.hideLoader();
-      //       });
-      //     })
-      //     .catch(async error => {
-      //       console.error('Error updating data:', error);
-      //       const toast = await this.toastController.create({
-      //         message: 'Error updating attendance data. Please try again later.',
-      //         duration: 2000,
-      //         position: 'bottom'
-      //       })
-      //         .finally(() => {
-      //           this.api.hideLoader();
-      //         });
-      //     });
       this.isPunchedIn = false;
     })
   }
@@ -343,10 +375,8 @@ export class AddAttendancePage implements OnInit {
     this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.CAMERA)
       .then(result => {
         if (result.hasPermission) {
-          // Permission granted, start the camera preview
           this.startCamera();
         } else {
-          // Permission denied, handle accordingly
           console.error('Camera permission denied');
         }
       })
@@ -387,6 +417,7 @@ export class AddAttendancePage implements OnInit {
 
   // Function to capture and store image
   captureImage() {
+    this.api.showLoader()
     this.cameraPreview.takeSnapshot({ width: 640, height: 640, quality: 85 }).then(base64Data => {
       console.log('Start to capture the image ', base64Data);
       let imageData = 'data:image/jpeg;base64,' + base64Data;
@@ -400,7 +431,6 @@ export class AddAttendancePage implements OnInit {
       const blob = new Blob([byteArray], { type: "image/jpeg" });
       const formData = new FormData
       formData.append('file', blob)
-      this.api.showLoader()
       this.api.uploadImage(formData).then(async (res: any) => {
         console.log(res)
         this.detailsJson = JSON.parse(res.data);
@@ -419,11 +449,11 @@ export class AddAttendancePage implements OnInit {
         });
         toast.present();
         toast.onDidDismiss().then(() => {
-          // this.navigate();
+          this.api.hideLoader()
         });
         this.cameraPreview.stopCamera().then(() => {
           console.log('Camera preview stopped successfully');
-          this.api.hideLoader()
+          
         }).catch(err => {
           console.error('Failed to stop camera preview', err);
         });
@@ -434,80 +464,6 @@ export class AddAttendancePage implements OnInit {
       console.error('Failed to capture image', err);
     });
   }
-
-  // startCamera() {
-  //   const screenWidth = window.screen.width;
-  //   const screenHeight = window.screen.height;
-
-  //   const cameraWidth = 300;
-  //   const cameraHeight = 400;
-
-  //   const cameraX = (screenWidth - cameraWidth) / 2;
-
-  //   const cameraY = (screenHeight - cameraHeight) / 2 - (screenHeight * 0.1);
-
-  //   let options = {
-  //     x: cameraX,
-  //     y: cameraY,
-  //     width: cameraWidth,
-  //     height: cameraHeight,
-  //     // camera: this.cameraPreview.CAMERA_DIRECTION.BACK,
-  //     toBack: false,
-  //     tapPhoto: true,
-  //     tapFocus: false,
-  //     previewDrag: false,
-  //     storeToFile: false,
-  //     disableExifHeaderStripping: false
-  //   };
-
-
-  //   this.cameraPreview.startCamera(options).then(() => {
-  //     console.log('Camera preview started successfully');
-
-  //     // Capture an image
-  //     // setTimeout(() => kjjhjh{
-  //       this.cameraPreview.takeSnapshot({ width: 640, height: 640, quality: 85 }).then(base64Data => {
-  //         // Process the captured image data
-  //         // ...
-  //         console.log('Start to capture the image ', base64Data);
-
-  //         let dummy = base64Data[0]
-
-
-  //         let imageData = 'data:image/jpeg;base64,' + base64Data;
-  //         console.log(imageData)
-
-  //         const byteCharacters = atob(imageData.split(',')[1]);
-  //         const byteNumbers = new Array(byteCharacters.length);
-  //         for (let i = 0; i < byteCharacters.length; i++) {
-  //           byteNumbers[i] = byteCharacters.charCodeAt(i);
-  //         }
-  //         const byteArray = new Uint8Array(byteNumbers);
-  //         const blob = new Blob([byteArray], { type: "image/jpeg" });
-  //         const formData = new FormData
-  //         formData.append('file', blob)
-  //         this.api.uploadImage(formData).then(res => {
-  //           console.log(res)
-  //         })
-  //         // Stop the camera preview
-  //         this.cameraPreview.stopCamera().then(() => {
-  //           console.log('Camera preview stopped successfully');
-  //         }).catch(err => {
-  //           console.error('Failed to stop camera preview', err);
-  //         });
-  //       }).catch(err => {
-  //         console.error('Failed to capture image', err);
-  //         this.cameraPreview.stopCamera().then(() => {
-  //           console.log('Camera preview stopped successfully');
-  //         }).catch(err => {
-  //           console.error('Failed to stop camera preview', err);
-  //         });
-  //       });
-  //     //  }, 10000);
-  //   }).catch(err => {
-  //     console.error('Failed to start camera preview', err);
-  //   });
-  // }
 
   ngOnInit() {
 

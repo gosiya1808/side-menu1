@@ -14,7 +14,7 @@ import { Platform } from '@ionic/angular';
 export class ApiServicesService {
   AttendanceId:any;
   EmployeeId:any;
-  baseUrl = 'https://b4d9-116-73-212-234.ngrok-free.app/';
+  baseUrl = 'https://b035-150-107-241-38.ngrok-free.app/';
   attendance = new Attendance();
   PageNumber:number|any;
   loginData: UserAuth|any;
@@ -27,8 +27,6 @@ export class ApiServicesService {
   private password!: string;
 
   private UserId!:number;
-  
-
 
   constructor(
    private http:HTTP,
@@ -43,11 +41,12 @@ export class ApiServicesService {
   });
   }
   setRole(role: string) {
+    localStorage.setItem('role',role)
     this.role = role;
   }
 
-  getRole(): string {
-    return this.role;
+  getRole(){
+    return localStorage.getItem('role') as string ;
   }
 
   getEmployess(PageNumber:number,PageSize:number=50): Observable<Employee[]>{
@@ -224,7 +223,6 @@ export class ApiServicesService {
 
   logout(){
     return this.http.post(this.baseUrl+'api/Account/Logout',{},{}).then(() => {
-      // ...
     }, (error:any) => {
       console.error(error);
     });
@@ -233,5 +231,26 @@ export class ApiServicesService {
   getProgressData(EmployeeId: number, Date:String){
     return this.http.get(this.baseUrl+'api/Attendance/GetInTimeByEmployeeId?employeeId='+EmployeeId+'&date='+Date,{},{});
   } 
+
+  //forgot password 
+  verifyCode(code:string, EmployeeId:number){
+    const g={
+      'EmployeeID': EmployeeId,
+      'Code': code
+    }
+    return this.http.post(this.baseUrl+'api/Account/VerifyCode',g,{})
+  }
+
+  getRandomString(id:number){
+    return this.http.post(this.baseUrl+'api/Account/GetRandomString?id='+id,{},{})
+  }
+
+  getUsersDetails(email: string){
+    return this.http.get(this.baseUrl+'api/Account/getusersdetails?user='+email,{},{})
+  }
+
+  updatePassword(user: string){
+    return this.http.post(this.baseUrl+'api/Account/UpdatePassword?user='+user,{},{})
+  }
 
 }

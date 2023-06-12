@@ -27,26 +27,24 @@ export class LocationService {
         longitude: "",
         accuracy: "",
         timestamp: ""
+       }
      }
-     }
+  async locationStatus() {
+    return new Promise((resolve, reject) => {
+        this.diagnostic.isLocationEnabled().then((isEnabled) => {
+        console.log(isEnabled);
+        if (isEnabled === false) {
+          resolve(false);
+        } else if (isEnabled === true) {
+          resolve(true);
+        }
+      })
+    .catch((_e) => {
 
-
-     async locationStatus() {
-      return new Promise((resolve, reject) => {
-         this.diagnostic.isLocationEnabled().then((isEnabled) => {
-         console.log(isEnabled);
-         if (isEnabled === false) {
-            resolve(false);
-         } else if (isEnabled === true) {
-            resolve(true);
-         }
-       })
-     .catch((_e) => {
-
-     reject(false);
-     });
+    reject(false);
     });
-   }
+  });
+}
 
 
 
@@ -163,10 +161,9 @@ async askToTurnOnGPS() {
       }
     });
    }
-
   });
-});
-}
+  });
+ }
 
 async getLocationCoordinates() {
   return new Promise((resolve, reject) => {
@@ -201,8 +198,6 @@ async presentToast() {
     ]
   });
   toast.present();
-}
-
-
+ }
 
 }

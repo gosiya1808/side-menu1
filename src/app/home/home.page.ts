@@ -1,13 +1,11 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiServicesService } from 'src/app/Services/api-services.service';
-import { Attendance, Employee, ProgressData, UserAuth } from '../Model/employee-details';
+import { Attendance, ProgressData, UserAuth } from '../Model/employee-details';
 import { Chart } from 'chart.js';
 import { AlertController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
-
-
-
+import { NavController } from '@ionic/angular';
 
 
 
@@ -18,16 +16,13 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements AfterViewInit, OnInit {
 
-  private punchInTime: Date = new Date(2023, 5, 4, 9, 0, 0); // Static punch in time (9:00 AM)
-  private punchOutTimee: Date = new Date(2023, 5, 4, 15, 0, 0);
-
-  private remainingTime: string = '';
+ 
   doughnutChart: any;
 
   page = 1;
   EmployeeId: number | any;
   detailsJson: string | any;
-  details: Attendance | any;
+  details!: Attendance | any;
   data: UserAuth | any;
   punchIntime!: string | any;
   punchOutTime!: string;
@@ -38,57 +33,54 @@ export class HomePage implements AfterViewInit, OnInit {
 
   employee: any;
   roles: any = [];
+  showRoleList = false;
+  selectedRole:any;
+  UserName!: string;
+  UserPassword!: string;
+
+  loginData: UserAuth = new UserAuth();
 
 
   @ViewChild('doughnutCanvas') private doughnutCanvas!: ElementRef;
   @ViewChild('completedTime') public completedTime!: ElementRef;
 
-  constructor(private api: ApiServicesService, private alertController: AlertController, private popoverController: PopoverController, private router: Router) { }
-
-  showRoleList = false;
-  selectedRole = this.api.getRole();
-
-  setActiveRole(event: any) {
-    const roleid = event.target.value;
+  constructor(private api: ApiServicesService, private alertController: AlertController, private popoverController: PopoverController, private router: Router,private navCtrl: NavController) {
+    this.selectedRole=parseInt(this.api.getRole());
+    console.log('ROLE lol',typeof(this.selectedRole))
   }
-
+  setActiveRole(event: any) {
+    const employeeId = this.api.getEmployeeId();
+    console.log(employeeId)
+    // debugger
+    const roleid = event.target.value;
+    this.api.setRole(roleid);
+    window.location.reload();
+    // const gg = this.api.setRole();
+  }
   getRoles() {
     this.api.multiRole(this.api.getUserId()).then((res: any) => {
       console.log(res);
       this.detailsJson = JSON.parse(res.data);
       console.log(this.detailsJson);
       this.employee = this.detailsJson['Result'];
-      console.log(this.employee);
-      // if (this.selectedRole === 'HR') {
-      //   this.router.navigate(['/employee-enrollment']);
-      //   console.log('emloyee enrollment page')
-      // } else if(this.selectedRole === 'Employee'){
-      //   this.router.navigate(['/home'])
-      //   console.log('home page')
-      // }
+      console.log(typeof(this.employee[0]['RoleId']));
     })
   }
-  
+    
 
   selectRole() {
-    this.popoverController.dismiss(this.selectedRole);
+    this.selectedRole=parseInt(this.api.getRole());
   }
-  async presentPopover(event: any) {
-    const popover = await this.popoverController.create({
-      component: 'rolePopover',
-      event: event
-    });
-    await popover.present();
-  }
-  async ionViewDidEnter() {
-    await this.attendance();
+ 
+  ionViewDidEnter() {
+    this.attendance();
     this.startDynamicChart();
   }
   ngAfterViewInit() {
     this.getRoles();
     console.log('Selected role  ', this.selectedRole)
     this.doughnutChartMethod();
-    // this.startDynamicAnimation();
+
   }
   doughnutChartMethod() {
     this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
@@ -119,8 +111,8 @@ export class HomePage implements AfterViewInit, OnInit {
       }
     });
   }
-  startDynamicChart() {
 
+  startDynamicChart() {
     this.doughnutChart.data.datasets[0].data = [0, 0];
     // this.doughnutChart.update();
     const employeeId = this.api.getEmployeeId();
@@ -197,39 +189,7 @@ export class HomePage implements AfterViewInit, OnInit {
       if (remainingTimeElement) {
         remainingTimeElement.textContent = elapsedTimeString;
       }
-
     });
-  }
-
-  startDynamicAnimation(): void {
-    this.doughnutChart.data.datasets[0].data = [0, 0];
-    // this.doughnutChart.update();
-    setInterval(() => {
-      const now = new Date();
-      const elapsed = now.getTime() - this.punchInTime.getTime();
-      const totalDuration = this.punchOutTimee.getTime() - this.punchInTime.getTime();
-      // const remaining = this.punchOutTimee.getTime() - now.getTime();
-
-      this.doughnutChart.data.datasets[0].data = [
-        elapsed / totalDuration * 100,
-        (totalDuration - elapsed) / totalDuration * 100
-      ];
-      this.doughnutChart.update();
-      // const remainingTime = new Date(remaining);fgbhfdh
-      // // console.log(remainingTime)
-      // const remainingHours = Math.floor(remainingTime.getTime() / (60 * 60 * 1000));
-      // const remainingMinutes = Math.floor(remainingTime.getTime() % (60 * 60 * 1000) / (60 * 1000));
-      // const completedTime = `${remainingHours} hrs ${remainingMinutes} mins`;
-      // console.log(completedTime)
-      const elapsedHours = Math.floor(elapsed / (60 * 60 * 1000));
-      const elapsedMinutes = Math.floor(elapsed % (60 * 60 * 1000) / (60 * 1000));
-      const elapsedTimeString = `${elapsedHours} hrs: ${elapsedMinutes} mins`;
-      // (<HTMLSpanElement>document.getElementById('remainingTime')!).textContent = elapsedTimeString;
-      const remainingTimeElement = document.getElementById('remainingTime');
-      if (remainingTimeElement) {
-        remainingTimeElement.textContent = elapsedTimeString;
-      }
-    }, 1000);
   }
 
   attendance() {
@@ -239,7 +199,6 @@ export class HomePage implements AfterViewInit, OnInit {
     // this.api.showLoader();
     this.api.getAttendanceById(employeeId, today).then((res: any) => {
       console.log(res);
-
       this.detailsJson = JSON.parse(res.data);
       console.log(this.detailsJson);
       this.details = this.detailsJson['Result'];
@@ -263,25 +222,27 @@ export class HomePage implements AfterViewInit, OnInit {
       // console.log(this.punchIntime);
 
       // Parse the punch out time and construct a Date object
-      const OutTime = this.details.OutTime;
-      const [hours1, minutes1, seconds1] = OutTime.split(':').map(Number);
+      // if(this.details.OutTime){
 
-      const date1 = new Date();
-      date1.setHours(hours1);
-      date1.setMinutes(minutes1);
-      date1.setSeconds(seconds1);
-      const outputTime1 = date1.toLocaleTimeString('en-US', options);
-
-      this.punchOutTime = outputTime1;
-      console.log(this.punchOutTime);
-      //  this.api.hideLoader();
+        const OutTime = this.details.OutTime;
+        const [hours1, minutes1, seconds1] = OutTime.split(':').map(Number);
+  
+        const date1 = new Date();
+        date1.setHours(hours1);
+        date1.setMinutes(minutes1);
+        date1.setSeconds(seconds1);
+        const outputTime1 = date1.toLocaleTimeString('en-US', options);
+  
+        this.punchOutTime = outputTime1;
+        console.log(this.punchOutTime);
+        //  this.api.hideLoader();
+      // }
 
     }).catch(error => {
       console.log("error getting data", error);
     })
   }
-
-
+  
   ngOnInit() {
 
   }
